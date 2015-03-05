@@ -1,6 +1,6 @@
 #IOIODotNet#
 
-Version 0.1 2014 Mar 03 joe@freemansoft.com
+Version 0.1 2014 Mar 03 [Joe Freeman](http://joe.blog.freemansoft.com)
 
 A crazy rough cut of a C# .Net library for the [IOIO device](https://github.com/ytai/ioio/wiki). 
 It involves a **lot** of code copied from the Java application.  This is on purpose to simplifiy tracking 
