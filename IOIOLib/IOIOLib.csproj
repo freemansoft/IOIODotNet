@@ -90,6 +90,7 @@
     <Compile Include="Device\Impl\IOIOIncomingHandlerCaptureLog.cs" />
     <Compile Include="Device\Impl\IOIOIncomingHandlerCaptureState.cs" />
     <Compile Include="Device\Impl\IOIOIncomingHandlerDistributor.cs" />
+    <Compile Include="Device\Impl\IOIOIncomingHandlerNotifier.cs" />
     <Compile Include="Device\Impl\IOIOProtocolIncoming.cs" />
     <Compile Include="Device\Impl\IOIOImpl.cs" />
     <Compile Include="Device\IOIO.cs" />

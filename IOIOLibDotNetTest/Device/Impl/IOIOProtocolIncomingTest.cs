@@ -51,15 +51,22 @@ namespace IOIOLibDotNetTest.Device.Impl
             System.Threading.Thread.Sleep(100); // receive the HW ID
             LOG.Info("This test requires pin 31 and 32 be shorted together");
             fooOut.setPinDigitalIn(31, DigitalInputSpecMode.FLOATING);
+            // request to be told of state change.  system will acknowledge this
             fooOut.setChangeNotify(31, true);
+            // first change that will be captured...
             fooOut.setPinDigitalOut(32, false, DigitalOutputSpecMode.NORMAL);
-            System.Threading.Thread.Sleep(100);
+            // second change that is captured
             fooOut.setDigitalOutLevel(32, true);
+            // we could wait until our acknowledgements are received
             System.Threading.Thread.Sleep(200);
             // all log  methods contain method name which is in the interface so this is reasonably safe
             // we get one change event as soon as the pin input pin is configured + 2 changes in test
             int matchingLogs = this.handlerLog.capturedLogs.Count(s => s.StartsWith("handleReportDigitalInStatus"));
-            Assert.IsTrue(matchingLogs > 1, "Should have captured input changes, not " + matchingLogs + ".  Are pins 31 and 32 shorted together");
+            Assert.AreEqual(2, matchingLogs, "Should have captured input changes, not " + matchingLogs + ".  Are pins 31 and 32 shorted together");
+            // verify the system acknowledged our request to be notified of state change
+            Assert.IsTrue(this.handlerState.StateSetChangeNotify.ContainsKey(31));
+            // verify we got pin state changes for 31
+            Assert.IsTrue(this.handlerState.StateReportDigitalInStatus.ContainsKey(31));
         }
     }
 }

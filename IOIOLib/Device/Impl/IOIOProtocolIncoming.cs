@@ -404,6 +404,8 @@ namespace IOIOLib.Device.Impl
                 handler_.handleConnectionLost();
                 LOG.Info("Throwing thread cancel to stop incoming thread");
                 cancelTokenSource_.Cancel();
+                // debugger will always stop here in unit tests if test dynamically determines what port ot use
+                // just hit continue in the debugger
                 cancelTokenSource_.Token.ThrowIfCancellationRequested();
                 stream_ = null;
                 this.incomingThread_ = null;
