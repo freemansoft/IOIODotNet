@@ -32,7 +32,7 @@ You can send and receive messages from the board. The unit tests flash the LED a
  * This code is not yet invoked unless you do it because IOIOImpl isn't built yet.  **See the unit tests for the current setup and teardown**
 
 
-##What Doesnt Work##
+##What Doesn't Work##
 
 1. IOIOImpl is not yet implemented. 
 * This means board verification is not yet automatic
