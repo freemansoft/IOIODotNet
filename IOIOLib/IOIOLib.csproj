@@ -104,6 +104,7 @@
     <Compile Include="Component\Impl\SpiMaster.cs" />
     <Compile Include="Component\Impl\TwiMaster.cs" />
     <Compile Include="Component\Impl\Sequencer.cs" />
+    <Compile Include="Device\IDevice.cs" />
     <Compile Include="Device\IOIO.cs" />
     <Compile Include="Device\Impl\IOIOProtocolOutgoing.cs" />
     <Compile Include="Device\Types\Board.cs" />

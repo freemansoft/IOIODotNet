@@ -53,7 +53,7 @@ namespace IOIOLib.Device
  *
  * @see IOIOFactory#create()
  */
-    public interface IOIO
+    public interface IOIO: IDevice
     {
     /**
      * Establishes connection with the IOIO board.
