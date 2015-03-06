@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Component\IComponent.cs" />
     <Compile Include="Component\Impl\DigitalInput.cs" />
     <Compile Include="Component\ISequencer.cs" />
     <Compile Include="Component\IUart.cs" />
