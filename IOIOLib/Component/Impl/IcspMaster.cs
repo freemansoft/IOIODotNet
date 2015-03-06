@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace IOIOLib.Component
+namespace IOIOLib.Component.Impl
 {
     /// <summary>
     /// Abstraction for this feature. See the Java version for an idea of functionality
     /// </summary>
-    public interface IIcspMaster
+    class IcspMaster : IIcspMaster
     {
     }
 }

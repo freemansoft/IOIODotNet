@@ -17,15 +17,15 @@ namespace IOIOLib.Device.Impl
         /// <summary>
         /// provided by IOIO when connects
         /// </summary>
-        private byte[] HardwareId;
+        internal string HardwareId;
         /// <summary>
         /// provided by IOIO when connects
         /// </summary>
-        private byte[] BootloaderId;
+        internal string BootloaderId;
         /// <summary>
         /// provided by IOIO when connects
         /// </summary>
-        private byte[] FirmwareId;
+        internal string FirmwareId;
         /// <summary>
         /// response from the checkInterfaceResponse call 
         /// </summary>
@@ -38,9 +38,9 @@ namespace IOIOLib.Device.Impl
 
         public void handleEstablishConnection(byte[] hardwareId, byte[] bootloaderId, byte[] firmwareId)
         {
-            this.HardwareId = hardwareId;
-            this.BootloaderId = bootloaderId;
-            this.FirmwareId = firmwareId;
+            this.HardwareId = System.Text.Encoding.ASCII.GetString(hardwareId);
+            this.BootloaderId = System.Text.Encoding.ASCII.GetString(bootloaderId);
+            this.FirmwareId = System.Text.Encoding.ASCII.GetString(firmwareId);
             OurHardware = Board.AllBoards[System.Text.Encoding.ASCII.GetString(hardwareId)];
         }
 

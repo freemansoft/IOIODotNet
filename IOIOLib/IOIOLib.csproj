@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Component\Impl\DigitalInput.cs" />
     <Compile Include="Component\ISequencer.cs" />
     <Compile Include="Component\IUart.cs" />
     <Compile Include="Component\ITwiMaster.cs" />
@@ -87,12 +88,21 @@
     <Compile Include="Connection\Impl\SerialConnectionFactory.cs" />
     <Compile Include="Connection\IOIOConnection.cs" />
     <Compile Include="Connection\IOIOConnectionFactory.cs" />
+    <Compile Include="Component\Impl\DigitalOutput.cs" />
+    <Compile Include="Component\Impl\AnalogInput.cs" />
+    <Compile Include="Component\Impl\CapSense.cs" />
+    <Compile Include="Component\Impl\IcspMaster.cs" />
     <Compile Include="Device\Impl\IOIOIncomingHandlerCaptureLog.cs" />
     <Compile Include="Device\Impl\IOIOIncomingHandlerCaptureState.cs" />
     <Compile Include="Device\Impl\IOIOIncomingHandlerDistributor.cs" />
     <Compile Include="Device\Impl\IOIOIncomingHandlerNotifier.cs" />
     <Compile Include="Device\Impl\IOIOProtocolIncoming.cs" />
     <Compile Include="Device\Impl\IOIOImpl.cs" />
+    <Compile Include="Component\Impl\PwmOutput.cs" />
+    <Compile Include="Component\Impl\Uart.cs" />
+    <Compile Include="Component\Impl\SpiMaster.cs" />
+    <Compile Include="Component\Impl\TwiMaster.cs" />
+    <Compile Include="Component\Impl\Sequencer.cs" />
     <Compile Include="Device\IOIO.cs" />
     <Compile Include="Device\Impl\IOIOProtocolOutgoing.cs" />
     <Compile Include="Device\Types\Board.cs" />
@@ -110,6 +120,7 @@
     <Compile Include="Device\Types\SequencerEvent.cs" />
     <Compile Include="Device\Types\SpecialPin.cs" />
     <Compile Include="IOIOException\ConnectionCreationException.cs" />
+    <Compile Include="IOIOException\IllegalStateException.cs" />
     <Compile Include="IOIOException\OutOfResourceException.cs" />
     <Compile Include="IOIOException\IncompatabilityException.cs" />
     <Compile Include="IOIOException\ConnectionLostException.cs" />
@@ -120,7 +131,6 @@
     <Compile Include="Util\IOIOLogManager.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Component\Impl\" />
     <Folder Include="Connection\Types\" />
     <Folder Include="Control\Impl\" />
     <Folder Include="Control\Types\" />
