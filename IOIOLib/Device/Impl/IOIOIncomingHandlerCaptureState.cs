@@ -17,31 +17,31 @@ namespace IOIOLib.Device.Impl
         /// <summary>
         /// provided by IOIO when connects
         /// </summary>
-        internal string HardwareId;
+        internal string HardwareId_;
         /// <summary>
         /// provided by IOIO when connects
         /// </summary>
-        internal string BootloaderId;
+        internal string BootloaderId_;
         /// <summary>
         /// provided by IOIO when connects
         /// </summary>
-        internal string FirmwareId;
+        internal string FirmwareId_;
         /// <summary>
         /// response from the checkInterfaceResponse call 
         /// </summary>
-        internal bool Supported;
+        internal bool Supported_;
         /// <summary>
         /// should we have a variable here or just look it up each time?
         /// this should probably not exist.  It should be posted as part of event to listeners
         /// </summary>
-        internal Hardware OurHardware = null;
+        internal Hardware OurHardware_ = null;
 
         public void handleEstablishConnection(byte[] hardwareId, byte[] bootloaderId, byte[] firmwareId)
         {
-            this.HardwareId = System.Text.Encoding.ASCII.GetString(hardwareId);
-            this.BootloaderId = System.Text.Encoding.ASCII.GetString(bootloaderId);
-            this.FirmwareId = System.Text.Encoding.ASCII.GetString(firmwareId);
-            OurHardware = Board.AllBoards[System.Text.Encoding.ASCII.GetString(hardwareId)];
+            this.HardwareId_ = System.Text.Encoding.ASCII.GetString(hardwareId);
+            this.BootloaderId_ = System.Text.Encoding.ASCII.GetString(bootloaderId);
+            this.FirmwareId_ = System.Text.Encoding.ASCII.GetString(firmwareId);
+            OurHardware_ = Board.AllBoards[System.Text.Encoding.ASCII.GetString(hardwareId)];
         }
 
         public void handleConnectionLost()
@@ -54,177 +54,177 @@ namespace IOIOLib.Device.Impl
 
         public void handleCheckInterfaceResponse(bool supported)
         {
-            this.Supported = supported;
+            this.Supported_ = supported;
         }
 
-        internal IDictionary<int, Tuple<int, bool>> StateSetChangeNotify = new Dictionary<int, Tuple<int, bool>>();
+        internal IDictionary<int, Tuple<int, bool>> StateSetChangeNotify_ = new Dictionary<int, Tuple<int, bool>>();
         public void handleSetChangeNotify(int pin, bool changeNotify)
         {
-            StateSetChangeNotify.Add(pin, new Tuple<int, bool>(pin, changeNotify));
+            StateSetChangeNotify_.Add(pin, new Tuple<int, bool>(pin, changeNotify));
         }
 
-        internal IDictionary<int, Tuple<int, bool>> StateReportDigitalInStatus = new Dictionary<int, Tuple<int, bool>>();
+        internal IDictionary<int, Tuple<int, bool>> StateReportDigitalInStatus_ = new Dictionary<int, Tuple<int, bool>>();
         public void handleReportDigitalInStatus(int pin, bool level)
         {
-            StateReportDigitalInStatus.Add(pin, new Tuple<int, bool>(pin, level));
+            StateReportDigitalInStatus_.Add(pin, new Tuple<int, bool>(pin, level));
         }
 
-        internal IDictionary<int, Tuple<int, int>> StatePeriodicDigitalSampling = new Dictionary<int, Tuple<int, int>>();
+        internal IDictionary<int, Tuple<int, int>> StatePeriodicDigitalSampling_ = new Dictionary<int, Tuple<int, int>>();
         public void handleRegisterPeriodicDigitalSampling(int pin, int freqScale)
         {
-            StatePeriodicDigitalSampling.Add(pin, new Tuple<int, int>(pin, freqScale));
+            StatePeriodicDigitalSampling_.Add(pin, new Tuple<int, int>(pin, freqScale));
         }
 
-        internal IDictionary<int, Tuple<int, bool[]>> StateReportPeriodicDigitalInStatus = new Dictionary<int, Tuple<int, bool[]>>();
+        internal IDictionary<int, Tuple<int, bool[]>> StateReportPeriodicDigitalInStatus_ = new Dictionary<int, Tuple<int, bool[]>>();
         public void handleReportPeriodicDigitalInStatus(int frameNum, bool[] values)
         {
-            StateReportPeriodicDigitalInStatus.Add(frameNum, new Tuple<int, bool[]>(frameNum, values));
+            StateReportPeriodicDigitalInStatus_.Add(frameNum, new Tuple<int, bool[]>(frameNum, values));
         }
 
-        internal IDictionary<int, Tuple<int, bool>> StateAnalogPinStatus = new Dictionary<int, Tuple<int, bool>>();
+        internal IDictionary<int, Tuple<int, bool>> StateAnalogPinStatus_ = new Dictionary<int, Tuple<int, bool>>();
         public void handleAnalogPinStatus(int pin, bool open)
         {
-            StateAnalogPinStatus.Add(pin, new Tuple<int, bool>(pin, open));
+            StateAnalogPinStatus_.Add(pin, new Tuple<int, bool>(pin, open));
         }
 
-        internal IDictionary<int, Tuple<int, int>> StateReportAnalogInStatus = new Dictionary<int, Tuple<int, int>>();
+        internal IDictionary<int, Tuple<int, int>> StateReportAnalogInStatus_ = new Dictionary<int, Tuple<int, int>>();
         public void handleReportAnalogInStatus(List<int> pins, List<int> values)
         {
             for (int i = 0; i < pins.Count; i++)
             {
-                StateReportAnalogInStatus.Add(pins[i], new Tuple<int, int>(pins[i], values[i]));
+                StateReportAnalogInStatus_.Add(pins[i], new Tuple<int, int>(pins[i], values[i]));
             }
         }
 
-        internal IDictionary<int, int> StateUartOpen = new Dictionary<int, int>();
+        internal IDictionary<int, int> StateUartOpen_ = new Dictionary<int, int>();
         public void handleUartOpen(int uartNum)
         {
-            StateUartOpen.Add(uartNum, uartNum);
+            StateUartOpen_.Add(uartNum, uartNum);
         }
 
         public void handleUartClose(int uartNum)
         {
-            if (StateUartOpen.ContainsKey(uartNum))
+            if (StateUartOpen_.ContainsKey(uartNum))
             {
-                StateUartOpen.Remove(uartNum);
+                StateUartOpen_.Remove(uartNum);
             }
         }
 
-        internal IDictionary<int, Tuple<int, int, byte[]>> StateUartData = new Dictionary<int, Tuple<int, int, byte[]>>();
+        internal IDictionary<int, Tuple<int, int, byte[]>> StateUartData_ = new Dictionary<int, Tuple<int, int, byte[]>>();
         public void handleUartData(int uartNum, int numBytes, byte[] data)
         {
-            StateUartData.Add(uartNum, new Tuple<int, int, byte[]>(uartNum, numBytes, data));
+            StateUartData_.Add(uartNum, new Tuple<int, int, byte[]>(uartNum, numBytes, data));
         }
 
         public void handleUartReportTxStatus(int uartNum, int bytesRemaining)
         {
         }
 
-        internal IDictionary<int, int> StateSpiOpen = new Dictionary<int, int>();
+        internal IDictionary<int, int> StateSpiOpen_ = new Dictionary<int, int>();
         public void handleSpiOpen(int spiNum)
         {
-            StateSpiOpen.Add(spiNum, spiNum);
+            StateSpiOpen_.Add(spiNum, spiNum);
         }
 
         public void handleSpiClose(int spiNum)
         {
-            if (StateSpiOpen.ContainsKey(spiNum))
+            if (StateSpiOpen_.ContainsKey(spiNum))
             {
-                StateSpiOpen.Remove(spiNum);
+                StateSpiOpen_.Remove(spiNum);
             }
         }
 
-        internal IDictionary<int, Tuple<int, int, byte[], int>> StateSpiData = new Dictionary<int, Tuple<int, int, byte[], int>>();
+        internal IDictionary<int, Tuple<int, int, byte[], int>> StateSpiData_ = new Dictionary<int, Tuple<int, int, byte[], int>>();
         public void handleSpiData(int spiNum, int ssPin, byte[] data, int dataBytes)
         {
-            StateSpiData.Add(spiNum, new Tuple<int, int, byte[], int>(spiNum, ssPin, data, dataBytes));
+            StateSpiData_.Add(spiNum, new Tuple<int, int, byte[], int>(spiNum, ssPin, data, dataBytes));
         }
 
         public void handleSpiReportTxStatus(int spiNum, int bytesRemaining)
         {
         }
 
-        internal IDictionary<int, int> StateI2cOpen = new Dictionary<int, int>();
+        internal IDictionary<int, int> StateI2cOpen_ = new Dictionary<int, int>();
         public void handleI2cOpen(int i2cNum)
         {
-            StateI2cOpen.Add(i2cNum, i2cNum);
+            StateI2cOpen_.Add(i2cNum, i2cNum);
         }
 
         public void handleI2cClose(int i2cNum)
         {
-            if (StateI2cOpen.ContainsKey(i2cNum))
+            if (StateI2cOpen_.ContainsKey(i2cNum))
             {
-                StateI2cOpen.Remove(i2cNum);
+                StateI2cOpen_.Remove(i2cNum);
             }
         }
 
-        internal IDictionary<int, Tuple<int, int, byte[]>> StateI2cResult = new Dictionary<int, Tuple<int, int, byte[]>>();
+        internal IDictionary<int, Tuple<int, int, byte[]>> StateI2cResult_ = new Dictionary<int, Tuple<int, int, byte[]>>();
         public void handleI2cResult(int i2cNum, int size, byte[] data)
         {
-            StateI2cResult.Add(i2cNum, new Tuple<int, int, byte[]>(i2cNum, size, data));
+            StateI2cResult_.Add(i2cNum, new Tuple<int, int, byte[]>(i2cNum, size, data));
         }
 
         public void handleI2cReportTxStatus(int spiNum, int bytesRemaining)
         {
         }
 
-        internal Boolean StateIcspOpen = false;
+        internal Boolean StateIcspOpen_ = false;
         public void handleIcspOpen()
         {
-            StateIcspOpen = true;
+            StateIcspOpen_ = true;
         }
 
         public void handleIcspClose()
         {
-            StateIcspOpen = false;
+            StateIcspOpen_ = false;
         }
 
         public void handleIcspReportRxStatus(int bytesRemaining)
         {
         }
 
-        internal Tuple<int, byte[]> StateIcspResult = new Tuple<int, byte[]>(-1, null);
+        internal Tuple<int, byte[]> StateIcspResult_ = new Tuple<int, byte[]>(-1, null);
         public void handleIcspResult(int size, byte[] data)
         {
-            StateIcspResult = new Tuple<int, byte[]>(size, data);
+            StateIcspResult_ = new Tuple<int, byte[]>(size, data);
         }
 
-        internal IDictionary<int, Tuple<int, int, byte[]>> StateIncapReport = new Dictionary<int, Tuple<int, int, byte[]>>();
+        internal IDictionary<int, Tuple<int, int, byte[]>> StateIncapReport_ = new Dictionary<int, Tuple<int, int, byte[]>>();
         public void handleIncapReport(int incapNum, int size, byte[] data)
         {
-            StateIncapReport.Add(incapNum, new Tuple<int, int, byte[]>(incapNum, size, data));
+            StateIncapReport_.Add(incapNum, new Tuple<int, int, byte[]>(incapNum, size, data));
         }
 
-        internal IDictionary<int, int> StateIncapOpen = new Dictionary<int, int>();
+        internal IDictionary<int, int> StateIncapOpen_ = new Dictionary<int, int>();
         public void handleIncapClose(int incapNum)
         {
-            if (StateIncapOpen.ContainsKey(incapNum))
+            if (StateIncapOpen_.ContainsKey(incapNum))
             {
-                StateIncapOpen.Remove(incapNum);
+                StateIncapOpen_.Remove(incapNum);
             }
         }
 
         public void handleIncapOpen(int incapNum)
         {
-            StateIncapOpen.Add(incapNum, incapNum);
+            StateIncapOpen_.Add(incapNum, incapNum);
         }
 
-        internal IDictionary<int, Tuple<int, int>> StateCapSenseReport = new Dictionary<int, Tuple<int, int>>();
+        internal IDictionary<int, Tuple<int, int>> StateCapSenseReport_ = new Dictionary<int, Tuple<int, int>>();
         public void handleCapSenseReport(int pinNum, int value)
         {
-            StateCapSenseReport.Add(pinNum, new Tuple<int, int>(pinNum, value));
+            StateCapSenseReport_.Add(pinNum, new Tuple<int, int>(pinNum, value));
         }
 
-        internal IDictionary<int, Tuple<int, bool>> StateCapSenseSampling = new Dictionary<int, Tuple<int, bool>>();
+        internal IDictionary<int, Tuple<int, bool>> StateCapSenseSampling_ = new Dictionary<int, Tuple<int, bool>>();
         public void handleSetCapSenseSampling(int pinNum, bool enable)
         {
-            StateCapSenseSampling.Add(pinNum, new Tuple<int, bool>(pinNum, enable));
+            StateCapSenseSampling_.Add(pinNum, new Tuple<int, bool>(pinNum, enable));
         }
 
-        internal IDictionary<Types.SequencerEvent, Tuple<Types.SequencerEvent, int>> StateSequencerEvent = new Dictionary<Types.SequencerEvent, Tuple<Types.SequencerEvent, int>>();
+        internal IDictionary<Types.SequencerEvent, Tuple<Types.SequencerEvent, int>> StateSequencerEvent_ = new Dictionary<Types.SequencerEvent, Tuple<Types.SequencerEvent, int>>();
         public void handleSequencerEvent(Types.SequencerEvent seqEvent, int arg)
         {
-            StateSequencerEvent.Add(seqEvent, new Tuple<SequencerEvent, int>(seqEvent, arg));
+            StateSequencerEvent_.Add(seqEvent, new Tuple<SequencerEvent, int>(seqEvent, arg));
         }
 
         public void handleSync()

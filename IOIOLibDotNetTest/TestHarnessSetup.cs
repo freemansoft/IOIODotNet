@@ -66,7 +66,7 @@ namespace IOIOLibDotNetTest
                         new List<IOIOIncomingHandler> { handlerLog, handlerState });
                     IOIOProtocolIncoming foo = new IOIOProtocolIncoming(oneConn.getInputStream(), handler);
                     System.Threading.Thread.Sleep(100); // WaitForChangedResult for hw ids
-                    if (handlerState.OurHardware != null)
+                    if (handlerState.OurHardware_ != null)
                     {
                         TestHarnessSetup.GOOD_CONN_NAME = oneConn.ConnectionString();
                         LOG.Info("Selecting " + oneConn.ConnectionString());

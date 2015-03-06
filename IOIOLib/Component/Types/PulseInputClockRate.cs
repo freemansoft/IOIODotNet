@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.Component.Types
 {
-    /** Supported clock rate enum. */
+    /** Supported_ clock rate enum. */
     public class PulseInputClockRate
     {
 

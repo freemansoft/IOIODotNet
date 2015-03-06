@@ -28,7 +28,7 @@ namespace IOIOLibDotNetTest.Device.Impl
             IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(GoodConnection.getInputStream(), handler);
             // wait for reply
             System.Threading.Thread.Sleep(2000);
-            Assert.IsNotNull(handlerState.OurHardware);
+            Assert.IsNotNull(handlerState.OurHardware_);
         }
 
         [TestMethod]
@@ -64,9 +64,9 @@ namespace IOIOLibDotNetTest.Device.Impl
             int matchingLogs = this.handlerLog.capturedLogs.Count(s => s.StartsWith("handleReportDigitalInStatus"));
             Assert.AreEqual(2, matchingLogs, "Should have captured input changes, not " + matchingLogs + ".  Are pins 31 and 32 shorted together");
             // verify the system acknowledged our request to be notified of state change
-            Assert.IsTrue(this.handlerState.StateSetChangeNotify.ContainsKey(31));
+            Assert.IsTrue(this.handlerState.StateSetChangeNotify_.ContainsKey(31));
             // verify we got pin state changes for 31
-            Assert.IsTrue(this.handlerState.StateReportDigitalInStatus.ContainsKey(31));
+            Assert.IsTrue(this.handlerState.StateReportDigitalInStatus_.ContainsKey(31));
         }
     }
 }

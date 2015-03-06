@@ -65,7 +65,7 @@ namespace IOIOLib.Device.Impl
             // hack until we figure out where state should be and how we accesses
             // Should this build the hardware object and retain it instead of doing it in the handler?
             // the inbound handler actually has already processed the board version.  
-            if (InbountStateCapture.OurHardware == null)
+            if (InbountStateCapture.OurHardware_ == null)
             {
                 State = IOIOState.DEAD;
             }
@@ -73,7 +73,7 @@ namespace IOIOLib.Device.Impl
             {
                 State = IOIOState.CONNECTED;
             }
-            LOG.Info("Hardware is " + InbountStateCapture.OurHardware);
+            LOG.Info("Hardware is " + InbountStateCapture.OurHardware_);
         }
 
         /// <summary>
@@ -123,11 +123,11 @@ namespace IOIOLib.Device.Impl
             switch (v)
             {
                 case IOIOVersionType.HARDWARE_VER:
-                    return this.InbountStateCapture.HardwareId;
+                    return this.InbountStateCapture.HardwareId_;
                 case IOIOVersionType.BOOTLOADER_VER:
-                    return this.InbountStateCapture.BootloaderId;
+                    return this.InbountStateCapture.BootloaderId_;
                 case IOIOVersionType.APP_FIRMWARE_VER:
-                    return this.InbountStateCapture.FirmwareId;
+                    return this.InbountStateCapture.FirmwareId_;
                 case IOIOVersionType.IOIOLIB_VER:
                     return "IOIO0504";
             }
