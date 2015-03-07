@@ -8,12 +8,13 @@ namespace IOIOLib.MessageFrom.Impl
 {
     public class HandleI2cReportTxStatusFrom : IHandleI2cReportTxStatusFrom
     {
-        private int spiNum;
+
+        public int I2cNum { get; private set; }
 
         public HandleI2cReportTxStatusFrom(int spiNum)
         {
             // TODO: Complete member initialization
-            this.spiNum = spiNum;
+            this.I2cNum = spiNum;
         }
     }
 }

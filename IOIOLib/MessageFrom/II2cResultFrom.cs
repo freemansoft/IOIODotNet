@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom
 {
-    public interface II2cResultFrom : IMessageFromIOIO
+    public interface II2cResultFrom : II2cFrom
     {
+        int Size { get; }
+        byte[] Data { get; }
     }
 }

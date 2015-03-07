@@ -8,16 +8,18 @@ namespace IOIOLib.MessageFrom.Impl
 {
     public class I2cResultFrom : II2cResultFrom
     {
-        private int i2cNum;
-        private int size;
-        private byte[] data;
+
+        public int I2cNum { get; private set; }
+
+        public int Size { get; private set; }
+        public byte[] Data { get; private set; }
 
         public I2cResultFrom(int i2cNum, int size, byte[] data)
         {
             // TODO: Complete member initialization
-            this.i2cNum = i2cNum;
-            this.size = size;
-            this.data = data;
+            this.I2cNum = i2cNum;
+            this.Size = size;
+            this.Data = data;
         }
     }
 }

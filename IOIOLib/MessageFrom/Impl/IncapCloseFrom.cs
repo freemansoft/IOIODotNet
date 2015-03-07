@@ -8,12 +8,12 @@ namespace IOIOLib.MessageFrom.Impl
 {
     public class IncapCloseFrom : IIncapCloseFrom
     {
-        private int incapNum;
+        public int IncapNum { get; private set; }
 
         public IncapCloseFrom(int incapNum)
         {
             // TODO: Complete member initialization
-            this.incapNum = incapNum;
+            this.IncapNum = incapNum;
         }
     }
 }

@@ -8,14 +8,14 @@ namespace IOIOLib.MessageFrom.Impl
 {
     public class HandleSpiReportTxStatusFrom : IHandleSpiReportTxStatusFrom
     {
-        private int spiNum;
-        private int bytesRemaining;
+        public int SpiNum { get; private set; }
+        public int BytesRemaining { get; private set; }
 
         public HandleSpiReportTxStatusFrom(int spiNum, int bytesRemaining)
         {
             // TODO: Complete member initialization
-            this.spiNum = spiNum;
-            this.bytesRemaining = bytesRemaining;
+            this.SpiNum = spiNum;
+            this.BytesRemaining = bytesRemaining;
         }
     }
 }

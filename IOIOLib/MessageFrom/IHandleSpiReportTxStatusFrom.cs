@@ -8,5 +8,8 @@ namespace IOIOLib.MessageFrom
 {
     public interface IHandleSpiReportTxStatusFrom : IMessageFromIOIO
     {
+        int SpiNum { get; }
+        int BytesRemaining { get; }
+
     }
 }

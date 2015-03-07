@@ -8,12 +8,12 @@ namespace IOIOLib.MessageFrom.Impl
 {
     public class I2cOpenFrom : II2cOpenFrom
     {
-        private int i2cNum;
+        public int I2cNum { get; private set; }
 
         public I2cOpenFrom(int i2cNum)
         {
             // TODO: Complete member initialization
-            this.i2cNum = i2cNum;
+            this.I2cNum = i2cNum;
         }
     }
 }

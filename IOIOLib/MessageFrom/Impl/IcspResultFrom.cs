@@ -8,14 +8,15 @@ namespace IOIOLib.MessageFrom.Impl
 {
     public class IcspResultFrom : IIcspResultFrom
     {
-        private int size;
-        private byte[] data;
+
+        public int Size { get; private set; }
+        public byte[] Data { get; private set; }
 
         public IcspResultFrom(int size, byte[] data)
         {
             // TODO: Complete member initialization
-            this.size = size;
-            this.data = data;
+            this.Size = size;
+            this.Data = data;
         }
     }
 }

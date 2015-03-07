@@ -8,5 +8,6 @@ namespace IOIOLib.MessageFrom
 {
     public interface IIncapFrom : IMessageFromIOIO
     {
+        int IncapNum { get; }
     }
 }

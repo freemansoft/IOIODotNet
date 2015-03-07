@@ -8,5 +8,6 @@ namespace IOIOLib.MessageFrom
 {
     public interface II2cFrom : IMessageFromIOIO
     {
+        int I2cNum { get; }
     }
 }

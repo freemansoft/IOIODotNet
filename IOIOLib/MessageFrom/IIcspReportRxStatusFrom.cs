@@ -8,5 +8,6 @@ namespace IOIOLib.MessageFrom
 {
     public interface IIcspReportRxStatusFrom : IMessageFromIOIO
     {
+        int BytesRemaining { get; }
     }
 }

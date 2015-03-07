@@ -8,5 +8,7 @@ namespace IOIOLib.MessageFrom
 {
     public interface IIcspResultFrom : IMessageFromIOIO
     {
+        int Size { get; }
+        byte[] Data { get; }
     }
 }

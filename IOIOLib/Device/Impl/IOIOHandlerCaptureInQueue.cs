@@ -150,9 +150,9 @@ namespace IOIOLib.Device.Impl
             this.Enqueue(new I2cResultFrom(i2cNum, size, data));
         }
 
-        public void handleI2cReportTxStatus(int spiNum, int bytesRemaining)
+        public void handleI2cReportTxStatus(int i2cNum, int bytesRemaining)
         {
-            this.Enqueue(new HandleI2cReportTxStatusFrom(spiNum));
+            this.Enqueue(new HandleI2cReportTxStatusFrom(i2cNum));
         }
 
         // default to close

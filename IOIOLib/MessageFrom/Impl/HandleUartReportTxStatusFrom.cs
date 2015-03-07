@@ -8,14 +8,14 @@ namespace IOIOLib.MessageFrom.Impl
 {
     public class HandleUartReportTxStatusFrom : IHandleUartReportTxStatusFrom
     {
-        private int uartNum;
-        private int bytesRemaining;
+        public int UartNum { get; private set; }
+        public int BytesRemaining { get; private set; }
 
         public HandleUartReportTxStatusFrom(int uartNum, int bytesRemaining)
         {
             // TODO: Complete member initialization
-            this.uartNum = uartNum;
-            this.bytesRemaining = bytesRemaining;
+            this.UartNum = uartNum;
+            this.BytesRemaining = bytesRemaining;
         }
     }
 }

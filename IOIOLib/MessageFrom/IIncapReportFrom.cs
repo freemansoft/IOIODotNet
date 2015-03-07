@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom
 {
-    public interface IIncapReportFrom : IMessageFromIOIO
+    public interface IIncapReportFrom : IIncapFrom
     {
+        int Size { get; }
+        byte[] Data { get; }
     }
 }

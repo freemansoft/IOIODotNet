@@ -8,16 +8,17 @@ namespace IOIOLib.MessageFrom.Impl
 {
     public class IncapReportFrom : IIncapReportFrom
     {
-        private int incapNum;
-        private int size;
-        private byte[] data;
+        public int IncapNum { get; private set; }
+
+        public int Size { get; private set; }
+        public byte[] Data { get; private set; }
 
         public IncapReportFrom(int incapNum, int size, byte[] data)
         {
             // TODO: Complete member initialization
-            this.incapNum = incapNum;
-            this.size = size;
-            this.data = data;
+            this.IncapNum = incapNum;
+            this.Size = size;
+            this.Data = data;
         }
     }
 }

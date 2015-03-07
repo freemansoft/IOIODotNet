@@ -142,25 +142,25 @@ namespace IOIOLib.Device.Impl
 
         public void handleSpiOpen(int spiNum)
         {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " spiNum:" + spiNum;
+            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " i2cNum:" + spiNum;
             LogAndCapture(LogString);
         }
 
         public void handleSpiClose(int spiNum)
         {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " spiNum:" + spiNum;
+            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " i2cNum:" + spiNum;
             LogAndCapture(LogString);
         }
 
         public void handleSpiData(int spiNum, int ssPin, byte[] data, int dataBytes)
         {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " spiNum:" + spiNum;
+            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " i2cNum:" + spiNum;
             LogAndCapture(LogString);
         }
 
         public void handleSpiReportTxStatus(int spiNum, int bytesRemaining)
         {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " spiNum:" + spiNum;
+            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " i2cNum:" + spiNum;
             LogAndCapture(LogString);
         }
 
@@ -184,7 +184,7 @@ namespace IOIOLib.Device.Impl
 
         public void handleI2cReportTxStatus(int spiNum, int bytesRemaining)
         {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " spiNum:" + spiNum;
+            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " i2cNum:" + spiNum;
             LogAndCapture(LogString);
         }
 

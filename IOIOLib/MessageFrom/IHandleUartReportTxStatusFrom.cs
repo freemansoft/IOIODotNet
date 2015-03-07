@@ -8,5 +8,8 @@ namespace IOIOLib.MessageFrom
 {
     public interface IHandleUartReportTxStatusFrom : IMessageFromIOIO
     {
+        int UartNum { get; }
+        int BytesRemaining { get; }
+
     }
 }

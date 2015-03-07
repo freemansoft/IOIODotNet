@@ -8,12 +8,13 @@ namespace IOIOLib.MessageFrom.Impl
 {
     public class IcspReportRxStatusFrom : IIcspReportRxStatusFrom
     {
-        private int bytesRemaining;
+
+        public int BytesRemaining { get; private set; }
 
         public IcspReportRxStatusFrom(int bytesRemaining)
         {
             // TODO: Complete member initialization
-            this.bytesRemaining = bytesRemaining;
+            this.BytesRemaining = bytesRemaining;
         }
     }
 }
