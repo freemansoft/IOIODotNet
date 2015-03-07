@@ -8,5 +8,6 @@ namespace IOIOLib.MessageFrom
 {
     public interface IUartFrom : IMessageFromIOIO
     {
+        int UartNum { get; }
     }
 }

@@ -8,14 +8,16 @@ namespace IOIOLib.MessageFrom.Impl
 {
     public class SetChangeNotifyMessageFrom : ISetChangeNotifyMessageFrom
     {
-        private int pin;
-        private bool changeNotify;
+        
+        public int Pin { get; private set; }
+        public bool ChangeNotify { get; set; }
+
 
         public SetChangeNotifyMessageFrom(int pin, bool changeNotify)
         {
             // TODO: Complete member initialization
-            this.pin = pin;
-            this.changeNotify = changeNotify;
+            this.Pin = pin;
+            this.ChangeNotify = changeNotify;
         }
     }
 }

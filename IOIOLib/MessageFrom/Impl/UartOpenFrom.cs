@@ -8,12 +8,11 @@ namespace IOIOLib.MessageFrom.Impl
 {
     public class UartOpenFrom : IUartOpenFrom
     {
-        private int uartNum;
+        public int UartNum { get; private set; }
 
         public UartOpenFrom(int uartNum)
         {
-            // TODO: Complete member initialization
-            this.uartNum = uartNum;
+            this.UartNum = uartNum;
         }
     }
 }

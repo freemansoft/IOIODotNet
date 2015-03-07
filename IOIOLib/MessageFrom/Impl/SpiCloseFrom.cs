@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom.Impl
 {
-    class SpiCloseFrom : ISpiCloseFrom
+    public class SpiCloseFrom : ISpiCloseFrom
     {
-        private int spiNum;
+        public int SpiNum { get; private set; }
 
         public SpiCloseFrom(int spiNum)
         {
-            // TODO: Complete member initialization
-            this.spiNum = spiNum;
+            this.SpiNum = spiNum;
         }
     }
 }

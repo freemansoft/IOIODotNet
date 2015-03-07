@@ -8,16 +8,16 @@ namespace IOIOLib.MessageFrom.Impl
 {
     public class UartDataFrom : IUartDataFrom
     {
-        private int uartNum;
-        private int numBytes;
-        private byte[] data;
+        public int UartNum { get; private set; }
+        public int NumberOfBytes { get; private set; }
+        public byte[] Data { get; private set; }
 
-        public UartDataFrom(int uartNum, int numBytes, byte[] data)
+        public UartDataFrom(int uartNum, int numberOfBytes, byte[] data)
         {
             // TODO: Complete member initialization
-            this.uartNum = uartNum;
-            this.numBytes = numBytes;
-            this.data = data;
+            this.UartNum = uartNum;
+            this.NumberOfBytes = numberOfBytes;
+            this.Data = data;
         }
     }
 }

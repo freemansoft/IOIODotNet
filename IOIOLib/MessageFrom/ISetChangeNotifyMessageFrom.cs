@@ -8,5 +8,7 @@ namespace IOIOLib.MessageFrom
 {
     public interface ISetChangeNotifyMessageFrom : IMessageFromIOIO
     {
+        int Pin { get; }
+        bool ChangeNotify { get; }
     }
 }

@@ -8,12 +8,11 @@ namespace IOIOLib.MessageFrom.Impl
 {
     public class SpiOpenFrom : ISpiOpenFrom
     {
-        private int spiNum;
+        public int SpiNum { get; private set; }
 
         public SpiOpenFrom(int spiNum)
         {
-            // TODO: Complete member initialization
-            this.spiNum = spiNum;
+            this.SpiNum = spiNum;
         }
     }
 }

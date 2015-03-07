@@ -8,18 +8,19 @@ namespace IOIOLib.MessageFrom.Impl
 {
     public class SpiDataFrom : ISpiDataFrom
     {
-        private int spiNum;
-        private int ssPin;
-        private byte[] data;
-        private int dataBytes;
+        public int SpiNum { get; private set; }
+
+        public int SlaveSelectPin { get; private set; }
+        public byte[] Data { get; private set; }
+        public int NumDataBytes { get; private set; }
 
         public SpiDataFrom(int spiNum, int ssPin, byte[] data, int dataBytes)
         {
             // TODO: Complete member initialization
-            this.spiNum = spiNum;
-            this.ssPin = ssPin;
-            this.data = data;
-            this.dataBytes = dataBytes;
+            this.SpiNum = spiNum;
+            this.SlaveSelectPin = ssPin;
+            this.Data = data;
+            this.NumDataBytes = dataBytes;
         }
     }
 }

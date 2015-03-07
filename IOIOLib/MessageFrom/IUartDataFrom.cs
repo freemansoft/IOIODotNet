@@ -8,5 +8,7 @@ namespace IOIOLib.MessageFrom
 {
     public interface IUartDataFrom: IMessageFromIOIO
     {
+        int NumberOfBytes { get; }
+        byte[] Data { get; }
     }
 }

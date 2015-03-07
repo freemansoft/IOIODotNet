@@ -8,5 +8,7 @@ namespace IOIOLib.MessageFrom
 {
     public interface ISequencerEventFrom : IMessageFromIOIO
     {
+        Device.Types.SequencerEvent SeqEvent { get; }
+        int Identifier { get; }
     }
 }

@@ -8,5 +8,6 @@ namespace IOIOLib.MessageFrom
 {
     public interface ISpiFrom : IMessageFromIOIO
     {
+        int SpiNum { get; }
     }
 }
