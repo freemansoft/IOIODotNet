@@ -59,6 +59,8 @@
   <ItemGroup>
     <Compile Include="Device\Impl\IOIOProtocolOutgoingTest.cs" />
     <Compile Include="Device\Impl\IOIOProtocolIncomingTest.cs" />
+    <Compile Include="MessageTo\CreateAnalogInputOutputTest.cs" />
+    <Compile Include="MessageTo\CreateDigitalInputOutputToTest.cs" />
     <Compile Include="TestHarnessSetup.cs" />
     <Compile Include="Connection\Impl\SerialConnectionFactoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -66,7 +66,7 @@ namespace IOIOLibDotNetTest
                         new List<IOIOIncomingHandler> { handlerLog, handlerState });
                     IOIOProtocolIncoming foo = new IOIOProtocolIncoming(oneConn.getInputStream(), handler);
                     System.Threading.Thread.Sleep(100); // WaitForChangedResult for hw ids
-                    if (handlerState.OurHardware_ != null)
+                    if (handlerState.EstablishConnectionFrom_ != null)
                     {
                         TestHarnessSetup.GOOD_CONN_NAME = oneConn.ConnectionString();
                         LOG.Info("Selecting " + oneConn.ConnectionString());
@@ -81,6 +81,7 @@ namespace IOIOLibDotNetTest
                 }
                 catch (ConnectionLostException e)
                 {
+                    LOG.Debug("Cought Exception Lost " + e.Message);
                     // just ignore it because will get this when we disconnect
                 }
             }

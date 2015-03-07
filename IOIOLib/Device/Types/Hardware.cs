@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.Device.Types
 {
-    internal class Hardware
+    public class Hardware
     {
         internal static bool[,] MAP_IOIO0002_IOIO0003 = {
             // p. out  p. in  analog

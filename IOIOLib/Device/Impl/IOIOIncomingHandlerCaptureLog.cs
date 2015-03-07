@@ -104,7 +104,15 @@ namespace IOIOLib.Device.Impl
 
         public void handleReportAnalogInStatus(List<int> pins, List<int> values)
         {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " pins:" + pins;
+            string LogString;
+            if (pins != null && values != null)
+            {
+                LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " pins:" + string.Join(", ", pins) + " values: " + string.Join(", ", values);
+            }
+            else
+            {
+                LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " pins:" + pins + " values: " + values;
+            }
             LogAndCapture(LogString);
         }
 
@@ -235,7 +243,7 @@ namespace IOIOLib.Device.Impl
 
         public void handleSequencerEvent(Types.SequencerEvent seqEvent, int arg)
         {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name;
+            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " Event:" + seqEvent;
             LogAndCapture(LogString);
         }
 

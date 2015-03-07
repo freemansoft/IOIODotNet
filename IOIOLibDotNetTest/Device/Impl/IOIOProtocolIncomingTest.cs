@@ -28,7 +28,7 @@ namespace IOIOLibDotNetTest.Device.Impl
             IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(GoodConnection.getInputStream(), handler);
             // wait for reply
             System.Threading.Thread.Sleep(2000);
-            Assert.IsNotNull(handlerState.OurHardware_);
+            Assert.IsNotNull(handlerState.EstablishConnectionFrom_);
         }
 
         [TestMethod]

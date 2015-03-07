@@ -13,6 +13,8 @@ namespace IOIOLib.Device.Types
         internal static PwmScale Scale64X = new PwmScale(64, 2);
         internal static PwmScale Scale256X = new PwmScale(256, 1);
 
+        public static IEnumerable<PwmScale> AllScales = new List<PwmScale> { Scale1X, Scale8X, Scale64X, Scale256X };
+
         internal int scale { get; set; }
         internal int encoding { get; set; }
 

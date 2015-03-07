@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.Device
 {
+    /// <summary>
+    /// gold plating marker interface for the future
+    /// </summary>
     public interface IDevice
     {
     }
