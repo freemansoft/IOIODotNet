@@ -14,9 +14,8 @@ namespace IOIOLib.MessageFrom.Impl
         public bool IsEnabled { get; private set; }
 
 
-        public CapSenseSamplingFrom(int pinNum, bool isEnabled)
+        internal CapSenseSamplingFrom(int pinNum, bool isEnabled)
         {
-            // TODO: Complete member initialization
             this.PinNum = pinNum;
             this.IsEnabled = isEnabled;
         }

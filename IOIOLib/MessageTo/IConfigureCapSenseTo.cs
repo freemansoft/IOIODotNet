@@ -8,7 +8,7 @@ namespace IOIOLib.MessageTo
 {
     public interface IConfigureCapSenseTo : IMesssageToIOIO, IPostMessageTo
     {
-        int Pin { get; set; }
-        float FilterCoefficent { get; set; }
+        int Pin { get; }
+        float FilterCoefficent { get; }
     }
 }

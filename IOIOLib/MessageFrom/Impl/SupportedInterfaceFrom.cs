@@ -10,7 +10,7 @@ namespace IOIOLib.MessageFrom.Impl
     {
         public bool IsSupported { get; private set; }
 
-        public SupportedInterfaceFrom(bool isSupported)
+        internal SupportedInterfaceFrom(bool isSupported)
         {
             IsSupported = isSupported;
         }

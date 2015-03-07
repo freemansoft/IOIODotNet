@@ -11,9 +11,8 @@ namespace IOIOLib.MessageFrom.Impl
 
         public int I2cNum { get; private set; }
 
-        public HandleI2cReportTxStatusFrom(int spiNum)
+        internal HandleI2cReportTxStatusFrom(int spiNum)
         {
-            // TODO: Complete member initialization
             this.I2cNum = spiNum;
         }
     }

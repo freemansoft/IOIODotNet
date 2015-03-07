@@ -11,9 +11,8 @@ namespace IOIOLib.MessageFrom.Impl
         public int Pin { get; private set; }
         public bool Level { get; private set; }
 
-        public ReportDigitalInStatusFrom(int pin, bool level)
+        internal ReportDigitalInStatusFrom(int pin, bool level)
         {
-            // TODO: Complete member initialization
             this.Pin = pin;
             this.Level = level;
         }

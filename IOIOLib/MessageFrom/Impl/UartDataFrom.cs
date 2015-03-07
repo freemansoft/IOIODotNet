@@ -12,7 +12,7 @@ namespace IOIOLib.MessageFrom.Impl
         public int NumberOfBytes { get; private set; }
         public byte[] Data { get; private set; }
 
-        public UartDataFrom(int uartNum, int numberOfBytes, byte[] data)
+        internal UartDataFrom(int uartNum, int numberOfBytes, byte[] data)
         {
             // TODO: Complete member initialization
             this.UartNum = uartNum;

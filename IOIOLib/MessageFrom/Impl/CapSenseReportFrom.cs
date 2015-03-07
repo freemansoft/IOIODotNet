@@ -11,9 +11,8 @@ namespace IOIOLib.MessageFrom.Impl
         public int PinNum { get; private set; }
         public int Value { get; private set; }
 
-        public CapSenseReportFrom(int pinNum, int value)
+        internal CapSenseReportFrom(int pinNum, int value)
         {
-            // TODO: Complete member initialization
             this.PinNum = pinNum;
             this.Value = value;
         }

@@ -11,9 +11,8 @@ namespace IOIOLib.MessageFrom.Impl
         public int UartNum { get; private set; }
         public int BytesRemaining { get; private set; }
 
-        public HandleUartReportTxStatusFrom(int uartNum, int bytesRemaining)
+        internal HandleUartReportTxStatusFrom(int uartNum, int bytesRemaining)
         {
-            // TODO: Complete member initialization
             this.UartNum = uartNum;
             this.BytesRemaining = bytesRemaining;
         }

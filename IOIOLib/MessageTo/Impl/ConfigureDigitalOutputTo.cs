@@ -10,10 +10,10 @@ namespace IOIOLib.MessageTo.Impl
     public class ConfigureDigitalOutputTo : IConfigureDigitalOutputTo
     {
 
-        internal DigitalOutputSpec Spec { get; set; }
-        internal bool StartValue { get; set; }
+        public DigitalOutputSpec Spec { get; private set; }
+        public bool StartValue { get; private set; }
 
-        public ConfigureDigitalOutputTo(Component.Types.DigitalOutputSpec spec, bool startValue)
+        internal ConfigureDigitalOutputTo(Component.Types.DigitalOutputSpec spec, bool startValue)
         {
             this.Spec = spec;
             this.StartValue = startValue;

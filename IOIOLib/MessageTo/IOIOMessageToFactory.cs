@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageTo
 {
+    /// <summary>
+    /// This is THE PlACE to create outbound messages
+    /// This SHOULD manage the resource pools
+    /// </summary>
     public class IOIOMessageToFactory
     {
 

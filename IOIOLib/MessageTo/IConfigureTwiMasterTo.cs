@@ -9,9 +9,9 @@ namespace IOIOLib.MessageTo
 {
     public interface IConfigureTwiMasterTo : IMesssageToIOIO, IPostMessageTo
     {
-        int TwiNum { get; set; }
-        TwiMasterRate Rate { get; set; }
+        int TwiNum { get;}
+        TwiMasterRate Rate { get;}
 
-        bool SmBus { get; set; }
+        bool SmBus { get;}
     }
 }

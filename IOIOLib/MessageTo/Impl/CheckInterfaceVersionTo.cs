@@ -8,9 +8,9 @@ namespace IOIOLib.MessageTo.Impl
 {
     public class CheckInterfaceVersionTo : ICheckInterfaceVersionTo
     {
-      public  byte[] InterfaceId { get; set; }
+        public byte[] InterfaceId { get; private set; }
 
-        public CheckInterfaceVersionTo(byte[] interfaceId)
+        internal CheckInterfaceVersionTo(byte[] interfaceId)
         {
             this.InterfaceId = interfaceId;
         }

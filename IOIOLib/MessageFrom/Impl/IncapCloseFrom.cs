@@ -10,9 +10,8 @@ namespace IOIOLib.MessageFrom.Impl
     {
         public int IncapNum { get; private set; }
 
-        public IncapCloseFrom(int incapNum)
+        internal IncapCloseFrom(int incapNum)
         {
-            // TODO: Complete member initialization
             this.IncapNum = incapNum;
         }
     }

@@ -9,5 +9,7 @@ namespace IOIOLib.MessageTo
 {
     public interface IConfigureDigitalOutputTo : IMesssageToIOIO, IPostMessageTo
     {
+        DigitalOutputSpec Spec { get;  }
+        bool StartValue { get;  }
     }
 }

@@ -12,7 +12,7 @@ namespace IOIOLib.MessageFrom.Impl
         /// <summary>
         /// provided by IOIO when connects
         /// </summary>
-        public string HardwareId_ { get; private set;}
+        public string HardwareId_ { get; private set; }
         /// <summary>
         /// provided by IOIO when connects
         /// </summary>
@@ -25,13 +25,13 @@ namespace IOIOLib.MessageFrom.Impl
         /// should we have a variable here or just look it up each time?
         /// this should probably not exist.  It should be posted as part of event to listeners
         /// </summary>
-        public  Device.Types.Hardware Hardware_ { get; private set;}
+        public Device.Types.Hardware Hardware_ { get; private set; }
 
 
-        public EstablishConnectionFrom(string hardwareId, string bootloaderId, string firmwareId, Device.Types.Hardware hardware)
+        internal EstablishConnectionFrom(string hardwareId, string bootloaderId, string firmwareId, Device.Types.Hardware hardware)
         {
             this.Hardware_ = null;
-            // TODO: Complete member initialization
+
             this.HardwareId_ = hardwareId;
             this.BootloaderId_ = bootloaderId;
             this.FirmwareId_ = firmwareId;

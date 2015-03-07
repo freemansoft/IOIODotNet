@@ -11,9 +11,8 @@ namespace IOIOLib.MessageFrom.Impl
         public int Pin { get; private set; }
         public int Value { get; private set; }
 
-        public ReportAnalogPinValuesFrom(int pin, int value)
+        internal ReportAnalogPinValuesFrom(int pin, int value)
         {
-            // TODO: Complete member initialization
             this.Pin = pin;
             this.Value = value;
         }

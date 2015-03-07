@@ -13,9 +13,8 @@ namespace IOIOLib.MessageFrom.Impl
         public int Size { get; private set; }
         public byte[] Data { get; private set; }
 
-        public IncapReportFrom(int incapNum, int size, byte[] data)
+        internal IncapReportFrom(int incapNum, int size, byte[] data)
         {
-            // TODO: Complete member initialization
             this.IncapNum = incapNum;
             this.Size = size;
             this.Data = data;

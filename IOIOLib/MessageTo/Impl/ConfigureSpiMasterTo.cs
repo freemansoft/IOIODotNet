@@ -9,6 +9,16 @@ namespace IOIOLib.MessageTo.Impl
 {
     public class ConfigureSpiMasterTo : IConfigureSpiMasterTo
     {
+        public DigitalInputSpec Miso { get; private set; }
+        public DigitalOutputSpec Mosi { get; private set; }
+
+        public DigitalOutputSpec Clock { get; private set; }
+
+        public DigitalOutputSpec[] SlaveSelect { get; private set; }
+
+        public SpiMasterConfig Rate { get; private set; }
+
+
 
         /// <summary>
         /// Do we even need all these parameters?  Isn't there only one SpiMaster on the board
@@ -18,7 +28,7 @@ namespace IOIOLib.MessageTo.Impl
         /// <param name="clock"></param>
         /// <param name="slaveSelect"></param>
         /// <param name="rate"></param>
-        public ConfigureSpiMasterTo(DigitalInputSpec miso, DigitalOutputSpec mosi, DigitalOutputSpec clock, DigitalOutputSpec[] slaveSelect, SpiMasterConfig rate)
+        internal ConfigureSpiMasterTo(DigitalInputSpec miso, DigitalOutputSpec mosi, DigitalOutputSpec clock, DigitalOutputSpec[] slaveSelect, SpiMasterConfig rate)
         {
             this.Miso = miso;
             this.Mosi = mosi;
@@ -27,16 +37,6 @@ namespace IOIOLib.MessageTo.Impl
             this.Rate = rate;
             throw new NotImplementedException("Post(IOpenSpiMasterTo) not tied together in outgoing protocol");
         }
-        public DigitalInputSpec Miso { get; set; }
-        public DigitalOutputSpec Mosi { get; set; }
-
-        public DigitalOutputSpec Clock { get; set; }
-
-        public DigitalOutputSpec[] SlaveSelect { get; set; }
-
-        public SpiMasterConfig Rate { get; set; }
-
-
 
         public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound)
         {

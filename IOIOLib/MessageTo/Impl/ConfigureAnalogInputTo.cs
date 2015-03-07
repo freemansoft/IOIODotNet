@@ -8,14 +8,15 @@ namespace IOIOLib.MessageTo.Impl
 {
     class ConfigureAnalogInputTo : IConfigureAnalogInputTo
     {
-        internal int Pin { get; set; }
+        public  int Pin { get; private set; }
 
-        internal Boolean? ChangeNotify = null;
+        public Boolean? ChangeNotify { get; private set; }
 
 
-        public ConfigureAnalogInputTo(int pin)
+        internal ConfigureAnalogInputTo(int pin)
         {
             this.Pin = pin;
+            this.ChangeNotify = null;
         }
 
         /// <summary>

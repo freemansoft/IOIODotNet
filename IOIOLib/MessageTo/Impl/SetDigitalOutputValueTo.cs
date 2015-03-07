@@ -8,11 +8,11 @@ namespace IOIOLib.MessageTo.Impl
 {
     public class SetDigitalOutputValueTo : ISetDigitalOutputValueTo
     {
-        private int Pin;
-        private bool Level;
+        public int Pin { get; private set; }
+        public bool Level { get; private set; }
 
 
-        public SetDigitalOutputValueTo(int pin, bool level)
+        internal SetDigitalOutputValueTo(int pin, bool level)
         {
             // TODO: Complete member initialization
             this.Pin = pin;

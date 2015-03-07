@@ -9,8 +9,17 @@ namespace IOIOLib.MessageTo.Impl
 {
     public class ConfigureUartTo : IConfigureUartTo
     {
+        public UartParity Parity { get; private set; }
+        public int UartNum { get; private set; }
+        public UartStopBits StopBits { get; private set; }
+        public int Rate { get; private set; }
+        public bool Speed4x { get; private set; }
+        public DigitalInputSpec RXSpec { get; private set; }
+        public DigitalOutputSpec TXSpec { get; private set; }
 
-        public ConfigureUartTo(Component.Types.DigitalInputSpec digitalInputSpec, Component.Types.DigitalOutputSpec digitalOutputSpec, int baud, Component.Types.UartParity parity, Component.Types.UartStopBits stopbits)
+
+
+        internal ConfigureUartTo(Component.Types.DigitalInputSpec digitalInputSpec, Component.Types.DigitalOutputSpec digitalOutputSpec, int baud, Component.Types.UartParity parity, Component.Types.UartStopBits stopbits)
         {
             // TODO: Complete resource allocation
             this.RXSpec = digitalInputSpec;
@@ -51,20 +60,6 @@ namespace IOIOLib.MessageTo.Impl
                 Rate = (int)(Math.Round(1000000.0f / baud) - 1);
             }
         }
-        public UartParity Parity { get; set; }
-
-        public int UartNum { get; set; }
-
-        public UartStopBits StopBits { get; set; }
-
-        public int Rate { get; set; }
-
-        public bool Speed4x { get; set; }
-
-        public DigitalInputSpec RXSpec { get; set; }
-        public DigitalOutputSpec TXSpec { get; set; }
-
-
 
         public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound)
         {

@@ -11,9 +11,8 @@ namespace IOIOLib.MessageFrom.Impl
 
         public int I2cNum { get; private set; }
 
-        public I2cCloseFrom(int i2cNum)
+        internal I2cCloseFrom(int i2cNum)
         {
-            // TODO: Complete member initialization
             this.I2cNum = i2cNum;
         }
     }

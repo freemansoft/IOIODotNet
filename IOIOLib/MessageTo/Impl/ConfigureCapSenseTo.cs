@@ -8,14 +8,14 @@ namespace IOIOLib.MessageTo.Impl
 {
     public class ConfigureCapSenseTo : IConfigureCapSenseTo
     {
-        public ConfigureCapSenseTo(int pin, float filterCoefficent)
+        public int Pin { get; private set; }
+        public float FilterCoefficent { get; private set; }
+
+        internal ConfigureCapSenseTo(int pin, float filterCoefficent)
         {
             this.Pin = pin;
             this.FilterCoefficent = filterCoefficent;
         }
-        public int Pin { get; set; }
-        public float FilterCoefficent { get; set; }
-
 
         public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound)
         {

@@ -11,9 +11,8 @@ namespace IOIOLib.MessageFrom.Impl
 
         public int BytesRemaining { get; private set; }
 
-        public IcspReportRxStatusFrom(int bytesRemaining)
+        internal IcspReportRxStatusFrom(int bytesRemaining)
         {
-            // TODO: Complete member initialization
             this.BytesRemaining = bytesRemaining;
         }
     }

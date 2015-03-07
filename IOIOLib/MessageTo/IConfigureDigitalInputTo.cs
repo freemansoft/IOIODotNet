@@ -9,5 +9,8 @@ namespace IOIOLib.MessageTo
 {
     public interface IConfigureDigitalInputTo : IMesssageToIOIO, IPostMessageTo
     {
+        DigitalInputSpec Spec { get; }
+
+        Boolean? ChangeNotify { get; }
     }
 }

@@ -9,14 +9,14 @@ namespace IOIOLib.MessageTo
 {
     public interface IConfigureSpiMasterTo : IMesssageToIOIO, IPostMessageTo
     {
-        DigitalInputSpec Miso { get; set; }
-        DigitalOutputSpec Mosi { get; set; }
+        DigitalInputSpec Miso { get; }
+        DigitalOutputSpec Mosi { get; }
 
-        DigitalOutputSpec Clock { get; set; }
+        DigitalOutputSpec Clock { get; }
 
-        DigitalOutputSpec[] SlaveSelect { get; set; }
+        DigitalOutputSpec[] SlaveSelect { get; }
 
-        SpiMasterConfig Rate { get; set; }
+        SpiMasterConfig Rate { get; }
 
     }
 }

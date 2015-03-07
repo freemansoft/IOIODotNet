@@ -14,7 +14,7 @@ namespace IOIOLib.MessageFrom.Impl
         public byte[] Data { get; private set; }
         public int NumDataBytes { get; private set; }
 
-        public SpiDataFrom(int spiNum, int ssPin, byte[] data, int dataBytes)
+        internal SpiDataFrom(int spiNum, int ssPin, byte[] data, int dataBytes)
         {
             // TODO: Complete member initialization
             this.SpiNum = spiNum;

@@ -12,9 +12,8 @@ namespace IOIOLib.MessageFrom.Impl
         public int Pin { get; private set; }
         public int FrequencyScale { get; private set; }
 
-        public RegisterPeriodicDigitalSamplingFrom(int pin, int freqScale)
+        internal RegisterPeriodicDigitalSamplingFrom(int pin, int freqScale)
         {
-            // TODO: Complete member initialization
             this.Pin = pin;
             this.FrequencyScale = freqScale;
         }

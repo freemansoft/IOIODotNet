@@ -8,6 +8,6 @@ namespace IOIOLib.MessageTo
 {
     public interface ICloseUartTo : IMesssageToIOIO, IPostMessageTo
     {
-        int UartNum { get; set; }
+        int UartNum { get;  }
     }
 }

@@ -10,7 +10,7 @@ namespace IOIOLib.MessageFrom.Impl
     {
         public int SpiNum { get; private set; }
 
-        public SpiOpenFrom(int spiNum)
+        internal SpiOpenFrom(int spiNum)
         {
             this.SpiNum = spiNum;
         }

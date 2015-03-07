@@ -12,9 +12,8 @@ namespace IOIOLib.MessageFrom.Impl
 
         public Device.Types.SequencerEvent SeqEvent { get; private set; }
         public int Identifier { get; private set; }
-        public SequencerEventFrom(Device.Types.SequencerEvent seqEvent, int arg)
+        internal SequencerEventFrom(Device.Types.SequencerEvent seqEvent, int arg)
         {
-            // TODO: Complete member initialization
             this.SeqEvent = seqEvent;
             this.Identifier = arg;
         }

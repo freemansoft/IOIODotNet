@@ -8,9 +8,9 @@ namespace IOIOLib.MessageTo.Impl
 {
     public class CloseUartTo : ICloseUartTo
     {
-        public int UartNum { get; set; }
+        public int UartNum { get; private set; }
 
-        public CloseUartTo(int uartNum)
+        internal CloseUartTo(int uartNum)
         {
             this.UartNum = uartNum;
         }

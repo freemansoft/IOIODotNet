@@ -8,5 +8,8 @@ namespace IOIOLib.MessageTo
 {
     public interface ISetDigitalOutputValueTo : IMesssageToIOIO, IPostMessageTo
     {
+        int Pin { get; }
+         bool Level { get;}
+
     }
 }

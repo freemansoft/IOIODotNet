@@ -9,11 +9,12 @@ namespace IOIOLib.MessageTo.Impl
 {
     public class ConfigureSequencerTo : IConfigureSequencerTo
     {
-        public ConfigureSequencerTo(ISequencerChannelConfig[] config)
+        public ISequencerChannelConfig[] ChannelConfiguration { get; private set; }
+
+        internal ConfigureSequencerTo(ISequencerChannelConfig[] config)
         {
             this.ChannelConfiguration = config;
         }
-        public ISequencerChannelConfig[] ChannelConfiguration { get; set; }
 
         public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound)
         {

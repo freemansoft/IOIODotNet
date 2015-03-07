@@ -9,14 +9,15 @@ namespace IOIOLib.MessageTo.Impl
 {
     public class ConfigureDigitalInputTo : IConfigureDigitalInputTo
     {
-        internal DigitalInputSpec Spec { get; set; }
+        public DigitalInputSpec Spec { get; private set; }
 
-        internal Boolean? ChangeNotify = null;
+        public Boolean? ChangeNotify { get; private set; }
 
 
-        public ConfigureDigitalInputTo(DigitalInputSpec digitalInputSpec)
+        internal ConfigureDigitalInputTo(DigitalInputSpec digitalInputSpec)
         {
             this.Spec = digitalInputSpec;
+            ChangeNotify = null;
         }
 
         /// <summary>

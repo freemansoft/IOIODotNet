@@ -11,9 +11,8 @@ namespace IOIOLib.MessageFrom.Impl
         public int FrameNum { get; private set; }
         public bool[] Values { get; private set; }
 
-        public ReportPeriodicDigitalInStatusFrom(int frameNum, bool[] values)
+        internal ReportPeriodicDigitalInStatusFrom(int frameNum, bool[] values)
         {
-            // TODO: Complete member initialization
             this.FrameNum = frameNum;
             this.Values = values;
         }

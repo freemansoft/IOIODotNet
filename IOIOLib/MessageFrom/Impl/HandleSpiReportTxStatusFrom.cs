@@ -11,9 +11,8 @@ namespace IOIOLib.MessageFrom.Impl
         public int SpiNum { get; private set; }
         public int BytesRemaining { get; private set; }
 
-        public HandleSpiReportTxStatusFrom(int spiNum, int bytesRemaining)
+        internal HandleSpiReportTxStatusFrom(int spiNum, int bytesRemaining)
         {
-            // TODO: Complete member initialization
             this.SpiNum = spiNum;
             this.BytesRemaining = bytesRemaining;
         }

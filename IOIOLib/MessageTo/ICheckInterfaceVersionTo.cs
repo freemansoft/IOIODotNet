@@ -7,6 +7,6 @@ namespace IOIOLib.MessageTo.Impl
 {
     public interface ICheckInterfaceVersionTo:IMesssageToIOIO, IPostMessageTo
     {
-        byte[] InterfaceId { get; set; }
+        byte[] InterfaceId { get; }
     }
 }

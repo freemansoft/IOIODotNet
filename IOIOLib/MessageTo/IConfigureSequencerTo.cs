@@ -9,6 +9,6 @@ namespace IOIOLib.MessageTo
 {
     public interface IConfigureSequencerTo : IMesssageToIOIO, IPostMessageTo
     {
-        ISequencerChannelConfig[] ChannelConfiguration { get; set; }
+        ISequencerChannelConfig[] ChannelConfiguration { get; }
     }
 }

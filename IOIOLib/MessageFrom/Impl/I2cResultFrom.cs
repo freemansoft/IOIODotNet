@@ -14,9 +14,8 @@ namespace IOIOLib.MessageFrom.Impl
         public int Size { get; private set; }
         public byte[] Data { get; private set; }
 
-        public I2cResultFrom(int i2cNum, int size, byte[] data)
+        internal I2cResultFrom(int i2cNum, int size, byte[] data)
         {
-            // TODO: Complete member initialization
             this.I2cNum = i2cNum;
             this.Size = size;
             this.Data = data;

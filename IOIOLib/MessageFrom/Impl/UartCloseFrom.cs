@@ -10,7 +10,7 @@ namespace IOIOLib.MessageFrom.Impl
     {
         public int UartNum { get; private set; }
 
-        public UartCloseFrom(int uartNum)
+        internal UartCloseFrom(int uartNum)
         {
             this.UartNum = uartNum;
         }

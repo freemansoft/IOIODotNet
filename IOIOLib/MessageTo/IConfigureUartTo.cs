@@ -10,17 +10,17 @@ namespace IOIOLib.MessageTo
     public interface IConfigureUartTo : IMesssageToIOIO
     {
 
-        DigitalInputSpec RXSpec { get; set; }
-        DigitalOutputSpec TXSpec { get; set; }
+        DigitalInputSpec RXSpec { get; }
+        DigitalOutputSpec TXSpec { get; }
 
-        UartParity Parity { get; set; }
+        UartParity Parity { get; }
 
-        int UartNum { get; set; }
+        int UartNum { get; }
 
-        UartStopBits StopBits { get; set; }
+        UartStopBits StopBits { get; }
 
-        int Rate { get; set; }
+        int Rate { get; }
 
-        bool Speed4x { get; set; }
+        bool Speed4x { get; }
     }
 }

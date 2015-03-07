@@ -10,18 +10,18 @@ namespace IOIOLib.MessageTo.Impl
 {
     public class ConfigurePwmOutputTo : IConfigurePwmOutputTo
     {
-        private bool ShouldSetDutyCycle = false;
+        public bool ShouldSetDutyCycle { get; private set; }
 
-        internal int Pin { get; set; }
+        public  int Pin { get; private set; }
 
-        internal bool Enable { get; set; }
+        public bool Enable { get; private set; }
 
-        internal int PwmNumber { get; set; }
+        public int PwmNumber { get; private set; }
 
-        internal float DutyCycle { get; set; }
+        public float DutyCycle { get; private set; }
 
-        internal int Period { get; set; }
-        internal PwmScale Scale { get; set; }
+        public int Period { get; private set; }
+        public PwmScale Scale { get; private set; }
 
         public ConfigurePwmOutputTo(int pin, bool enable)
         {
