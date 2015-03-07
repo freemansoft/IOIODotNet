@@ -15,7 +15,7 @@ namespace IOIOLib.Component.Types
     {
         /**
          * The pulse period, in time-base units, as determined for this channel in its
-         * configuration. Valid values are [0..65536]. Note that:
+         * configuration. Valid Values are [0..65536]. Note that:
          * <ul>
          * <li>A period of 0 will result in no pulses generated for this cue.</li>
          * <li>A non-0 period smaller than the pulse duration will result in the output constantly

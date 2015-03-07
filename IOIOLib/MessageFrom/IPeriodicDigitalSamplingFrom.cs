@@ -8,5 +8,7 @@ namespace IOIOLib.MessageFrom
 {
     public interface IRegisterPeriodicDigitalSamplingFrom : IMessageFromIOIO
     {
+        int Pin { get; }
+        int FrequencyScale { get; }
     }
 }

@@ -8,5 +8,8 @@ namespace IOIOLib.MessageFrom
 {
     public interface IReportDigitalInStatusFrom : IMessageFromIOIO
     {
+         int Pin { get; }
+         bool Level { get; }
+
     }
 }

@@ -8,14 +8,15 @@ namespace IOIOLib.MessageFrom.Impl
 {
     public class RegisterPeriodicDigitalSamplingFrom : IRegisterPeriodicDigitalSamplingFrom
     {
-        private int pin;
-        private int freqScale;
+
+        public int Pin { get; private set; }
+        public int FrequencyScale { get; private set; }
 
         public RegisterPeriodicDigitalSamplingFrom(int pin, int freqScale)
         {
             // TODO: Complete member initialization
-            this.pin = pin;
-            this.freqScale = freqScale;
+            this.Pin = pin;
+            this.FrequencyScale = freqScale;
         }
     }
 }

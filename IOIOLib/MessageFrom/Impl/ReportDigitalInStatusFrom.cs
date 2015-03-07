@@ -8,8 +8,8 @@ namespace IOIOLib.MessageFrom.Impl
 {
     public class ReportDigitalInStatusFrom : IReportDigitalInStatusFrom
     {
-        internal int Pin;
-        internal bool Level;
+        public int Pin { get; private set; }
+        public bool Level { get; private set; }
 
         public ReportDigitalInStatusFrom(int pin, bool level)
         {

@@ -82,7 +82,7 @@ namespace IOIOLib.Device.Impl
         {
             if (pins.Count != values.Count)
             {
-                LOG.Warn("handleReportAnalogInStatus has pins:" + pins.Count + " values:" + values.Count);
+                LOG.Warn("handleReportAnalogInStatus has pins:" + pins.Count + " Values:" + values.Count);
             }
             for (int i = 0; i < pins.Count; i++)
             {

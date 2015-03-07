@@ -8,8 +8,8 @@ namespace IOIOLib.MessageFrom.Impl
 {
     public class ReportAnalogPinValuesFrom : IReportAnalogPinValuesFrom
     {
-        internal int Pin;
-        internal int Value;
+        public int Pin { get; private set; }
+        public int Value { get; private set; }
 
         public ReportAnalogPinValuesFrom(int pin, int value)
         {

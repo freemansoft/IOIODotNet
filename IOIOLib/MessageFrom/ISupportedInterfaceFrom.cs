@@ -8,6 +8,6 @@ namespace IOIOLib.MessageFrom
 {
     public interface ISupportedInterfaceFrom : IMessageFromIOIO
     {
-        bool IsSupported();
+        bool IsSupported { get; }
     }
 }

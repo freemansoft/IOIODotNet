@@ -8,16 +8,11 @@ namespace IOIOLib.MessageFrom.Impl
 {
     public class SupportedInterfaceFrom : ISupportedInterfaceFrom
     {
-        internal bool IsSupported_ = false;
+        public bool IsSupported { get; private set; }
 
         public SupportedInterfaceFrom(bool isSupported)
         {
-            IsSupported_ = isSupported;
-        }
-
-        public bool IsSupported()
-        {
-            return IsSupported_;
+            IsSupported = isSupported;
         }
     }
 }

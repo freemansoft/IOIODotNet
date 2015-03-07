@@ -27,14 +27,14 @@ namespace IOIOLib.Component.Types
         public SequencerClock clk;
 
         /**
-         * The PWM period, in time-base units, determined by {@link #clk}. Valid values are
+         * The PWM period, in time-base units, determined by {@link #clk}. Valid Values are
          * [2..65536].
          */
         public int period;
 
         /**
          * The initial pulse width (before any cue is executed), in time-base units, determined by
-         * {@link #clk}. Valid values are 0 or [2..65536].
+         * {@link #clk}. Valid Values are 0 or [2..65536].
          */
         public int initialPulseWidth;
 

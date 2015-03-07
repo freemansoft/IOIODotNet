@@ -48,13 +48,13 @@ namespace IOIOLib.Component.Types
 
         /**
          * The pulse-width, in time-base units, as determined for this channel in its configuration.
-         * Valid values are [0..floor(period / 2)].
+         * Valid Values are [0..floor(period / 2)].
          */
         public int pulseWidth;
 
         /**
          * The pulse period, in time-base units, as determined for this channel in its
-         * configuration. Valid values are [3..65536].
+         * configuration. Valid Values are [3..65536].
          */
         public int period;
     }

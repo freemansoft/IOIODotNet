@@ -29,7 +29,7 @@ namespace IOIOLib.Component.Types
 
         /**
          * The width (duration) of each pulse, in time-base units, determined by {@link #clk}. Valid
-         * values are [2..65536].
+         * Values are [2..65536].
          */
         public int pulseWidth;
 

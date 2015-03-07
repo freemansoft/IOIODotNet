@@ -9,7 +9,7 @@ namespace IOIOLib.MessageTo.Impl
     public class ConfigurePulseInputTo : IConfigurePulseInputTo
     {
         //
-        // from java IOIOImpl  we just need to  set the values and let the outgoing protocol make the calls
+        // from java IOIOImpl  we just need to  set the Values and let the outgoing protocol make the calls
         /*
         checkState();
         hardware_.checkSupportsPeripheralInput(spec.Pin);

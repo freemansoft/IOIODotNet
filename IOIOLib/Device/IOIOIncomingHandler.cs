@@ -37,10 +37,10 @@ namespace IOIOLib.Device
         void handleAnalogPinStatus(int pin, bool open);
 
         /// <summary>
-        /// Pin analog values
+        /// Pin analog Values
         /// </summary>
         /// <param name="pins"></param>
-        /// <param name="values"></param>
+        /// <param name="Values"></param>
         void handleReportAnalogInStatus(List<int> pins, List<int> values);
 
         void handleUartOpen(int uartNum);

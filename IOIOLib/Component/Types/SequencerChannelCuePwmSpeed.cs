@@ -15,7 +15,7 @@ namespace IOIOLib.Component.Types
     {
         /**
          * The pulse-width, in time-base units, as determined for this channel in its configuration.
-         * Valid values are 0 or [2..65536].
+         * Valid Values are 0 or [2..65536].
          */
         public int pulseWidth;
     }

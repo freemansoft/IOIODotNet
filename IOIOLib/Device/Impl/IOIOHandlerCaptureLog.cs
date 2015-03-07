@@ -92,7 +92,7 @@ namespace IOIOLib.Device.Impl
 
         public void handleReportPeriodicDigitalInStatus(int frameNum, bool[] values)
         {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " frameNum:" + frameNum;
+            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " FrameNum:" + frameNum;
             LogAndCapture(LogString);
         }
 
@@ -107,11 +107,11 @@ namespace IOIOLib.Device.Impl
             string LogString;
             if (pins != null && values != null)
             {
-                LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " pins:" + string.Join(", ", pins) + " values: " + string.Join(", ", values);
+                LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " pins:" + string.Join(", ", pins) + " Values: " + string.Join(", ", values);
             }
             else
             {
-                LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " pins:" + pins + " values: " + values;
+                LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " pins:" + pins + " Values: " + values;
             }
             LogAndCapture(LogString);
         }

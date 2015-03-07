@@ -8,5 +8,7 @@ namespace IOIOLib.MessageFrom
 {
     public interface IReportPeriodicDigitalInStatusFrom : IMessageFromIOIO
     {
+        int FrameNum { get; }
+        bool[] Values { get; }
     }
 }
