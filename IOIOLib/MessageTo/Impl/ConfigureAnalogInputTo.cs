@@ -21,7 +21,7 @@ namespace IOIOLib.MessageTo.Impl
         /// <summary>
         /// create an inbound analong channel that samples data
         /// </summary>
-        /// <param name="pin"></param>
+        /// <param name="Pin"></param>
         /// <param name="notifyOnChange">at a 1khz rate</param>
         public ConfigureAnalogInputTo(int pin, bool notifyOnChange)
         {

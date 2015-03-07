@@ -7,19 +7,19 @@ using System.Threading.Tasks;
 namespace IOIOLib.Component.Types
 {
     /**
-     * A digital input pin specification, used when opening digital inputs.
+     * A digital input Pin specification, used when opening digital inputs.
      */
     public class DigitalInputSpec
     {
-        /** The pin number, as labeled on the board. */
+        /** The Pin number, as labeled on the board. */
         public int pin;
-        /** The pin mode. */
+        /** The Pin mode. */
         public DigitalInputSpecMode mode;
 
         /**
          * Constructor.
          * 
-         * @param pin
+         * @param Pin
          *            Pin number, as labeled on the board.
          * @param mode
          *            Pin mode.
@@ -30,7 +30,7 @@ namespace IOIOLib.Component.Types
             this.mode = mode;
         }
 
-        /** Shorthand for Spec(pin, Mode.FLOATING). */
+        /** Shorthand for Spec(Pin, Mode.FLOATING). */
         public DigitalInputSpec(int pin) :
             this(pin, DigitalInputSpecMode.FLOATING)
         {

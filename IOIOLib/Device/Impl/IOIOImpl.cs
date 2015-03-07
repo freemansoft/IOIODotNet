@@ -30,8 +30,8 @@ namespace IOIOLib.Device.Impl
         private IOIOProtocolOutgoing OutProt;
         private IOIOProtocolIncoming InProt;
         private IOIOIncomingHandler InboundHandler;
-        private IOIOIncomingHandlerCaptureState InbountStateCapture;
-        private IOIOIncomingHandlerCaptureLog InboundCaptureAndLog;
+        private IOIOHandlerCaptureState InbountStateCapture;
+        private IOIOHandlerCaptureLog InboundCaptureAndLog;
 
 
         public IOIOImpl(IOIOConnection conn)
@@ -46,9 +46,9 @@ namespace IOIOLib.Device.Impl
         public void waitForConnect()
         {
             Conn.waitForConnect();
-            InbountStateCapture = new IOIOIncomingHandlerCaptureState();
-            InboundCaptureAndLog = new IOIOIncomingHandlerCaptureLog(10);
-            InboundHandler = new IOIOIncomingHandlerDistributor(
+            InbountStateCapture = new IOIOHandlerCaptureState();
+            InboundCaptureAndLog = new IOIOHandlerCaptureLog(10);
+            InboundHandler = new IOIOHandlerDistributor(
                 new List<IOIOIncomingHandler> { InbountStateCapture, InboundCaptureAndLog });
 
             OutProt = new IOIOProtocolOutgoing(this.Conn.getOutputStream());

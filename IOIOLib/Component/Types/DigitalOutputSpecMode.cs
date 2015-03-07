@@ -10,17 +10,17 @@ namespace IOIOLib.Component.Types
     {
         /**
          * Pin operates in push-pull mode, i.e. a logical "HIGH" is
-         * represented by a voltage of Vdd on the pin and a logical "LOW" by
+         * represented by a voltage of Vdd on the Pin and a logical "LOW" by
          * a voltage of 0 (ground).
          */
         NORMAL,
         /**
-         * Pin operates in open-drain mode, i.e. a logical "HIGH" is
-         * represented by a high impedance on the pin (as if it is
+         * Pin operates in IsOpen-drain mode, i.e. a logical "HIGH" is
+         * represented by a high impedance on the Pin (as if it is
          * disconnected) and a logical "LOW" by a voltage of 0 (ground).
          * This mode is most commonly used for generating 5V logical signal
-         * on a 3.3V pin: 5V tolerant pins must be used; a pull-up resistor
-         * is connected between the pin and 5V, and the pin is used in open-
+         * on a 3.3V Pin: 5V tolerant pins must be used; a pull-up resistor
+         * is connected between the Pin and 5V, and the Pin is used in IsOpen-
          * drain mode.
          */
         OPEN_DRAIN,

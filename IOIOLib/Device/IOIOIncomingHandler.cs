@@ -29,8 +29,18 @@ namespace IOIOLib.Device
 
         void handleReportPeriodicDigitalInStatus(int frameNum, bool[] values);
 
+        /// <summary>
+        /// Added and removed pins
+        /// </summary>
+        /// <param name="Pin"></param>
+        /// <param name="IsOpen"></param>
         void handleAnalogPinStatus(int pin, bool open);
 
+        /// <summary>
+        /// Pin analog values
+        /// </summary>
+        /// <param name="pins"></param>
+        /// <param name="values"></param>
         void handleReportAnalogInStatus(List<int> pins, List<int> values);
 
         void handleUartOpen(int uartNum);

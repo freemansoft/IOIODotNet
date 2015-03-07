@@ -19,7 +19,7 @@ namespace IOIOLib.Component.Types
     public class SequencerChannelConfigSteps : ISequencerChannelConfig
     {
         /**
-         * Specification of the output pin(s) for this channel.
+         * Specification of the output Pin(s) for this channel.
          */
         public DigitalOutputSpec[] pinSpec;
 

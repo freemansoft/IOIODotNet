@@ -153,13 +153,13 @@ namespace IOIOLib.Device.Impl
                             break;
 
                         case (int)IOIOProtocolCommands.REPORT_DIGITAL_IN_STATUS:
-                            // pin number and state are in same byte
+                            // Pin number and state are in same byte
                             arg1 = readByte();
                             handler_.handleReportDigitalInStatus(arg1 >> 2, (arg1 & 0x01) == 1);
                             break;
 
                         case (int)IOIOProtocolCommands.SET_CHANGE_NOTIFY:
-                            // pin number and state are in same byte
+                            // Pin number and state are in same byte
                             arg1 = readByte();
                             handler_.handleSetChangeNotify(arg1 >> 2, (arg1 & 0x01) == 1);
                             break;

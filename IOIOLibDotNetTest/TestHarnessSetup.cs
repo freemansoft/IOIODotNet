@@ -53,16 +53,19 @@ namespace IOIOLibDotNetTest
             Assert.IsTrue(connections.Count > 0, "None of these tests can run because we can't find a possible IOIO port");
             LOG.Info("Found " + connections.Count + " possible com ports");
 
-            /// probably don't need this since we aren't connected.
+            // probably don't need this since we aren't connected.
             foreach (IOIOConnection oneConn in connections)
             {
+                // uses custom setup because we are trying to find IOIO not trying to do work with them
                 try
                 {
                     LOG.Info("Trying " + oneConn.ConnectionString());
                     oneConn.waitForConnect();
-                    IOIOIncomingHandlerCaptureLog handlerLog = new IOIOIncomingHandlerCaptureLog(1);
-                    IOIOIncomingHandlerCaptureState handlerState = new IOIOIncomingHandlerCaptureState();
-                    IOIOIncomingHandler handler = new IOIOIncomingHandlerDistributor(
+                    // logging without real capture
+                    IOIOHandlerCaptureLog handlerLog = new IOIOHandlerCaptureLog(1);
+                    // so we can verifys
+                    IOIOHandlerCaptureState handlerState = new IOIOHandlerCaptureState();
+                    IOIOIncomingHandler handler = new IOIOHandlerDistributor(
                         new List<IOIOIncomingHandler> { handlerLog, handlerState });
                     IOIOProtocolIncoming foo = new IOIOProtocolIncoming(oneConn.getInputStream(), handler);
                     System.Threading.Thread.Sleep(100); // WaitForChangedResult for hw ids

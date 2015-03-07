@@ -14,7 +14,7 @@ namespace IOIOLib.Connection.Impl
         private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(SerialConnectionFactory));
 
         /// <summary>
-        /// Returns connection object if we can open the port.
+        /// Returns connection object if we can IsOpen the port.
         /// Otherwise throws ConnectioncreatedException
         /// </summary>
         /// <param name="connectionString"></param>
@@ -52,14 +52,14 @@ namespace IOIOLib.Connection.Impl
                 }
                 catch (ConnectionCreationException e)
                 {
-                    LOG.Debug("Couldn't open while iterating " + singleConnectionString, e);
+                    LOG.Debug("Couldn't IsOpen while iterating " + singleConnectionString, e);
                 }
             }
             return createdConnections;
         }
 
         /// <summary>
-        /// auto-find ports we can open
+        /// auto-find ports we can IsOpen
         /// </summary>
         /// <returns></returns>
         public ICollection<IOIOConnection> createConnections()
@@ -79,7 +79,7 @@ namespace IOIOLib.Connection.Impl
                 }
                 catch (Exception e)
                 {
-                    LOG.Debug("Couldn't open while scanning " + name, e);
+                    LOG.Debug("Couldn't IsOpen while scanning " + name, e);
                 }
 
             }

@@ -22,14 +22,14 @@ namespace IOIOLib.MessageTo.Impl
             /*
                 checkState();
                 if (rx != null) {
-                    hardware_.checkSupportsPeripheralInput(rx.pin);
+                    hardware_.checkSupportsPeripheralInput(rx.Pin);
                 }
                 if (isTx != null) {
-                    hardware_.checkSupportsPeripheralOutput(isTx.pin);
+                    hardware_.checkSupportsPeripheralOutput(isTx.Pin);
                 }
-                Resource rxPin = rx != null ? new Resource(ResourceType.PIN, rx.pin)
+                Resource rxPin = rx != null ? new Resource(ResourceType.PIN, rx.Pin)
                         : null;
-                Resource txPin = isTx != null ? new Resource(ResourceType.PIN, isTx.pin)
+                Resource txPin = isTx != null ? new Resource(ResourceType.PIN, isTx.Pin)
                         : null;
                 Resource uart = new Resource(ResourceType.UART);
                 resourceManager_.alloc(rxPin, txPin, uart);

@@ -18,7 +18,7 @@ namespace IOIOLib.Component.Types
     public class SequencerChannelConfigFmSpeed : ISequencerChannelConfig
     {
         /**
-         * Specification of the output pin(s) for this channel.
+         * Specification of the output Pin(s) for this channel.
          */
         public DigitalOutputSpec[] pinSpec;
 

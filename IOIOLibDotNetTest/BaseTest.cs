@@ -27,8 +27,9 @@ namespace IOIOLibDotNetTest
 
         internal IOIOConnection GoodConnection = null;
 
-        internal IOIOIncomingHandlerCaptureLog handlerLog;
-        internal IOIOIncomingHandlerCaptureState handlerState;
+        internal IOIOHandlerCaptureLog handlerLog;
+        internal IOIOHandlerCaptureState handlerState;
+        internal IOIOHandlerCaptureInQueue handlerSingleQueueState;
         internal IOIOIncomingHandler handler;
         public TestContext TestContext
         {
@@ -91,7 +92,7 @@ namespace IOIOLibDotNetTest
             IOIOConnectionFactory factory = new SerialConnectionFactory();
             GoodConnection = factory.createConnection(TestHarnessSetup.GOOD_CONN_NAME);
             this.ConnectionsOpenedDuringTest.Add(GoodConnection); // always add connections used by incoming
-            GoodConnection.waitForConnect(); // actually open the GoodConnection
+            GoodConnection.waitForConnect(); // actually IsOpen the GoodConnection
         }
 
         /// <summary>
@@ -99,10 +100,11 @@ namespace IOIOLibDotNetTest
         /// </summary>
         internal void CreateCaptureLogHandlerSet()
         {
-            handlerLog = new IOIOIncomingHandlerCaptureLog(10);
-            handlerState = new IOIOIncomingHandlerCaptureState();
-            handler = new IOIOIncomingHandlerDistributor(
-               new List<IOIOIncomingHandler> { handlerLog, handlerState });
+            handlerLog = new IOIOHandlerCaptureLog(10);
+            handlerState = new IOIOHandlerCaptureState();
+            handlerSingleQueueState = new IOIOHandlerCaptureInQueue();
+            handler = new IOIOHandlerDistributor(
+               new List<IOIOIncomingHandler> { handlerLog, handlerState, handlerSingleQueueState });
         }
 
 

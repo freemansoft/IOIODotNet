@@ -235,7 +235,7 @@ namespace IOIOLib.Device.Types
         {
             if (pin < 0 || pin >= PinMap.GetLength(0))
             {
-                throw new ArgumentException("Illegal pin: " + pin);
+                throw new ArgumentException("Illegal Pin: " + pin);
             }
         }
 
