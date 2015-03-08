@@ -54,10 +54,10 @@ namespace IOIOLibDotNetTest.Device.Impl
         [TestMethod]
         public void IOIOProtocolIncoming_TestStartRunLoop()
         {
-            this.CreateGoodSerialConnection();
+            IOIOConnection ourConn = this.CreateGoodSerialConnection();
             this.CreateCaptureLogHandlerSet();
             LOG.Debug("Setup Complete");
-            IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(GoodConnection_.getInputStream(), HandlerContainer_);
+            IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(ourConn.getInputStream(), HandlerContainer_);
             // wait for reply
             System.Threading.Thread.Sleep(2000);
             Assert.IsNotNull(HandlerQueuePerType_.EstablishConnectionFrom_);
@@ -76,12 +76,12 @@ namespace IOIOLibDotNetTest.Device.Impl
         [TestMethod]
         public void IOIOProtocolOutgoing_DigitalLoopbackOut31In32()
         {
-            this.CreateGoodSerialConnection();
+            IOIOConnection ourConn = this.CreateGoodSerialConnection();
             this.CreateCaptureLogHandlerSet();
             LOG.Debug("Setup Complete");
 
-            IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(GoodConnection_.getInputStream(), HandlerContainer_);
-            IOIOProtocolOutgoing fooOut = new IOIOProtocolOutgoing(GoodConnection_.getOutputStream());
+            IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(ourConn.getInputStream(), HandlerContainer_);
+            IOIOProtocolOutgoing fooOut = new IOIOProtocolOutgoing(ourConn.getOutputStream());
             System.Threading.Thread.Sleep(100); // receive the HW ID
             LOG.Info("This test requires Pin 31 and 32 be shorted together");
             fooOut.setPinDigitalIn(31, DigitalInputSpecMode.FLOATING);

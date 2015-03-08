@@ -26,8 +26,10 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied.
  */
- 
+
 using IOIOLib.Component.Types;
+using IOIOLib.Connection;
+using IOIOLib.Device;
 using IOIOLib.Device.Impl;
 using IOIOLib.Device.Types;
 using IOIOLib.MessageFrom;
@@ -53,13 +55,12 @@ namespace IOIOLibDotNetTest.Device.Impl
         [TestMethod]
         public void IOIOImpl_ToggleLED()
         {
-            this.CreateGoodSerialConnection(false);
+            IOIOConnection ourConn = this.CreateGoodSerialConnection(false);
             this.CreateCaptureLogHandlerSet();
             LOG.Debug("Setup Complete");
 
             // we'll add the handler state on top of the default handlers so we don't have to peek into impl
-            IOIOImpl ourImpl = new IOIOImpl(this.GoodConnection_, this.HandlerQueuePerType_);
-            ourImpl.waitForConnect();
+            IOIO ourImpl = CreateIOIOImplAndConnect(ourConn, this.HandlerQueuePerType_);
             System.Threading.Thread.Sleep(100); // wait for us to get the hardware ids
 
             // SHOULD USE THE FACTORY instead of this lame ...
@@ -82,13 +83,12 @@ namespace IOIOLibDotNetTest.Device.Impl
         [TestMethod]
         public void IOIOImpl_DigitaLoopbackOut31In32()
         {
-            this.CreateGoodSerialConnection(false);
+            IOIOConnection ourConn = this.CreateGoodSerialConnection(false);
             this.CreateCaptureLogHandlerSet();
             LOG.Debug("Setup Complete");
 
             // we'll add the handler state on top of the default handlers so we don't have to peek into impl
-            IOIOImpl ourImpl = new IOIOImpl(this.GoodConnection_, this.HandlerQueuePerType_);
-            ourImpl.waitForConnect();
+            IOIO ourImpl = CreateIOIOImplAndConnect(ourConn, this.HandlerQueuePerType_);
             System.Threading.Thread.Sleep(100); // wait for us to get the hardware ids
 
             // SHOULD USE THE FACTORY instead of this lame ...
@@ -117,5 +117,6 @@ namespace IOIOLibDotNetTest.Device.Impl
 
             Assert.AreEqual(1 + (2 * 8), changeCount, "trying to figure out how many changes we'd see");
         }
+
     }
 }

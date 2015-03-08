@@ -26,7 +26,7 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied.
  */
- 
+
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using IOIOLib.Device.Impl;
@@ -47,40 +47,18 @@ namespace IOIOLibDotNetTest
         {
         }
 
-        private TestContext testContextInstance;
-
         /// <summary>
         /// Capture all connections here so we can make sure we clean them up
         /// </summary>
-        internal List<IOIOConnection> ConnectionsOpenedDuringTest;
+        private List<IOIOConnection> ConnectionsOpenedDuringTest;
+        private List<IOIO> DevicesOpenedDuringTest;
 
-        internal IOIOConnection GoodConnection_ = null;
+        private IOIOConnection GoodConnection_ = null;
 
         internal IOIOHandlerCaptureLog HandlerLog_;
         internal IOIOHandlerCaptureSeparateQueue HandlerQueuePerType_;
         internal IOIOHandlerCaptureSingleQueue HandlerSingleQueueAllType_;
         internal IOIOHandlerDistributor HandlerContainer_;
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        [ClassInitialize]
-        public static void MyClassInitialize(TestContext testContext)
-        {
-        }
-
-        [ClassCleanup()]
-        public static void MyClassCleanup()
-        {
-        }
 
         /// <summary>
         /// Create new GoodConnection_ test collections before each test
@@ -89,6 +67,7 @@ namespace IOIOLibDotNetTest
         public void MyTestInitialize()
         {
             ConnectionsOpenedDuringTest = new List<IOIOConnection>();
+            DevicesOpenedDuringTest = new List<IOIO>();
             GoodConnection_ = null;
             LOG.Debug("Done MyTestInitialize");
 
@@ -102,12 +81,17 @@ namespace IOIOLibDotNetTest
         [TestCleanup()]
         public void MyTestCleanup()
         {
+            DevicesOpenedDuringTest.ForEach(x =>
+            {
+                x.disconnect();
+                LOG.Info("Disconnected " + x.ToString());
+            });
             ConnectionsOpenedDuringTest.ForEach(x =>
                 {
                     if (x.canClose())
                     {
                         x.disconnect();
-                        LOG.Info("Disconnecting " + x.ToString());
+                        LOG.Info("Disconnected " + x.ToString());
                     }
                 });
             GoodConnection_ = null;
@@ -121,7 +105,7 @@ namespace IOIOLibDotNetTest
         /// <param name="leaveConnectionOpen">defaults to true because that is the way the first tests ran.
         ///     set to false for IOIOImpl</param>
         /// <returns>connected that is set on instance variable</returns>
-        internal void CreateGoodSerialConnection(bool leaveConnectionOpen = true)
+        internal IOIOConnection CreateGoodSerialConnection(bool leaveConnectionOpen = true)
         {
             IOIOConnectionFactory factory = new SerialConnectionFactory();
             GoodConnection_ = factory.createConnection(TestHarnessSetup.GOOD_CONN_NAME);
@@ -131,6 +115,7 @@ namespace IOIOLibDotNetTest
                 GoodConnection_.waitForConnect(); // actually IsOpen the GoodConnection_
             }
             LOG.Debug("Done CreateGoodSerialConnection");
+            return GoodConnection_;
 
         }
 
@@ -150,6 +135,19 @@ namespace IOIOLibDotNetTest
                });
         }
 
+        /// <summary>
+        /// Use this to create your IOIO because it retains references to Tasks that are automatically cleaned up for you
+        /// </summary>
+        /// <param name="connection"></param>
+        /// <param name="handler"></param>
+        /// <returns></returns>
+        internal IOIO CreateIOIOImplAndConnect(IOIOConnection connection, IOIOIncomingHandler handler)
+        {
+            IOIO ourImpl = new IOIOImpl(connection, handler);
+            DevicesOpenedDuringTest.Add(ourImpl);
+            ourImpl.waitForConnect();
+            return ourImpl;
+        }
 
     }
 }

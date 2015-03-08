@@ -26,7 +26,7 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied.
  */
- 
+
 using IOIOLib.Device.Types;
 using System;
 using System.Collections.Generic;
@@ -51,12 +51,12 @@ namespace IOIOLib.Device.Impl
     {
         private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(IOIOProtocolOutgoing));
 
-        private int batchCounter_ = 0;
-        private Stream stream;
+        private int BatchCounter_ = 0;
+        private Stream Stream;
 
         public IOIOProtocolOutgoing(Stream stream)
         {
-            this.stream = stream;
+            this.Stream = stream;
         }
 
         private void writeByte(int b)
@@ -65,7 +65,7 @@ namespace IOIOLib.Device.Impl
             // http://www.sparxeng.com/blog/software/must-use-net-system-io-ports-serialport
             System.Diagnostics.Debug.Assert(b >= 0 && b < 256);
             LOG.Debug("sending: 0x" + b.ToString("X"));
-            stream.WriteByte((byte)b);
+            Stream.WriteByte((byte)b);
         }
 
         private void writeBytes(byte[] buf, int offset, int size)
@@ -78,14 +78,14 @@ namespace IOIOLib.Device.Impl
 
         public void beginBatch()
         {
-            ++batchCounter_;
+            ++BatchCounter_;
         }
 
         public void endBatch()
         {
-            if (--batchCounter_ == 0)
+            if (--BatchCounter_ == 0)
             {
-                stream.Flush();
+                Stream.Flush();
             }
         }
 

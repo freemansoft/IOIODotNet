@@ -26,7 +26,7 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied.
  */
- 
+
 using IOIOLib.Component;
 using IOIOLib.Component.Types;
 using IOIOLib.Connection;
@@ -125,13 +125,14 @@ namespace IOIOLib.Device.Impl
         {
             Conn.waitForConnect();
 
+            // Use the same cancel token for inbound and outbound
+            CancelTokenSource_ = new CancellationTokenSource();
             OutProt = new IOIOProtocolOutgoing(this.Conn.getOutputStream());
-            InProt = new IOIOProtocolIncoming(this.Conn.getInputStream(), this.InboundHandler);
+            InProt = new IOIOProtocolIncoming(this.Conn.getInputStream(), this.InboundHandler, CancelTokenSource_);
             //Joe's COM4 @ 115200 spits out HW,BootLoader,InterfaceVersion: IOIOSPRK0016IOIO0311IOIO0500
             initBoardVersion();
             //checkInterfaceVersion();
             // start the message pump
-            CancelTokenSource_ = new CancellationTokenSource();
             OutgoingTask_ = new Task(run, CancelTokenSource_.Token, TaskCreationOptions.LongRunning);
             OutgoingTask_.Start();
         }
@@ -171,7 +172,6 @@ namespace IOIOLib.Device.Impl
         public void disconnect()
         {
             CancelTokenSource_.Cancel();
-            throw new NotImplementedException();
         }
 
         public void waitForDisconnect()
@@ -243,12 +243,12 @@ namespace IOIOLib.Device.Impl
             }
             catch (System.Threading.ThreadAbortException e)
             {
-                LOG.Error(OutgoingTask_.Id+" Probably aborted thread (TAE): "+ e.Message);
+                LOG.Error(OutgoingTask_.Id + " Probably aborted thread (TAE): " + e.Message);
             }
             catch (ObjectDisposedException e)
             {
                 //// see this when steram is closed
-                LOG.Error(OutgoingTask_.Id + " Probably closed outgoing stream: (ODE)" + e.Message);
+                LOG.Error(OutgoingTask_.Id + " Probably closed outgoing Stream: (ODE)" + e.Message);
             }
             catch (Exception e)
             {
@@ -256,7 +256,7 @@ namespace IOIOLib.Device.Impl
             }
             finally
             {
-                // we don't play swith stream since we didn't create it
+                // we don't play swith Stream since we didn't create it
                 LOG.Debug(OutgoingTask_.Id + " Throwing thread cancel to mae sure outgoing thread stopped");
                 // this is redundant if we got here because of thread stop
                 this.CancelTokenSource_.Cancel();

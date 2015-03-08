@@ -67,11 +67,11 @@ namespace IOIOLibDotNetTest.Device.Impl
         [TestMethod]
         public void IOIOProtocolOutgoing_CheckInterfaceVersion()
         {
-            this.CreateGoodSerialConnection();
+            IOIOConnection ourConn = this.CreateGoodSerialConnection();
             this.CreateCaptureLogHandlerSet();
             LOG.Debug("Setup Complete");
-            IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(GoodConnection_.getInputStream(), HandlerContainer_);
-            IOIOProtocolOutgoing fooOut = new IOIOProtocolOutgoing(GoodConnection_.getOutputStream());
+            IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(ourConn.getInputStream(), HandlerContainer_);
+            IOIOProtocolOutgoing fooOut = new IOIOProtocolOutgoing(ourConn.getOutputStream());
             System.Threading.Thread.Sleep(100); // wait for us to get the hardware ids
             fooOut.checkInterfaceVersion();
             // wait for reply
@@ -82,12 +82,12 @@ namespace IOIOLibDotNetTest.Device.Impl
         [TestMethod]
         public void IOIOProtocolOutgoing_ToggleLED()
         {
-            this.CreateGoodSerialConnection();
+            IOIOConnection ourConn = this.CreateGoodSerialConnection();
             this.CreateCaptureLogHandlerSet();
             LOG.Debug("Setup Complete");
 
-            IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(GoodConnection_.getInputStream(), HandlerContainer_);
-            IOIOProtocolOutgoing fooOut = new IOIOProtocolOutgoing(GoodConnection_.getOutputStream());
+            IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(ourConn.getInputStream(), HandlerContainer_);
+            IOIOProtocolOutgoing fooOut = new IOIOProtocolOutgoing(ourConn.getOutputStream());
             System.Threading.Thread.Sleep(100); // wait for us to get the hardware ids
 
             fooOut.setPinDigitalOut(SpecialPin.LED_PIN, false, DigitalOutputSpecMode.NORMAL);

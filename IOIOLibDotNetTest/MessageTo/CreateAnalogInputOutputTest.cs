@@ -26,8 +26,9 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied.
  */
- 
+
 using IOIOLib.Component.Types;
+using IOIOLib.Connection;
 using IOIOLib.Device.Impl;
 using IOIOLib.Device.Types;
 using IOIOLib.MessageTo.Impl;
@@ -49,10 +50,10 @@ namespace IOIOLibDotNetTest.MessageTo
         [TestMethod]
         public void CreateAnalogInputOutputTo_AnalogLoopbackOut31In32()
         {
-            this.CreateGoodSerialConnection();
+            IOIOConnection ourConn = this.CreateGoodSerialConnection();
             this.CreateCaptureLogHandlerSet();
-            IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(GoodConnection_.getInputStream(), HandlerContainer_);
-            IOIOProtocolOutgoing fooOut = new IOIOProtocolOutgoing(GoodConnection_.getOutputStream());
+            IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(ourConn.getInputStream(), HandlerContainer_);
+            IOIOProtocolOutgoing fooOut = new IOIOProtocolOutgoing(ourConn.getOutputStream());
             System.Threading.Thread.Sleep(100); // wait for us to get the hardware ids
             ConfigureAnalogInputTo commandCreateIn = new ConfigureAnalogInputTo(31, true);
             commandCreateIn.ExecuteMessage(fooOut);
