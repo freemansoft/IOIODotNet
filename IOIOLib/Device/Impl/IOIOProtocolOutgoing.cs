@@ -9,6 +9,7 @@ using IOIOLib.Component;
 using IOIOLib.Component.Types;
 using IOIOLib.Connection;
 using IOIOLib.Util;
+using System.Threading;
 
 namespace IOIOLib.Device.Impl
 {

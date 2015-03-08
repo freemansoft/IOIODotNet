@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom
 {
-    public interface IRegisterPeriodicDigitalSamplingFrom : IMessageFromIOIO
+    public interface IRegisterPeriodicDigitalSamplingFrom : IDigitalInFrom
     {
         int Pin { get; }
         int FrequencyScale { get; }

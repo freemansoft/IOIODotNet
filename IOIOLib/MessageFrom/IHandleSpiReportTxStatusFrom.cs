@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom
 {
-    public interface IHandleSpiReportTxStatusFrom : IMessageFromIOIO
+    public interface IHandleSpiReportTxStatusFrom : ISpiFrom
     {
-        int SpiNum { get; }
         int BytesRemaining { get; }
 
     }

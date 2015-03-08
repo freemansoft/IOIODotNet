@@ -48,6 +48,7 @@ namespace IOIOLibDotNetTest
         public static void TryAndFindIOIODevice()
         {
             ILog LOG = LogManager.GetLogger(typeof(TestHarnessSetup));
+            LOG.Debug("Starting TryAndFindIOIODevice");
             IOIOConnectionFactory factory = new SerialConnectionFactory();
             ICollection<IOIOConnection> connections = factory.createConnections();
             Assert.IsTrue(connections.Count > 0, "None of these tests can run because we can't find a possible IOIO port");
@@ -64,7 +65,7 @@ namespace IOIOLibDotNetTest
                     // logging without real capture
                     IOIOHandlerCaptureLog handlerLog = new IOIOHandlerCaptureLog(1);
                     // so we can verifys
-                    IOIOHandlerCaptureState handlerState = new IOIOHandlerCaptureState();
+                    IOIOHandlerCaptureSeparateQueue handlerState = new IOIOHandlerCaptureSeparateQueue();
                     IOIOIncomingHandler handler = new IOIOHandlerDistributor(
                         new List<IOIOIncomingHandler> { handlerLog, handlerState });
                     IOIOProtocolIncoming foo = new IOIOProtocolIncoming(oneConn.getInputStream(), handler);
@@ -88,7 +89,7 @@ namespace IOIOLibDotNetTest
                     // just ignore it because will get this when we disconnect
                 }
             }
-
+            LOG.Debug("Starting TryAndFindIOIODevice");
         }
     }
 }

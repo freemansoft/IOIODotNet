@@ -14,9 +14,9 @@ namespace IOIOLib.Device.Impl
     /// <summary>
     /// TODO: This class should be a dispatcher for event listeners.
     /// </summary>
-    public class IOIOHandlerCaptureInQueue : IOIOIncomingHandler
+    public class IOIOHandlerCaptureSingleQueue : IOIOIncomingHandler
     {
-        private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(IOIOHandlerCaptureInQueue));
+        private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(IOIOHandlerCaptureSingleQueue));
 
         /// <summary>
         /// Need to come up with an API for this

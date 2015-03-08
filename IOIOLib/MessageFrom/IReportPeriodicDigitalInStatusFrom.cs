@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom
 {
-    public interface IReportPeriodicDigitalInStatusFrom : IMessageFromIOIO
+    public interface IReportPeriodicDigitalInStatusFrom : IDigitalInFrom
     {
         int FrameNum { get; }
         bool[] Values { get; }

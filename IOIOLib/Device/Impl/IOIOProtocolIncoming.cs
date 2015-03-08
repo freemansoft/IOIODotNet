@@ -26,6 +26,9 @@ namespace IOIOLib.Device.Impl
         private HashSet<int> removedPins_ = new HashSet<int>();
         private HashSet<int> addedPins_ = new HashSet<int>();
         private Stream stream_;
+        /// <summary>
+        /// Could be a handler distributor with multiple other handlers in it
+        /// </summary>
         private IOIOIncomingHandler handler_;
         /// <summary>
         /// this should go somewhere else
@@ -34,15 +37,15 @@ namespace IOIOLib.Device.Impl
         /// <summary>
         /// Why do we retain reference to this when we have cancel token access?
         /// </summary>
-        private Task incomingThread_;
+        private Task IncomingTask_;
 
         public IOIOProtocolIncoming(Stream stream, IOIOIncomingHandler handler)
         {
             this.stream_ = stream;
             this.handler_ = handler;
             cancelTokenSource_ = new CancellationTokenSource();
-            incomingThread_ = new Task(run, cancelTokenSource_.Token, TaskCreationOptions.LongRunning);
-            incomingThread_.Start();
+            IncomingTask_ = new Task(run, cancelTokenSource_.Token, TaskCreationOptions.LongRunning);
+            IncomingTask_.Start();
         }
 
         private void calculateAnalogFrameDelta()
@@ -84,23 +87,23 @@ namespace IOIOLib.Device.Impl
                             throw new IOException("Unexpected stream_ closure");
                         }
 
-                        LOG.Debug("received 0x" + b.ToString("X"));
+                        LOG.Debug(IncomingTask_.Id+" received 0x" + b.ToString("X"));
                         return b;
                     }
                     catch (TimeoutException e)
                     {
-                        LOG.Debug("readByte " + e.Message + " retrying");
+                        LOG.Debug(IncomingTask_.Id+" readByte " + e.Message + " retrying");
                     }
                 }
             }
             catch (System.Threading.ThreadAbortException e)
             {
-                LOG.Warn("Thread aborted while in read ", e);
+                LOG.Warn(IncomingTask_.Id+" Thread aborted while in read ", e);
                 throw e;
             }
             catch (IOException e)
             {
-                LOG.Warn("IOIO disconnected while in read");
+                LOG.Warn(IncomingTask_.Id+" IOIO disconnected while in read");
                 throw e;
             }
         }
@@ -128,7 +131,7 @@ namespace IOIOLib.Device.Impl
                 {
                     cancelTokenSource_.Token.ThrowIfCancellationRequested();
                     arg1 = readByte();
-                    LOG.Debug("Processing reply type " + arg1.ToString("X"));
+                    LOG.Debug(IncomingTask_.Id+" Processing reply type " + arg1.ToString("X"));
                     switch (arg1)
                     {
                         case (int)IOIOProtocolCommands.ESTABLISH_CONNECTION:
@@ -338,7 +341,7 @@ namespace IOIOLib.Device.Impl
                             break;
 
                         case (int)IOIOProtocolCommands.SOFT_CLOSE:
-                            LOG.Debug("Received soft close.");
+                            LOG.Debug(IncomingTask_.Id + " Received soft close.");
                             throw new IOException("Soft close");
 
                         case (int)IOIOProtocolCommands.CAPSENSE_REPORT:
@@ -387,28 +390,28 @@ namespace IOIOLib.Device.Impl
             }
             catch (System.Threading.ThreadAbortException e)
             {
-                LOG.Error("Probably aborted thread (TAE): ", e);
+                LOG.Error(IncomingTask_.Id + " Probably aborted thread (TAE): ", e);
             }
             catch (ObjectDisposedException e)
             {
                 //// see this when steram is closed
-                LOG.Error("Probably closed incoming stream: (ODE)", e);
+                LOG.Error(IncomingTask_.Id + " Probably closed incoming stream: (ODE)", e);
             }
             catch (Exception e)
             {
-                LOG.Error("Probably stopping incoming: (E)", e);
+                LOG.Error(IncomingTask_.Id + " Probably stopping incoming: (E)", e);
             }
             finally
             {
                 // we don't play swith stream since we didn't create it
                 handler_.handleConnectionLost();
-                LOG.Info("Throwing thread cancel to stop incoming thread");
+                LOG.Info(IncomingTask_.Id + " Throwing thread cancel to stop incoming thread");
                 cancelTokenSource_.Cancel();
                 // debugger will always stop here in unit tests if test dynamically determines what port ot use
                 // just hit continue in the debugger
                 cancelTokenSource_.Token.ThrowIfCancellationRequested();
                 stream_ = null;
-                this.incomingThread_ = null;
+                this.IncomingTask_ = null;
             }
         }
     }

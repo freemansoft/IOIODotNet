@@ -7,6 +7,7 @@ using IOIOLib.MessageTo;
 using IOIOLib.MessageTo.Impl;
 using IOIOLib.Util;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,11 +18,15 @@ namespace IOIOLib.Device.Impl
 {
     /// <summary>
     /// This class will SOMEDAY act as an object oriented wrapper around the IOIO boards.
+    /// This should handle the clean up of the incoming and outgoing protocols
     /// </summary>
     class IOIOImpl : IOIO
     {
         private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(IOIOImpl));
 
+        /// <summary>
+        /// communication channel
+        /// </summary>
         private IOIOConnection Conn;
         /// <summary>
         /// TODO Need to get on this and make state be correct!
@@ -30,13 +35,57 @@ namespace IOIOLib.Device.Impl
         private IOIOProtocolOutgoing OutProt;
         private IOIOProtocolIncoming InProt;
         private IOIOIncomingHandler InboundHandler;
-        private IOIOHandlerCaptureState InbountStateCapture;
-        private IOIOHandlerCaptureLog InboundCaptureAndLog;
+        private IOIOHandlerCaptureConnectionState CapturedConnectionInformation;
+        private IOIOHandlerCaptureLog CapturedLogs;
+
+        /// <summary>
+        /// Used to stop this protocol thread
+        /// </summary>
+        internal CancellationTokenSource CancelTokenSource_;
+        /// <summary>
+        /// our outbound thread
+        /// </summary>
+        private Task OutgoingTask_;
 
 
-        public IOIOImpl(IOIOConnection conn)
+        /// <summary>
+        /// Should use ConcurrentCollection under the hood
+        /// </summary>
+        private BlockingCollection<IPostMessageTo> WorkQueue = new BlockingCollection<IPostMessageTo>();
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="conn"></param>
+        /// <param name="customHandler">your handler.  This always adds:
+        ///     IOIOHandlerCaptureConnectionState , IOIOHandlerCaptureLog</param>
+        public IOIOImpl(IOIOConnection conn, IOIOIncomingHandler customHandler)
         {
+            if (conn == null)
+            {
+                throw new IllegalStateException("Silly Rabbit: You can't create an IOIOImpl without a connection!");
+            }
             this.Conn = conn;
+            ConfigureHandlers(customHandler);
+        }
+
+        /// <summary>
+        /// Wrap the custom handler with our instrumentation handlers
+        /// </summary>
+        /// <param name="customHandler">optional handler provided by object creator</param>
+        private void ConfigureHandlers(IOIOIncomingHandler customHandler)
+        {
+            CapturedConnectionInformation = new IOIOHandlerCaptureConnectionState();
+            CapturedLogs = new IOIOHandlerCaptureLog(10);
+            InboundHandler = new IOIOHandlerDistributor(
+                new List<IOIOIncomingHandler> { CapturedConnectionInformation, CapturedLogs });
+            if (customHandler != null)
+            {
+                InboundHandler = new IOIOHandlerDistributor(
+                    new List<IOIOIncomingHandler> { CapturedConnectionInformation, CapturedLogs, customHandler });
+            }
         }
 
 
@@ -46,16 +95,16 @@ namespace IOIOLib.Device.Impl
         public void waitForConnect()
         {
             Conn.waitForConnect();
-            InbountStateCapture = new IOIOHandlerCaptureState();
-            InboundCaptureAndLog = new IOIOHandlerCaptureLog(10);
-            InboundHandler = new IOIOHandlerDistributor(
-                new List<IOIOIncomingHandler> { InbountStateCapture, InboundCaptureAndLog });
 
             OutProt = new IOIOProtocolOutgoing(this.Conn.getOutputStream());
             InProt = new IOIOProtocolIncoming(this.Conn.getInputStream(), this.InboundHandler);
             //Joe's COM4 @ 115200 spits out HW,BootLoader,InterfaceVersion: IOIOSPRK0016IOIO0311IOIO0500
             initBoardVersion();
             //checkInterfaceVersion();
+            // start the message pump
+            CancelTokenSource_ = new CancellationTokenSource();
+            OutgoingTask_ = new Task(run, CancelTokenSource_.Token, TaskCreationOptions.LongRunning);
+            OutgoingTask_.Start();
         }
 
         /// <summary>
@@ -66,7 +115,7 @@ namespace IOIOLib.Device.Impl
             // hack until we figure out where state should be and how we accesses
             // Should this build the hardware object and retain it instead of doing it in the handler?
             // the inbound handler actually has already processed the board version.  
-            if (InbountStateCapture.EstablishConnectionFrom_ == null)
+            if (CapturedConnectionInformation.EstablishConnectionFrom_ == null)
             {
                 State = IOIOState.DEAD;
             }
@@ -74,7 +123,7 @@ namespace IOIOLib.Device.Impl
             {
                 State = IOIOState.CONNECTED;
             }
-            LOG.Info("Hardware is " + InbountStateCapture.EstablishConnectionFrom_);
+            LOG.Info("Hardware is " + CapturedConnectionInformation.EstablishConnectionFrom_);
         }
 
         /// <summary>
@@ -92,6 +141,7 @@ namespace IOIOLib.Device.Impl
 
         public void disconnect()
         {
+            CancelTokenSource_.Cancel();
             throw new NotImplementedException();
         }
 
@@ -115,12 +165,6 @@ namespace IOIOLib.Device.Impl
             throw new NotImplementedException();
         }
 
-        public void postMessage(IPostMessageTo message)
-        {
-            message.ExecuteMessage(this.OutProt);
-        }
-
-
         public void beginBatch()
         {
             throw new NotImplementedException();
@@ -134,6 +178,67 @@ namespace IOIOLib.Device.Impl
         public void sync()
         {
             throw new NotImplementedException();
+        }
+
+
+        public void postMessage(IPostMessageTo message)
+        {
+            WorkQueue.Add(message);
+        }
+
+
+
+        //////////////////////////////////////////////////////////
+        //// Outbound Thread Handling section
+        //////////////////////////////////////////////////////////
+
+
+        public void run()
+        {
+            try
+            {
+                // pick something fast for humans but long for a computer
+                TimeSpan timeout = new TimeSpan(0, 0, 0, 0, 100);
+                while (true)
+                {
+                    this.CancelTokenSource_.Token.ThrowIfCancellationRequested();
+                    IPostMessageTo result;
+                    // use timeout so we can get cancellation token
+                    // use blocking queue so that we aren't spinning
+                    bool didTake = WorkQueue.TryTake(out result, timeout);
+                    if (didTake && result != null)
+                    {
+                        result.ExecuteMessage(this.OutProt);
+                    }
+                }
+            }
+            catch (System.Threading.ThreadAbortException e)
+            {
+                LOG.Error(OutgoingTask_.Id+" Probably aborted thread (TAE): ", e);
+            }
+            catch (ObjectDisposedException e)
+            {
+                //// see this when steram is closed
+                LOG.Error(OutgoingTask_.Id + " Probably closed outgoing stream: (ODE)", e);
+            }
+            catch (Exception e)
+            {
+                LOG.Error(OutgoingTask_.Id + " Probably stopping outgoing: (E)", e);
+            }
+            finally
+            {
+                // we don't play swith stream since we didn't create it
+                LOG.Debug(OutgoingTask_.Id + " Throwing thread cancel to mae sure outgoing thread stopped");
+                // this is redundant if we got here because of thread stop
+                this.CancelTokenSource_.Cancel();
+                // debugger will always stop here in unit tests if test dynamically determines what port ot use
+                // just hit continue in the debugger
+                this.CancelTokenSource_.Token.ThrowIfCancellationRequested();
+                // should tell OutProt to shut down
+                this.OutProt = null;
+                this.OutgoingTask_ = null;
+            }
+
         }
 
     }

@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom
 {
-    public interface IHandleUartReportTxStatusFrom : IMessageFromIOIO
+    public interface IHandleUartReportTxStatusFrom : IUartFrom
     {
-        int UartNum { get; }
         int BytesRemaining { get; }
 
     }

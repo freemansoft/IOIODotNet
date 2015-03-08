@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom
 {
-    public interface IIcspResultFrom : IMessageFromIOIO
+    public interface IIcspResultFrom : IIcspFrom
     {
         int Size { get; }
         byte[] Data { get; }

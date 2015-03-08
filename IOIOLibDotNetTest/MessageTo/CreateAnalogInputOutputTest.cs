@@ -18,12 +18,12 @@ namespace IOIOLibDotNetTest.MessageTo
         private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(CreateDigitalInputOutputToTest));
 
         [TestMethod]
-        public void CreateAnalogInputOutputTo_ToggleOut31In32()
+        public void CreateAnalogInputOutputTo_AnalogLoopbackOut31In32()
         {
             this.CreateGoodSerialConnection();
             this.CreateCaptureLogHandlerSet();
-            IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(GoodConnection.getInputStream(), handler);
-            IOIOProtocolOutgoing fooOut = new IOIOProtocolOutgoing(GoodConnection.getOutputStream());
+            IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(GoodConnection_.getInputStream(), HandlerContainer_);
+            IOIOProtocolOutgoing fooOut = new IOIOProtocolOutgoing(GoodConnection_.getOutputStream());
             System.Threading.Thread.Sleep(100); // wait for us to get the hardware ids
             ConfigureAnalogInputTo commandCreateIn = new ConfigureAnalogInputTo(31, true);
             commandCreateIn.ExecuteMessage(fooOut);

@@ -40,13 +40,14 @@ namespace IOIOLibDotNetTest.Device.Impl
         {
             this.CreateGoodSerialConnection();
             this.CreateCaptureLogHandlerSet();
-            IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(GoodConnection.getInputStream(), handler);
-            IOIOProtocolOutgoing fooOut = new IOIOProtocolOutgoing(GoodConnection.getOutputStream());
+            LOG.Debug("Setup Complete");
+            IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(GoodConnection_.getInputStream(), HandlerContainer_);
+            IOIOProtocolOutgoing fooOut = new IOIOProtocolOutgoing(GoodConnection_.getOutputStream());
             System.Threading.Thread.Sleep(100); // wait for us to get the hardware ids
             fooOut.checkInterfaceVersion();
             // wait for reply
             System.Threading.Thread.Sleep(2000);
-            Assert.IsTrue(handlerState.Supported_.IsSupported, " the handler returned not supported interface.");
+            Assert.IsTrue(HandlerQueuePerType_.Supported_.IsSupported, " the HandlerContainer_ returned not supported interface.");
         }
 
         [TestMethod]
@@ -54,8 +55,10 @@ namespace IOIOLibDotNetTest.Device.Impl
         {
             this.CreateGoodSerialConnection();
             this.CreateCaptureLogHandlerSet();
-            IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(GoodConnection.getInputStream(), handler);
-            IOIOProtocolOutgoing fooOut = new IOIOProtocolOutgoing(GoodConnection.getOutputStream());
+            LOG.Debug("Setup Complete");
+
+            IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(GoodConnection_.getInputStream(), HandlerContainer_);
+            IOIOProtocolOutgoing fooOut = new IOIOProtocolOutgoing(GoodConnection_.getOutputStream());
             System.Threading.Thread.Sleep(100); // wait for us to get the hardware ids
 
             fooOut.setPinDigitalOut(SpecialPin.LED_PIN, false, DigitalOutputSpecMode.NORMAL);

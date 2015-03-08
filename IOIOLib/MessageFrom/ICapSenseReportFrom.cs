@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom
 {
-    public interface ICapSenseReportFrom : IMessageFromIOIO
+    public interface ICapSenseReportFrom : ICapSenseFrom
     {
-        int PinNum { get; }
         int Value { get; }
     }
 }

@@ -4,6 +4,8 @@ using IOIOLib.Connection.Impl;
 using IOIOLib.Device;
 using IOIOLib.Device.Impl;
 using IOIOLib.IOIOException;
+using IOIOLib.MessageFrom;
+using IOIOLib.MessageFrom.Impl;
 using IOIOLib.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -25,10 +27,11 @@ namespace IOIOLibDotNetTest.Device.Impl
         {
             this.CreateGoodSerialConnection();
             this.CreateCaptureLogHandlerSet();
-            IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(GoodConnection.getInputStream(), handler);
+            LOG.Debug("Setup Complete");
+            IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(GoodConnection_.getInputStream(), HandlerContainer_);
             // wait for reply
             System.Threading.Thread.Sleep(2000);
-            Assert.IsNotNull(handlerState.EstablishConnectionFrom_);
+            Assert.IsNotNull(HandlerQueuePerType_.EstablishConnectionFrom_);
         }
 
         [TestMethod]
@@ -36,18 +39,20 @@ namespace IOIOLibDotNetTest.Device.Impl
         {
             this.CreateCaptureLogHandlerSet();
             MemoryStream fakeStream = new MemoryStream();
-            IOIOProtocolIncoming fooOut = new IOIOProtocolIncoming(fakeStream, handler);
+            IOIOProtocolIncoming fooOut = new IOIOProtocolIncoming(fakeStream, HandlerContainer_);
             fakeStream.Close();
             System.Threading.Thread.Sleep(3000);
         }
 
         [TestMethod]
-        public void IOIOProtocolOutgoing_ToggleOut31In32()
+        public void IOIOProtocolOutgoing_DigitalLoopbackOut31In32()
         {
             this.CreateGoodSerialConnection();
             this.CreateCaptureLogHandlerSet();
-            IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(GoodConnection.getInputStream(), handler);
-            IOIOProtocolOutgoing fooOut = new IOIOProtocolOutgoing(GoodConnection.getOutputStream());
+            LOG.Debug("Setup Complete");
+
+            IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(GoodConnection_.getInputStream(), HandlerContainer_);
+            IOIOProtocolOutgoing fooOut = new IOIOProtocolOutgoing(GoodConnection_.getOutputStream());
             System.Threading.Thread.Sleep(100); // receive the HW ID
             LOG.Info("This test requires Pin 31 and 32 be shorted together");
             fooOut.setPinDigitalIn(31, DigitalInputSpecMode.FLOATING);
@@ -61,12 +66,16 @@ namespace IOIOLibDotNetTest.Device.Impl
             System.Threading.Thread.Sleep(200);
             // all log  methods contain method name which is in the interface so this is reasonably safe
             // we get one change event as soon as the Pin input Pin is configured + 2 changes in test
-            int matchingLogs = this.handlerLog.capturedLogs.Count(s => s.StartsWith("handleReportDigitalInStatus"));
-            Assert.AreEqual(2, matchingLogs, "Should have captured input changes, not " + matchingLogs + ".  Are pins 31 and 32 shorted together");
+            int matchingLogs = this.HandlerLog_.capturedLogs.Count(s => s.StartsWith("handleReportDigitalInStatus"));
+            Assert.AreEqual(3, matchingLogs, "Should have captured input changes, not " + matchingLogs + ".  Are pins 31 and 32 shorted together");
             // verify the system acknowledged our request to be notified of state change
-            Assert.IsTrue(this.handlerState.StateSetChangeNotify_.ContainsKey(31));
+            Assert.AreEqual(1, this.HandlerQueuePerType_.GetClassified(typeof(ISetChangeNotifyMessageFrom))
+                .OfType<ISetChangeNotifyMessageFrom>().Where(m => m.Pin == 31).Count()
+                , "Unexpected count for IReportDigitalInStatusFrom");
             // verify we got Pin state changes for 31
-            Assert.IsTrue(this.handlerState.StateReportDigitalInStatus_.ContainsKey(31));
+            Assert.AreEqual(3, this.HandlerQueuePerType_.GetClassified(typeof(IDigitalInFrom))
+                .OfType<IReportDigitalInStatusFrom>().Where(m => m.Pin == 31).Count()
+                , "Unexpected count for IReportDigitalInStatusFrom");
         }
     }
 }

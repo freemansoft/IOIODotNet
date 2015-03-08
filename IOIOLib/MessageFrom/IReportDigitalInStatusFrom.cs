@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom
 {
-    public interface IReportDigitalInStatusFrom : IMessageFromIOIO
+    public interface IReportDigitalInStatusFrom : IDigitalInFrom
     {
-         int Pin { get; }
-         bool Level { get; }
+        int Pin { get; }
+        bool Level { get; }
 
     }
 }

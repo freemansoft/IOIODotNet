@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom
 {
-    public interface IReportAnalogPinValuesFrom : IAnalogInFrom
+    public interface IAnalogInFrom : IMessageFromIOIO
     {
-        int Value { get; }
+        int Pin { get; }
     }
 }

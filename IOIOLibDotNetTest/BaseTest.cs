@@ -25,12 +25,12 @@ namespace IOIOLibDotNetTest
         /// </summary>
         internal List<IOIOConnection> ConnectionsOpenedDuringTest;
 
-        internal IOIOConnection GoodConnection = null;
+        internal IOIOConnection GoodConnection_ = null;
 
-        internal IOIOHandlerCaptureLog handlerLog;
-        internal IOIOHandlerCaptureState handlerState;
-        internal IOIOHandlerCaptureInQueue handlerSingleQueueState;
-        internal IOIOIncomingHandler handler;
+        internal IOIOHandlerCaptureLog HandlerLog_;
+        internal IOIOHandlerCaptureSeparateQueue HandlerQueuePerType_;
+        internal IOIOHandlerCaptureSingleQueue HandlerSingleQueueAllType_;
+        internal IOIOHandlerDistributor HandlerContainer_;
         public TestContext TestContext
         {
             get
@@ -54,13 +54,15 @@ namespace IOIOLibDotNetTest
         }
 
         /// <summary>
-        /// Create new GoodConnection test collections before each test
+        /// Create new GoodConnection_ test collections before each test
         /// </summary>
         [TestInitialize()]
         public void MyTestInitialize()
         {
             ConnectionsOpenedDuringTest = new List<IOIOConnection>();
-            GoodConnection = null;
+            GoodConnection_ = null;
+            LOG.Debug("Done MyTestInitialize");
+
         }
 
 
@@ -79,32 +81,44 @@ namespace IOIOLibDotNetTest
                         LOG.Info("Disconnecting " + x.ToString());
                     }
                 });
-            GoodConnection = null;
+            GoodConnection_ = null;
             System.Threading.Thread.Sleep(100);
+            LOG.Debug("Done MyTestCleanup");
         }
 
         /// <summary>
-        /// Creates a "good" serial GoodConnection and registeres it for automatic closure
+        /// Creates a "good" serial GoodConnection_ and registeres it for automatic closure
         /// </summary>
+        /// <param name="leaveConnectionOpen">defaults to true because that is the way the first tests ran.
+        ///     set to false for IOIOImpl</param>
         /// <returns>connected that is set on instance variable</returns>
-        internal void CreateGoodSerialConnection()
+        internal void CreateGoodSerialConnection(bool leaveConnectionOpen = true)
         {
             IOIOConnectionFactory factory = new SerialConnectionFactory();
-            GoodConnection = factory.createConnection(TestHarnessSetup.GOOD_CONN_NAME);
-            this.ConnectionsOpenedDuringTest.Add(GoodConnection); // always add connections used by incoming
-            GoodConnection.waitForConnect(); // actually IsOpen the GoodConnection
+            GoodConnection_ = factory.createConnection(TestHarnessSetup.GOOD_CONN_NAME);
+            this.ConnectionsOpenedDuringTest.Add(GoodConnection_); // always add connections used by incoming
+            if (leaveConnectionOpen)
+            {
+                GoodConnection_.waitForConnect(); // actually IsOpen the GoodConnection_
+            }
+            LOG.Debug("Done CreateGoodSerialConnection");
+
         }
 
         /// <summary>
-        /// Creates a standard handler set and put sit in instance variables
+        /// Creates a standard HandlerContainer_ set and put it in instance variables so all tests can use.
+        /// Create one of each of the standard types
         /// </summary>
         internal void CreateCaptureLogHandlerSet()
         {
-            handlerLog = new IOIOHandlerCaptureLog(10);
-            handlerState = new IOIOHandlerCaptureState();
-            handlerSingleQueueState = new IOIOHandlerCaptureInQueue();
-            handler = new IOIOHandlerDistributor(
-               new List<IOIOIncomingHandler> { handlerLog, handlerState, handlerSingleQueueState });
+            HandlerLog_ = new IOIOHandlerCaptureLog(10);
+            HandlerQueuePerType_ = new IOIOHandlerCaptureSeparateQueue();
+            HandlerSingleQueueAllType_ = new IOIOHandlerCaptureSingleQueue();
+            HandlerContainer_ = new IOIOHandlerDistributor(
+               new List<IOIOIncomingHandler> { HandlerLog_, 
+                   HandlerQueuePerType_, 
+                   HandlerSingleQueueAllType_ 
+               });
         }
 
 

@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom
 {
-    public interface ICapSenseSamplingFrom : IMessageFromIOIO
+    public interface ICapSenseSamplingFrom : ICapSenseFrom
     {
-        int PinNum { get; }
         bool IsEnabled { get; }
 
     }

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom
 {
-    interface IAnalogPinStatusFrom : IMessageFromIOIO
+    interface IAnalogPinStatusFrom : IAnalogInFrom
     {
-        int Pin { get; }
+
         bool IsOpen { get; }
     }
 }

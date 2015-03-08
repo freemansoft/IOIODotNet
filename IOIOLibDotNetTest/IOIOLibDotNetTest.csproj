@@ -57,6 +57,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Device\Impl\IOIOImplTest.cs" />
     <Compile Include="Device\Impl\IOIOProtocolOutgoingTest.cs" />
     <Compile Include="Device\Impl\IOIOProtocolIncomingTest.cs" />
     <Compile Include="MessageTo\CreateAnalogInputOutputTest.cs" />

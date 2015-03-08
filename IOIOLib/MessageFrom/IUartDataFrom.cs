@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom
 {
-    public interface IUartDataFrom: IMessageFromIOIO
+    public interface IUartDataFrom : IUartFrom
     {
         int NumberOfBytes { get; }
         byte[] Data { get; }

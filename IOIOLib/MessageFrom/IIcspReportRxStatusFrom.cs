@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom
 {
-    public interface IIcspReportRxStatusFrom : IMessageFromIOIO
+    public interface IIcspReportRxStatusFrom : IIcspFrom
     {
         int BytesRemaining { get; }
     }

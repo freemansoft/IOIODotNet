@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom
 {
-    public interface IHandleI2cReportTxStatusFrom : IMessageFromIOIO
+    public interface IHandleI2cReportTxStatusFrom : II2cFrom
     {
-        int I2cNum { get; }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom
 {
-    public interface ISpiDataFrom : IMessageFromIOIO
+    public interface ISpiDataFrom : ISpiFrom
     {
         int SlaveSelectPin { get; }
         byte[] Data { get; }
