@@ -1,8 +1,9 @@
 #IOIODotNet#
 
-Version 0.1 2014 Mar 07 [Joe Freeman](http://joe.blog.freemansoft.com)
+Version 0.1 2014 Mar 07 [Joe Freeman](http://joe.blog.freemansoft.com) You can find a high level diagram 
+[in this blog article](http://joe.blog.freemansoft.com/2015/03/extremely-rough-cut-at-c-based-ioio.html).
 
-A crazy rough cut of a C# .Net library for the [IOIO device](https://github.com/ytai/ioio/wiki). 
+A crazy rough cut of a [C# .Net library for the IOIO device](https://github.com/ytai/ioio/wiki) on GitHub. 
 It involves code copied from the Java application though the operational model is different.  This is on purpose 
 to simplifiy tracking 
 future Java application and IOIO protocol changes. There is a lot of C# style work to be done.
