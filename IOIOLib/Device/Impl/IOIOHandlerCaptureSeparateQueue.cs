@@ -26,7 +26,7 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied.
  */
- 
+
 using IOIOLib.Device.Types;
 using IOIOLib.MessageFrom;
 using IOIOLib.MessageFrom.Impl;
@@ -42,7 +42,7 @@ using IOIOLib.IOIOException;
 namespace IOIOLib.Device.Impl
 {
     /// <summary>
-    /// TODO: This class should be a dispatcher for event listeners.
+    /// This class leaks if you don't read the messages it captures
     /// </summary>
     public class IOIOHandlerCaptureSeparateQueue : IOIOIncomingHandler
     {

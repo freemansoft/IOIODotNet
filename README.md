@@ -23,43 +23,66 @@ Basic Analog and Digital functions work. The integration tests flash the LED and
 
 ###Outgoing##
 Outgoing state is mostly implemented using the IOIOOutgoingProtocol class. 
- * IOIOImpl can manager IOIOOutgoingProtocol in its own thread. They communicate via _IxxxTo_ messages.
- * integration tests demonstrate direct protocol communication and message based via IOIOImpl
- * Only Digital out has been tested.
- * Other features _may just work_ since the IOIOProtocol has been _mostly_ implemented.
+ * IOIOImpl manages IOIOOutgoingProtocol in its own thread. Callers post _IxxxTo_ messages to the IOIO which then communicate via message queue.
+ * Integration tests demonstrate direct protocol communication and message based via IOIOImpl
+ * Only Digital and Analog out have been tested.
+ * Other features _may work_ since the IOIOProtocol has been _mostly_ implemented.
  * Outgoing Messages
+     + There are two types of tests, those that call the outgoing protocol API directly and those that post messages to IOIOImpl. The message API will be the future API
      + The tests mostly build the messages directly. That is because they all involve individual pins 
-     + Outbound messages Will eventually be built through the factory.  That is where all the 
+     + Outbound messages will eventually be built through the factory.  That is where all the 
     constrained resource management will eventually be managed
 
 ###Incoming###
- * State is received using the IOIOIncomingProtocol classes and distributed via handlers.  Inbound data is packaged inot _IxxxFrom_ messages
- * Incoming state is captured in its own thread similar to the way the Java library works.
+ * State is received using  **IOIOProtocolIncoming** which runs in its own thread
+   + Incoming messages are distributed via handlers.  
+   + Inbound data is packaged inot _IxxxFrom_ messages
+   + Incoming state is captured in its own thread similar to the way the Java library works.
+   + It can be killed using the token in IOIOImpl or through its own token if run standalone. Tests show both behaviors.
+   + Closing the communication device cleans up the thread also.
  * Handlers
-   + IOIOIncomingHandlerDistributor can pass the incoming data messages to a set of other IOIOIncomingHandler objects
-   + IOIOIncomingHandlerCaptureLog logs a message and captures the message every time a message is received from teh IOIO
-   + IOIOIncomingHandlerCaptureSeparateQueue Captures inbound messages classified by the inbound message interface type. See the integration test
-   + IOIOIncomingHandlerCaptureSingleQueue Captures inbound messages in a single inbount ConcurrentQueue
-   + IOIOIncomingHandlerNotifier does nothing yet.  It will eventually post events to listeners interested in state change
- * Only Digital In _on state change_ has been tested.
- * The thread/Task has a cancellation token that can be used to kill the inbound process. It will also cleanup when the COM port is closed
- * Closing the communication device cleans up the thread also.
+   + **IOIOHandlerDistributor** Distributes incoming messages to other IOIOIncomingHandler objects. This is used in all the tests and in IOIOImpl
+   + **IOIOHandlerCaptureConnectionState** Captures just the connection information. Used by IOIOImpl.
+   + **IOIOHandlerCaptureLog** Logs a message and captures the message every time a message is received from the IOIO. Can set buffer size
+   + **IOIOHandlerCaptureSeparateQueue** Captures inbound messages classified by the inbound message interface type. See the integration test. This class is used in most of the tests to check return data.
+   + **IOIOHandlerCaptureSingleQueue** Captures inbound messages in a single inbount ConcurrentQueue
+   + **IOIOHandlerNotifier** does nothing yet.  It will eventually post events to listeners interested in state change
+ * Digital In _on state change_ has been tested.
+ * The existance of Analog return values is tested but not their values.
 
-###Hardening###
-Basic board verification code works including getting the version strings from the IOIO on connection and sending the version confirmation string.
- * This code is not yet invoked unless you do it because IOIOImpl isn't built yet.  **See the integration tests for the current setup and teardown**
+##Build Environemnt##
+Visual Studio 2013 with .Net 4 on Windows 8.
 
+###integration testing###
+
+* Pair your IOIO with your PC.  
+* The Digital Input / Digital Output test expects that pin 31 and 32 are connected
+* The LED test should flash the LED twice on your device.
+* Either let the integration tests find your device or set a device name by in _IOIOLibDotNetTest.TestHarnessSetup.cs_
 
 ##What Doesn't Work##
 
-1. IOIOImpl is not yet implemented. 
-* This means board verification is not yet automatic
-* This means the higher level APIs are not yet implemented
-2. None of the feature abstractions have been implemented.
-3. Change notification for information coming from the IOIO is not yet implemented.
+1. Resource management is not yet implemented.  This will probably be done in _IOIOMessageToFactory_
+2. Robust setup and teardown is not yet implemented. 
+  * Board verification is not yet automatic
+  * Higher level APIs are not yet implemented
+  * IOIOImpl methods are missing code
+3. None of the complex abstractions or buses have been implemented.
+
+###Outbound Messages###
+There are missing Outbound message types _xxxTo_ .  The _IOIOMessageToFactory_ may not have factory methods for all message types.
+
+###Inbound Change Notification###
+Programs must poll for changes.  Change notification for information coming from the IOIO is not yet implemented.
+
+###Hardening###
+Board verificaton is not finished. 
+Basic board verification code works including getting the version strings from the IOIO on connection and sending the version confirmation string.
+This code is not yet invoked unless you do it because IOIOImpl isn't built out.  **See the integration tests** for the current setup and teardown
 
 
-##Issues##
+
+###Issues###
 There really are too many to list at this stage
 
 1. Cleanup is very important.  You must close your device before exit otherwise windows bluetooth will get confused and you will not bbe able to open the device again.
@@ -67,12 +90,6 @@ There really are too many to list at this stage
  * Look at the integration tests to see that the "after test" method closes any known serial devices.
 2. There is a lot of C# naming convention changes to make but some really ugly _javaisms_ may stay to make java module change tracking easier.
 
-##integration testing##
-
-* Pair your IOIO with your PC.  
-* The Digital Input / Digital Output test expects that pin 31 and 32 are connected
-* The LED test should flash the LED twice on your device.
-* Either let the integration tests find your device or set a device name by in _IOIOLibDotNetTest.TestHarnessSetup.cs_
 
 
 

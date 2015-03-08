@@ -26,7 +26,7 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied.
  */
- 
+
 using IOIOLib.Device.Types;
 using IOIOLib.MessageFrom;
 using IOIOLib.MessageFrom.Impl;
@@ -41,7 +41,7 @@ using System.Threading.Tasks;
 namespace IOIOLib.Device.Impl
 {
     /// <summary>
-    /// TODO: This class should be a dispatcher for event listeners.
+    /// This class leaks if you don't read the messages it captures
     /// </summary>
     public class IOIOHandlerCaptureSingleQueue : IOIOIncomingHandler
     {
@@ -135,7 +135,7 @@ namespace IOIOLib.Device.Impl
 
         public void HandleUartData(int uartNum, int numBytes, byte[] data)
         {
-            this.Enqueue( new UartDataFrom(uartNum, numBytes, data));
+            this.Enqueue(new UartDataFrom(uartNum, numBytes, data));
         }
 
 
