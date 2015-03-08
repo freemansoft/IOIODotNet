@@ -26,7 +26,7 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied.
  */
- 
+
 using IOIOLib.Device.Types;
 using IOIOLib.MessageFrom;
 using IOIOLib.MessageFrom.Impl;
@@ -41,6 +41,7 @@ namespace IOIOLib.Device.Impl
 {
     /// <summary>
     /// Small subset of IOIOHandlerCaptureSeparateQueue
+    /// Used to capture connection state but nothing else.  No memory growth issue with this
     /// </summary>
     public class IOIOHandlerCaptureConnectionState : IOIOIncomingHandler
     {

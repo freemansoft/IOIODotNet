@@ -31,6 +31,7 @@ using IOIOLib.Component.Types;
 using IOIOLib.Connection;
 using IOIOLib.Device.Impl;
 using IOIOLib.Device.Types;
+using IOIOLib.MessageFrom;
 using IOIOLib.MessageTo.Impl;
 using IOIOLib.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -68,8 +69,9 @@ namespace IOIOLibDotNetTest.MessageTo
             commandChangePWM.ExecuteMessage(fooOut);
             System.Threading.Thread.Sleep(100);
 
-            // my tests are awesome
-            Assert.IsTrue(true);
+            IEnumerable<IReportAnalogPinValuesFrom> readValues = this.HandlerQueuePerType_
+                .GetClassified(typeof(IAnalogInFrom)).OfType<IReportAnalogPinValuesFrom>();
+            Assert.IsTrue(readValues.Count() >= 1, "Unexpected count for IReportAnalogPinValuesFrom: "+readValues.Count());
         }
 
     }

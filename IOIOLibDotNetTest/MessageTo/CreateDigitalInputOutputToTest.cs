@@ -69,8 +69,7 @@ namespace IOIOLibDotNetTest.MessageTo
                 System.Threading.Thread.Sleep(200);
                 commandOff.ExecuteMessage(fooOut);
             }
-            // my tests are awesome
-            Assert.IsTrue(true); ;
+            Assert.IsTrue(true, "there is no status to check");
         }
 
     }

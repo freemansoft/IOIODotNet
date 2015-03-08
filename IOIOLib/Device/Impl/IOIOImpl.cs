@@ -108,12 +108,15 @@ namespace IOIOLib.Device.Impl
         {
             CapturedConnectionInformation = new IOIOHandlerCaptureConnectionState();
             CapturedLogs = new IOIOHandlerCaptureLog(10);
-            InboundHandler = new IOIOHandlerDistributor(
-                new List<IOIOIncomingHandler> { CapturedConnectionInformation, CapturedLogs });
             if (customHandler != null)
             {
                 InboundHandler = new IOIOHandlerDistributor(
                     new List<IOIOIncomingHandler> { CapturedConnectionInformation, CapturedLogs, customHandler });
+            }
+            else
+            {
+                InboundHandler = new IOIOHandlerDistributor(
+                    new List<IOIOIncomingHandler> { CapturedConnectionInformation, CapturedLogs });
             }
         }
 

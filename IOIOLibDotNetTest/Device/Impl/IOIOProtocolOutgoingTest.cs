@@ -98,6 +98,7 @@ namespace IOIOLibDotNetTest.Device.Impl
                 System.Threading.Thread.Sleep(200);
                 fooOut.setDigitalOutLevel(SpecialPin.LED_PIN, false);
             }
+            Assert.IsTrue(true, "there is no status to check");
         }
 
 

@@ -77,7 +77,7 @@ namespace IOIOLibDotNetTest.Device.Impl
                 System.Threading.Thread.Sleep(200);
                 ourImpl.postMessage(turnItOff);
             }
-            // there is no status to check
+            Assert.IsTrue(true, "there is no status to check");
         }
 
         [TestMethod]
