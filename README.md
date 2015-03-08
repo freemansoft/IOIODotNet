@@ -10,10 +10,12 @@ future Java application and IOIO protocol changes. There is a lot of C# style wo
 IOIODotNet was built with VisualStudio 2013. 
 Get the new Community edition if you don't have an MSDN license. There are only integration tests at this time.
 
-Basic Analog and Digital functions work. The integration tests flash the LED and set and receive digital pin values.
-**See the integration tests** in the _IOIOLibDotNetTest_ project to see the current state and capabilities of the API.
+![alt text](http://1.bp.blogspot.com/-l3lVEHkgJkg/VPudkk-pXSI/AAAAAAAABw0/dnOpQ0RdS1A/s1600/IOIO%2BDot%2BNet.png "Logo Title Text 1")
+
 
 ##What Works##
+Basic Analog and Digital functions work. The integration tests flash the LED and set and receive digital pin values.
+**See the integration tests** in the _IOIOLibDotNetTest_ project to see the current state and capabilities of the API.
 
 1. This has been tested on a windows 8 pc with using an IOIO V1 over bluetooth. IOIO V2 OTG boards should also work
  * The library does support more than one device.
