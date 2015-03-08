@@ -52,8 +52,8 @@ namespace IOIOLibDotNetTest.MessageTo
         {
             IOIOConnection ourConn = this.CreateGoodSerialConnection();
             this.CreateCaptureLogHandlerSet();
-            IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(ourConn.getInputStream(), HandlerContainer_);
-            IOIOProtocolOutgoing fooOut = new IOIOProtocolOutgoing(ourConn.getOutputStream());
+            IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(ourConn.GetInputStream(), HandlerContainer_);
+            IOIOProtocolOutgoing fooOut = new IOIOProtocolOutgoing(ourConn.GetOutputStream());
             System.Threading.Thread.Sleep(100); // wait for us to get the hardware ids
 
             ConfigureDigitalOutputTo commandSetup = new ConfigureDigitalOutputTo(

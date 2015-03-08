@@ -83,14 +83,14 @@ namespace IOIOLibDotNetTest
         {
             DevicesOpenedDuringTest.ForEach(x =>
             {
-                x.disconnect();
+                x.Disconnect();
                 LOG.Info("Disconnected " + x.ToString());
             });
             ConnectionsOpenedDuringTest.ForEach(x =>
                 {
-                    if (x.canClose())
+                    if (x.CanClose())
                     {
-                        x.disconnect();
+                        x.Disconnect();
                         LOG.Info("Disconnected " + x.ToString());
                     }
                 });
@@ -108,11 +108,11 @@ namespace IOIOLibDotNetTest
         internal IOIOConnection CreateGoodSerialConnection(bool leaveConnectionOpen = true)
         {
             IOIOConnectionFactory factory = new SerialConnectionFactory();
-            GoodConnection_ = factory.createConnection(TestHarnessSetup.GOOD_CONN_NAME);
+            GoodConnection_ = factory.CreateConnection(TestHarnessSetup.GOOD_CONN_NAME);
             this.ConnectionsOpenedDuringTest.Add(GoodConnection_); // always add connections used by incoming
             if (leaveConnectionOpen)
             {
-                GoodConnection_.waitForConnect(); // actually IsOpen the GoodConnection_
+                GoodConnection_.WaitForConnect(); // actually IsOpen the GoodConnection_
             }
             LOG.Debug("Done CreateGoodSerialConnection");
             return GoodConnection_;
@@ -145,7 +145,7 @@ namespace IOIOLibDotNetTest
         {
             IOIO ourImpl = new IOIOImpl(connection, handler);
             DevicesOpenedDuringTest.Add(ourImpl);
-            ourImpl.waitForConnect();
+            ourImpl.WaitForConnect();
             return ourImpl;
         }
 

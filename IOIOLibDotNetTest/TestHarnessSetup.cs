@@ -79,8 +79,8 @@ namespace IOIOLibDotNetTest
             ILog LOG = LogManager.GetLogger(typeof(TestHarnessSetup));
             LOG.Debug("Starting TryAndFindIOIODevice");
             IOIOConnectionFactory factory = new SerialConnectionFactory();
-            ICollection<IOIOConnection> connections = factory.createConnections();
-            Assert.IsTrue(connections.Count > 0, "None of these tests can run because we can't find a possible IOIO port");
+            ICollection<IOIOConnection> connections = factory.CreateConnections();
+            Assert.IsTrue(connections.Count > 0, "None of these tests can run because we can't find a possible IOIO Port_");
             LOG.Info("Found " + connections.Count + " possible com ports");
 
             // probably don't need this since we aren't connected.
@@ -90,32 +90,32 @@ namespace IOIOLibDotNetTest
                 try
                 {
                     LOG.Info("Trying " + oneConn.ConnectionString());
-                    oneConn.waitForConnect();
+                    oneConn.WaitForConnect();
                     // logging without real capture
                     IOIOHandlerCaptureLog handlerLog = new IOIOHandlerCaptureLog(1);
                     // so we can verifys
                     IOIOHandlerCaptureSeparateQueue handlerState = new IOIOHandlerCaptureSeparateQueue();
                     IOIOIncomingHandler handler = new IOIOHandlerDistributor(
                         new List<IOIOIncomingHandler> { handlerLog, handlerState });
-                    IOIOProtocolIncoming foo = new IOIOProtocolIncoming(oneConn.getInputStream(), handler);
+                    IOIOProtocolIncoming foo = new IOIOProtocolIncoming(oneConn.GetInputStream(), handler);
                     System.Threading.Thread.Sleep(100); // WaitForChangedResult for hw ids
                     if (handlerState.EstablishConnectionFrom_ != null)
                     {
                         TestHarnessSetup.GOOD_CONN_NAME = oneConn.ConnectionString();
                         LOG.Info("Selecting " + oneConn.ConnectionString());
-                        oneConn.disconnect();
+                        oneConn.Disconnect();
                         break;
                     }
                     else
                     {
                         LOG.Info("Ignoring " + oneConn.ConnectionString());
-                        oneConn.disconnect();
+                        oneConn.Disconnect();
                     }
                 }
                 catch (ConnectionLostException e)
                 {
                     LOG.Debug("Cought Exception Lost " + e.Message);
-                    // just ignore it because will get this when we disconnect
+                    // just ignore it because will get this when we Disconnect
                 }
             }
             LOG.Debug("Starting TryAndFindIOIODevice");

@@ -44,273 +44,273 @@ namespace IOIOLib.Device.Impl
     {
         private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(IOIOHandlerDistributor));
 
-        private List<IOIOIncomingHandler> Distributees = new List<IOIOIncomingHandler>();
+        private List<IOIOIncomingHandler> Distributees_ = new List<IOIOIncomingHandler>();
 
         public IOIOHandlerDistributor(List<IOIOIncomingHandler> distributees)
         {
-            this.Distributees.AddRange(distributees);
+            this.Distributees_.AddRange(distributees);
         }
-        public void handleEstablishConnection(byte[] hardwareId, byte[] bootloaderId, byte[] firmwareId)
+        public void HandleEstablishConnection(byte[] hardwareId, byte[] bootloaderId, byte[] firmwareId)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees)
+            foreach (IOIOIncomingHandler Distributee in Distributees_)
             {
-                Distributee.handleEstablishConnection(hardwareId, bootloaderId, firmwareId);
+                Distributee.HandleEstablishConnection(hardwareId, bootloaderId, firmwareId);
             }
         }
 
-        public void handleConnectionLost()
+        public void HandleConnectionLost()
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees)
+            foreach (IOIOIncomingHandler Distributee in Distributees_)
             {
-                Distributee.handleConnectionLost();
+                Distributee.HandleConnectionLost();
             }
         }
 
-        public void handleSoftReset()
+        public void HandleSoftReset()
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees)
+            foreach (IOIOIncomingHandler Distributee in Distributees_)
             {
-                Distributee.handleSoftReset();
+                Distributee.HandleSoftReset();
             }
         }
 
-        public void handleCheckInterfaceResponse(bool supported)
+        public void HandleCheckInterfaceResponse(bool supported)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees)
+            foreach (IOIOIncomingHandler Distributee in Distributees_)
             {
-                Distributee.handleCheckInterfaceResponse(supported);
+                Distributee.HandleCheckInterfaceResponse(supported);
             }
         }
 
-        public void handleSetChangeNotify(int pin, bool changeNotify)
+        public void HandleSetChangeNotify(int pin, bool changeNotify)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees)
+            foreach (IOIOIncomingHandler Distributee in Distributees_)
             {
-                Distributee.handleSetChangeNotify(pin, changeNotify);
+                Distributee.HandleSetChangeNotify(pin, changeNotify);
             }
         }
 
-        public void handleReportDigitalInStatus(int pin, bool level)
+        public void HandleReportDigitalInStatus(int pin, bool level)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees)
+            foreach (IOIOIncomingHandler Distributee in Distributees_)
             {
-                Distributee.handleReportDigitalInStatus(pin, level);
+                Distributee.HandleReportDigitalInStatus(pin, level);
             }
         }
 
-        public void handleRegisterPeriodicDigitalSampling(int pin, int freqScale)
+        public void HandleRegisterPeriodicDigitalSampling(int pin, int freqScale)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees)
+            foreach (IOIOIncomingHandler Distributee in Distributees_)
             {
-                Distributee.handleRegisterPeriodicDigitalSampling(pin, freqScale);
+                Distributee.HandleRegisterPeriodicDigitalSampling(pin, freqScale);
             }
         }
 
-        public void handleReportPeriodicDigitalInStatus(int frameNum, bool[] values)
+        public void HandleReportPeriodicDigitalInStatus(int frameNum, bool[] values)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees)
+            foreach (IOIOIncomingHandler Distributee in Distributees_)
             {
-                Distributee.handleReportPeriodicDigitalInStatus(frameNum, values);
+                Distributee.HandleReportPeriodicDigitalInStatus(frameNum, values);
             }
         }
 
-        public void handleAnalogPinStatus(int pin, bool open)
+        public void HandleAnalogPinStatus(int pin, bool open)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees)
+            foreach (IOIOIncomingHandler Distributee in Distributees_)
             {
-                Distributee.handleAnalogPinStatus(pin, open);
+                Distributee.HandleAnalogPinStatus(pin, open);
             }
         }
 
-        public void handleReportAnalogInStatus(List<int> pins, List<int> values)
+        public void HandleReportAnalogInStatus(List<int> pins, List<int> values)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees)
+            foreach (IOIOIncomingHandler Distributee in Distributees_)
             {
-                Distributee.handleReportAnalogInStatus(pins, values);
+                Distributee.HandleReportAnalogInStatus(pins, values);
             }
         }
 
-        public void handleUartOpen(int uartNum)
+        public void HandleUartOpen(int uartNum)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees)
+            foreach (IOIOIncomingHandler Distributee in Distributees_)
             {
-                Distributee.handleUartOpen(uartNum);
+                Distributee.HandleUartOpen(uartNum);
             }
         }
 
-        public void handleUartClose(int uartNum)
+        public void HandleUartClose(int uartNum)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees)
+            foreach (IOIOIncomingHandler Distributee in Distributees_)
             {
-                Distributee.handleUartClose(uartNum);
+                Distributee.HandleUartClose(uartNum);
             }
         }
 
-        public void handleUartData(int uartNum, int numBytes, byte[] data)
+        public void HandleUartData(int uartNum, int numBytes, byte[] data)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees)
+            foreach (IOIOIncomingHandler Distributee in Distributees_)
             {
-                Distributee.handleUartData(uartNum, numBytes, data);
+                Distributee.HandleUartData(uartNum, numBytes, data);
             }
         }
 
-        public void handleUartReportTxStatus(int uartNum, int bytesRemaining)
+        public void HandleUartReportTxStatus(int uartNum, int bytesRemaining)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees)
+            foreach (IOIOIncomingHandler Distributee in Distributees_)
             {
-                Distributee.handleUartReportTxStatus(uartNum, bytesRemaining);
+                Distributee.HandleUartReportTxStatus(uartNum, bytesRemaining);
             }
         }
 
-        public void handleSpiOpen(int spiNum)
+        public void HandleSpiOpen(int spiNum)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees)
+            foreach (IOIOIncomingHandler Distributee in Distributees_)
             {
-                Distributee.handleSpiOpen(spiNum);
+                Distributee.HandleSpiOpen(spiNum);
             }
         }
 
-        public void handleSpiClose(int spiNum)
+        public void HandleSpiClose(int spiNum)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees)
+            foreach (IOIOIncomingHandler Distributee in Distributees_)
             {
-                Distributee.handleSpiClose(spiNum);
+                Distributee.HandleSpiClose(spiNum);
             }
         }
 
-        public void handleSpiData(int spiNum, int ssPin, byte[] data, int dataBytes)
+        public void HandleSpiData(int spiNum, int ssPin, byte[] data, int dataBytes)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees)
+            foreach (IOIOIncomingHandler Distributee in Distributees_)
             {
-                Distributee.handleSpiData(spiNum, ssPin, data, dataBytes);
+                Distributee.HandleSpiData(spiNum, ssPin, data, dataBytes);
             }
         }
 
-        public void handleSpiReportTxStatus(int spiNum, int bytesRemaining)
+        public void HandleSpiReportTxStatus(int spiNum, int bytesRemaining)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees)
+            foreach (IOIOIncomingHandler Distributee in Distributees_)
             {
-                Distributee.handleSpiReportTxStatus(spiNum, bytesRemaining);
+                Distributee.HandleSpiReportTxStatus(spiNum, bytesRemaining);
             }
         }
 
-        public void handleI2cOpen(int i2cNum)
+        public void HandleI2cOpen(int i2cNum)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees)
+            foreach (IOIOIncomingHandler Distributee in Distributees_)
             {
-                Distributee.handleI2cOpen(i2cNum);
+                Distributee.HandleI2cOpen(i2cNum);
             }
         }
 
-        public void handleI2cClose(int i2cNum)
+        public void HandleI2cClose(int i2cNum)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees)
+            foreach (IOIOIncomingHandler Distributee in Distributees_)
             {
-                Distributee.handleI2cClose(i2cNum);
+                Distributee.HandleI2cClose(i2cNum);
             }
         }
 
-        public void handleI2cResult(int i2cNum, int size, byte[] data)
+        public void HandleI2cResult(int i2cNum, int size, byte[] data)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees)
+            foreach (IOIOIncomingHandler Distributee in Distributees_)
             {
-                Distributee.handleI2cResult(i2cNum, size, data);
+                Distributee.HandleI2cResult(i2cNum, size, data);
             }
         }
 
-        public void handleI2cReportTxStatus(int spiNum, int bytesRemaining)
+        public void HandleI2cReportTxStatus(int spiNum, int bytesRemaining)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees)
+            foreach (IOIOIncomingHandler Distributee in Distributees_)
             {
-                Distributee.handleI2cReportTxStatus(spiNum, bytesRemaining);
+                Distributee.HandleI2cReportTxStatus(spiNum, bytesRemaining);
             }
         }
 
-        public void handleIcspOpen()
+        public void HandleIcspOpen()
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees)
+            foreach (IOIOIncomingHandler Distributee in Distributees_)
             {
-                Distributee.handleIcspOpen();
+                Distributee.HandleIcspOpen();
             }
         }
 
-        public void handleIcspClose()
+        public void HandleIcspClose()
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees)
+            foreach (IOIOIncomingHandler Distributee in Distributees_)
             {
-                Distributee.handleIcspClose();
+                Distributee.HandleIcspClose();
             }
         }
 
-        public void handleIcspReportRxStatus(int bytesRemaining)
+        public void HandleIcspReportRxStatus(int bytesRemaining)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees)
+            foreach (IOIOIncomingHandler Distributee in Distributees_)
             {
-                Distributee.handleIcspReportRxStatus(bytesRemaining);
+                Distributee.HandleIcspReportRxStatus(bytesRemaining);
             }
         }
 
-        public void handleIcspResult(int size, byte[] data)
+        public void HandleIcspResult(int size, byte[] data)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees)
+            foreach (IOIOIncomingHandler Distributee in Distributees_)
             {
-                Distributee.handleIcspResult(size, data);
+                Distributee.HandleIcspResult(size, data);
             }
         }
 
-        public void handleIncapReport(int incapNum, int size, byte[] data)
+        public void HandleIncapReport(int incapNum, int size, byte[] data)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees)
+            foreach (IOIOIncomingHandler Distributee in Distributees_)
             {
-                Distributee.handleIncapReport(incapNum, size, data);
+                Distributee.HandleIncapReport(incapNum, size, data);
             }
         }
 
-        public void handleIncapClose(int incapNum)
+        public void HandleIncapClose(int incapNum)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees)
+            foreach (IOIOIncomingHandler Distributee in Distributees_)
             {
-                Distributee.handleIncapClose(incapNum);
+                Distributee.HandleIncapClose(incapNum);
             }
         }
 
-        public void handleIncapOpen(int incapNum)
+        public void HandleIncapOpen(int incapNum)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees)
+            foreach (IOIOIncomingHandler Distributee in Distributees_)
             {
-                Distributee.handleIncapOpen(incapNum);
+                Distributee.HandleIncapOpen(incapNum);
             }
         }
 
-        public void handleCapSenseReport(int pinNum, int value)
+        public void HandleCapSenseReport(int pinNum, int value)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees)
+            foreach (IOIOIncomingHandler Distributee in Distributees_)
             {
-                Distributee.handleCapSenseReport(pinNum, value);
+                Distributee.HandleCapSenseReport(pinNum, value);
             }
         }
 
-        public void handleSetCapSenseSampling(int pinNum, bool enable)
+        public void HandleSetCapSenseSampling(int pinNum, bool enable)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees)
+            foreach (IOIOIncomingHandler Distributee in Distributees_)
             {
-                Distributee.handleSetCapSenseSampling(pinNum, enable);
+                Distributee.HandleSetCapSenseSampling(pinNum, enable);
             }
         }
 
-        public void handleSequencerEvent(Types.SequencerEvent seqEvent, int arg)
+        public void HandleSequencerEvent(Types.SequencerEvent seqEvent, int arg)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees)
+            foreach (IOIOIncomingHandler Distributee in Distributees_)
             {
-                Distributee.handleSequencerEvent(seqEvent, arg);
+                Distributee.HandleSequencerEvent(seqEvent, arg);
             }
         }
 
-        public void handleSync()
+        public void HandleSync()
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees)
+            foreach (IOIOIncomingHandler Distributee in Distributees_)
             {
-                Distributee.handleSync();
+                Distributee.HandleSync();
             }
         }
     }

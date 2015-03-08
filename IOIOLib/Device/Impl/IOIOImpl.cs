@@ -56,16 +56,16 @@ namespace IOIOLib.Device.Impl
         /// <summary>
         /// communication channel
         /// </summary>
-        private IOIOConnection Conn;
+        private IOIOConnection Conn_;
         /// <summary>
         /// TODO Need to get on this and make state be correct!
         /// </summary>
-        private IOIOState State = IOIOState.INIT;
-        private IOIOProtocolOutgoing OutProt;
-        private IOIOProtocolIncoming InProt;
-        private IOIOIncomingHandler InboundHandler;
-        private IOIOHandlerCaptureConnectionState CapturedConnectionInformation;
-        private IOIOHandlerCaptureLog CapturedLogs;
+        private IOIOState State_ = IOIOState.INIT;
+        private IOIOProtocolOutgoing OutProt_;
+        private IOIOProtocolIncoming InProt_;
+        private IOIOIncomingHandler InboundHandler_;
+        private IOIOHandlerCaptureConnectionState CapturedConnectionInformation_;
+        private IOIOHandlerCaptureLog CapturedLogs_;
 
         /// <summary>
         /// Used to stop this protocol thread
@@ -96,7 +96,7 @@ namespace IOIOLib.Device.Impl
             {
                 throw new IllegalStateException("Silly Rabbit: You can't create an IOIOImpl without a connection!");
             }
-            this.Conn = conn;
+            this.Conn_ = conn;
             ConfigureHandlers(customHandler);
         }
 
@@ -106,17 +106,17 @@ namespace IOIOLib.Device.Impl
         /// <param name="customHandler">optional handler provided by object creator</param>
         private void ConfigureHandlers(IOIOIncomingHandler customHandler)
         {
-            CapturedConnectionInformation = new IOIOHandlerCaptureConnectionState();
-            CapturedLogs = new IOIOHandlerCaptureLog(10);
+            CapturedConnectionInformation_ = new IOIOHandlerCaptureConnectionState();
+            CapturedLogs_ = new IOIOHandlerCaptureLog(10);
             if (customHandler != null)
             {
-                InboundHandler = new IOIOHandlerDistributor(
-                    new List<IOIOIncomingHandler> { CapturedConnectionInformation, CapturedLogs, customHandler });
+                InboundHandler_ = new IOIOHandlerDistributor(
+                    new List<IOIOIncomingHandler> { CapturedConnectionInformation_, CapturedLogs_, customHandler });
             }
             else
             {
-                InboundHandler = new IOIOHandlerDistributor(
-                    new List<IOIOIncomingHandler> { CapturedConnectionInformation, CapturedLogs });
+                InboundHandler_ = new IOIOHandlerDistributor(
+                    new List<IOIOIncomingHandler> { CapturedConnectionInformation_, CapturedLogs_ });
             }
         }
 
@@ -124,14 +124,14 @@ namespace IOIOLib.Device.Impl
         /// <summary>
         /// This method is not yet finished.
         /// </summary>
-        public void waitForConnect()
+        public void WaitForConnect()
         {
-            Conn.waitForConnect();
+            Conn_.WaitForConnect();
 
             // Use the same cancel token for inbound and outbound
             CancelTokenSource_ = new CancellationTokenSource();
-            OutProt = new IOIOProtocolOutgoing(this.Conn.getOutputStream());
-            InProt = new IOIOProtocolIncoming(this.Conn.getInputStream(), this.InboundHandler, CancelTokenSource_);
+            OutProt_ = new IOIOProtocolOutgoing(this.Conn_.GetOutputStream());
+            InProt_ = new IOIOProtocolIncoming(this.Conn_.GetInputStream(), this.InboundHandler_, CancelTokenSource_);
             //Joe's COM4 @ 115200 spits out HW,BootLoader,InterfaceVersion: IOIOSPRK0016IOIO0311IOIO0500
             initBoardVersion();
             //checkInterfaceVersion();
@@ -148,15 +148,15 @@ namespace IOIOLib.Device.Impl
             // hack until we figure out where state should be and how we accesses
             // Should this build the hardware object and retain it instead of doing it in the handler?
             // the inbound handler actually has already processed the board version.  
-            if (CapturedConnectionInformation.EstablishConnectionFrom_ == null)
+            if (CapturedConnectionInformation_.EstablishConnectionFrom_ == null)
             {
-                State = IOIOState.DEAD;
+                State_ = IOIOState.DEAD;
             }
             else
             {
-                State = IOIOState.CONNECTED;
+                State_ = IOIOState.CONNECTED;
             }
-            LOG.Info("Hardware is " + CapturedConnectionInformation.EstablishConnectionFrom_);
+            LOG.Info("Hardware is " + CapturedConnectionInformation_.EstablishConnectionFrom_);
         }
 
         /// <summary>
@@ -167,53 +167,53 @@ namespace IOIOLib.Device.Impl
         private void checkInterfaceVersion()
         {
             ICheckInterfaceVersionTo CheckInterfaceVersionTo_ = new CheckInterfaceVersionTo(IOIORequiredInterfaceId.REQUIRED_INTERFACE_ID);
-            this.postMessage(CheckInterfaceVersionTo_);
+            this.PostMessage(CheckInterfaceVersionTo_);
             LOG.Warn("checkInterfaceVersion should poll for the response");
-            //State = IOIOState.INCOMPATIBLE;
+            //State_ = IOIOState.INCOMPATIBLE;
         }
 
-        public void disconnect()
+        public void Disconnect()
         {
             CancelTokenSource_.Cancel();
         }
 
-        public void waitForDisconnect()
+        public void WaitForDisconnect()
         {
             throw new NotImplementedException();
         }
 
-        public IOIOState getState()
+        public IOIOState GetState()
         {
-            return State;
+            return State_;
         }
 
-        public void softReset()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void hardReset()
+        public void SoftReset()
         {
             throw new NotImplementedException();
         }
 
-        public void beginBatch()
+        public void HardReset()
         {
             throw new NotImplementedException();
         }
 
-        public void endBatch()
+        public void BeginBatch()
         {
             throw new NotImplementedException();
         }
 
-        public void sync()
+        public void EndBatch()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Sync()
         {
             throw new NotImplementedException();
         }
 
 
-        public void postMessage(IPostMessageTo message)
+        public void PostMessage(IPostMessageTo message)
         {
             WorkQueue.Add(message);
         }
@@ -240,7 +240,7 @@ namespace IOIOLib.Device.Impl
                     bool didTake = WorkQueue.TryTake(out result, timeout);
                     if (didTake && result != null)
                     {
-                        result.ExecuteMessage(this.OutProt);
+                        result.ExecuteMessage(this.OutProt_);
                     }
                 }
             }
@@ -251,7 +251,7 @@ namespace IOIOLib.Device.Impl
             catch (ObjectDisposedException e)
             {
                 //// see this when steram is closed
-                LOG.Error(OutgoingTask_.Id + " Probably closed outgoing Stream: (ODE)" + e.Message);
+                LOG.Error(OutgoingTask_.Id + " Probably closed outgoing Stream_: (ODE)" + e.Message);
             }
             catch (Exception e)
             {
@@ -259,15 +259,15 @@ namespace IOIOLib.Device.Impl
             }
             finally
             {
-                // we don't play swith Stream since we didn't create it
+                // we don't play swith Stream_ since we didn't create it
                 LOG.Debug(OutgoingTask_.Id + " Throwing thread cancel to mae sure outgoing thread stopped");
                 // this is redundant if we got here because of thread stop
                 this.CancelTokenSource_.Cancel();
-                // debugger will always stop here in unit tests if test dynamically determines what port ot use
+                // debugger will always stop here in unit tests if test dynamically determines what Port_ ot use
                 // just hit continue in the debugger
                 this.CancelTokenSource_.Token.ThrowIfCancellationRequested();
-                // should tell OutProt to shut down
-                this.OutProt = null;
+                // should tell OutProt_ to shut down
+                this.OutProt_ = null;
                 this.OutgoingTask_ = null;
             }
 

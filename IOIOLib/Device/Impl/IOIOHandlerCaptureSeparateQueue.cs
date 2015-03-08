@@ -54,7 +54,7 @@ namespace IOIOLib.Device.Impl
 
         internal IEstablishConnectionFrom EstablishConnectionFrom_;
 
-        public void handleEstablishConnection(byte[] hardwareId, byte[] bootloaderId, byte[] firmwareId)
+        public void HandleEstablishConnection(byte[] hardwareId, byte[] bootloaderId, byte[] firmwareId)
         {
             EstablishConnectionFrom_ = new EstablishConnectionFrom(
                 System.Text.Encoding.ASCII.GetString(hardwareId),
@@ -64,15 +64,15 @@ namespace IOIOLib.Device.Impl
                 );
         }
 
-        public void handleConnectionLost()
+        public void HandleConnectionLost()
         {
         }
 
-        public void handleSoftReset()
+        public void HandleSoftReset()
         {
         }
 
-        public void handleCheckInterfaceResponse(bool supported)
+        public void HandleCheckInterfaceResponse(bool supported)
         {
             this.Supported_ = new SupportedInterfaceFrom(supported);
         }
@@ -81,7 +81,7 @@ namespace IOIOLib.Device.Impl
 
         private void AddToClassifiedStorage(Type t, IMessageFromIOIO message)
         {
-            // FIXME should verify message is of type t
+            // FIXME should verify message is of Type_ t
             if (!ClassifiedStorage_.ContainsKey(t))
             {
                 ClassifiedStorage_.TryAdd(t, new ConcurrentQueue<IMessageFromIOIO>());
@@ -108,7 +108,7 @@ namespace IOIOLib.Device.Impl
             }
             else
             {
-                throw new IllegalStateException("couldn't make type work with classified storage " + t.Name);
+                throw new IllegalStateException("couldn't make Type_ work with classified storage " + t.Name);
             }
         }
 
@@ -117,36 +117,36 @@ namespace IOIOLib.Device.Impl
         /// </summary>
         /// <param name="pin"></param>
         /// <param name="changeNotify"></param>
-        public void handleSetChangeNotify(int pin, bool changeNotify)
+        public void HandleSetChangeNotify(int pin, bool changeNotify)
         {
             AddToClassifiedStorage(typeof(ISetChangeNotifyMessageFrom), new SetChangeNotifyMessageFrom(pin, changeNotify));
         }
 
-        public void handleReportDigitalInStatus(int pin, bool level)
+        public void HandleReportDigitalInStatus(int pin, bool level)
         {
             AddToClassifiedStorage(typeof(IDigitalInFrom),
                 new ReportDigitalInStatusFrom(pin, level));
         }
 
-        public void handleRegisterPeriodicDigitalSampling(int pin, int freqScale)
+        public void HandleRegisterPeriodicDigitalSampling(int pin, int freqScale)
         {
             AddToClassifiedStorage(typeof(IDigitalInFrom),
                 new RegisterPeriodicDigitalSamplingFrom(pin, freqScale));
         }
 
-        public void handleReportPeriodicDigitalInStatus(int frameNum, bool[] values)
+        public void HandleReportPeriodicDigitalInStatus(int frameNum, bool[] values)
         {
             AddToClassifiedStorage(typeof(IDigitalInFrom),
                 new ReportPeriodicDigitalInStatusFrom(frameNum, values));
         }
 
-        public void handleAnalogPinStatus(int pin, bool open)
+        public void HandleAnalogPinStatus(int pin, bool open)
         {
             AddToClassifiedStorage(typeof(IAnalogInFrom),
                 new AnalogPinStatusFrom(pin, open));
         }
 
-        public void handleReportAnalogInStatus(List<int> pins, List<int> values)
+        public void HandleReportAnalogInStatus(List<int> pins, List<int> values)
         {
             for (int i = 0; i < pins.Count; i++)
             {
@@ -155,120 +155,120 @@ namespace IOIOLib.Device.Impl
             }
         }
 
-        public void handleUartOpen(int uartNum)
+        public void HandleUartOpen(int uartNum)
         {
             AddToClassifiedStorage(typeof(IUartFrom), new UartOpenFrom(uartNum));
         }
 
-        public void handleUartClose(int uartNum)
+        public void HandleUartClose(int uartNum)
         {
             AddToClassifiedStorage(typeof(IUartFrom), new UartCloseFrom(uartNum));
         }
 
-        public void handleUartData(int uartNum, int numBytes, byte[] data)
+        public void HandleUartData(int uartNum, int numBytes, byte[] data)
         {
             AddToClassifiedStorage(typeof(IUartFrom), new UartDataFrom(uartNum, numBytes, data));
         }
 
 
-        public void handleUartReportTxStatus(int uartNum, int bytesRemaining)
+        public void HandleUartReportTxStatus(int uartNum, int bytesRemaining)
         {
             AddToClassifiedStorage(typeof(IUartFrom), new HandleUartReportTxStatusFrom(uartNum, bytesRemaining));
         }
 
-        public void handleSpiOpen(int spiNum)
+        public void HandleSpiOpen(int spiNum)
         {
             AddToClassifiedStorage(typeof(ISpiFrom), new SpiOpenFrom(spiNum));
         }
 
-        public void handleSpiClose(int spiNum)
+        public void HandleSpiClose(int spiNum)
         {
             AddToClassifiedStorage(typeof(ISpiFrom), new SpiCloseFrom(spiNum));
         }
 
-        public void handleSpiData(int spiNum, int ssPin, byte[] data, int dataBytes)
+        public void HandleSpiData(int spiNum, int ssPin, byte[] data, int dataBytes)
         {
             AddToClassifiedStorage(typeof(ISpiFrom), new SpiDataFrom(spiNum, ssPin, data, dataBytes));
         }
 
-        public void handleSpiReportTxStatus(int spiNum, int bytesRemaining)
+        public void HandleSpiReportTxStatus(int spiNum, int bytesRemaining)
         {
             AddToClassifiedStorage(typeof(ISpiFrom), new HandleSpiReportTxStatusFrom(spiNum, bytesRemaining));
         }
 
-        public void handleI2cOpen(int i2cNum)
+        public void HandleI2cOpen(int i2cNum)
         {
             AddToClassifiedStorage(typeof(II2cFrom), new I2cOpenFrom(i2cNum));
         }
 
-        public void handleI2cClose(int i2cNum)
+        public void HandleI2cClose(int i2cNum)
         {
             AddToClassifiedStorage(typeof(II2cFrom), new I2cCloseFrom(i2cNum));
         }
 
-        public void handleI2cResult(int i2cNum, int size, byte[] data)
+        public void HandleI2cResult(int i2cNum, int size, byte[] data)
         {
             AddToClassifiedStorage(typeof(II2cFrom), new I2cResultFrom(i2cNum, size, data));
         }
 
-        public void handleI2cReportTxStatus(int spiNum, int bytesRemaining)
+        public void HandleI2cReportTxStatus(int spiNum, int bytesRemaining)
         {
             AddToClassifiedStorage(typeof(II2cFrom), new HandleI2cReportTxStatusFrom(spiNum));
         }
 
         // default to close
         internal IIcspFrom StateIcsp_ = new IcspCloseFrom();
-        public void handleIcspOpen()
+        public void HandleIcspOpen()
         {
             AddToClassifiedStorage(typeof(IIcspFrom), new IcspOpenFrom());
         }
 
-        public void handleIcspClose()
+        public void HandleIcspClose()
         {
             AddToClassifiedStorage(typeof(IIcspFrom), new IcspCloseFrom());
         }
 
-        public void handleIcspReportRxStatus(int bytesRemaining)
+        public void HandleIcspReportRxStatus(int bytesRemaining)
         {
             AddToClassifiedStorage(typeof(IIcspFrom), new IcspReportRxStatusFrom(bytesRemaining));
         }
 
-        public void handleIcspResult(int size, byte[] data)
+        public void HandleIcspResult(int size, byte[] data)
         {
             AddToClassifiedStorage(typeof(IIcspFrom), new IcspResultFrom(size, data));
         }
 
-        public void handleIncapReport(int incapNum, int size, byte[] data)
+        public void HandleIncapReport(int incapNum, int size, byte[] data)
         {
             AddToClassifiedStorage(typeof(IIncapFrom), new IncapReportFrom(incapNum, size, data));
         }
 
-        public void handleIncapClose(int incapNum)
+        public void HandleIncapClose(int incapNum)
         {
             AddToClassifiedStorage(typeof(IIncapFrom), new IncapOpenFrom(incapNum));
         }
 
-        public void handleIncapOpen(int incapNum)
+        public void HandleIncapOpen(int incapNum)
         {
             AddToClassifiedStorage(typeof(IIncapFrom), new IncapCloseFrom(incapNum));
         }
 
-        public void handleCapSenseReport(int pinNum, int value)
+        public void HandleCapSenseReport(int pinNum, int value)
         {
             AddToClassifiedStorage(typeof(ICapSenseFrom), new CapSenseReportFrom(pinNum, value));
         }
 
-        public void handleSetCapSenseSampling(int pinNum, bool enable)
+        public void HandleSetCapSenseSampling(int pinNum, bool enable)
         {
             AddToClassifiedStorage(typeof(ICapSenseFrom), new CapSenseSamplingFrom(pinNum, enable));
         }
 
-        public void handleSequencerEvent(Types.SequencerEvent seqEvent, int arg)
+        public void HandleSequencerEvent(Types.SequencerEvent seqEvent, int arg)
         {
             AddToClassifiedStorage(typeof(ISequencerEventFrom), new SequencerEventFrom(seqEvent, arg));
         }
 
-        public void handleSync()
+        public void HandleSync()
         {
         }
     }

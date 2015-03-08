@@ -69,13 +69,13 @@ namespace IOIOLibDotNetTest.Device.Impl
             ISetDigitalOutputValueTo turnItOn = new SetDigitalOutputValueTo(SpecialPin.LED_PIN, true);
             ISetDigitalOutputValueTo turnItOff = new SetDigitalOutputValueTo(SpecialPin.LED_PIN, false);
 
-            ourImpl.postMessage(confDigitalOut);
+            ourImpl.PostMessage(confDigitalOut);
             for (int i = 0; i < 8; i++)
             {
                 System.Threading.Thread.Sleep(200);
-                ourImpl.postMessage(turnItOn);
+                ourImpl.PostMessage(turnItOn);
                 System.Threading.Thread.Sleep(200);
-                ourImpl.postMessage(turnItOff);
+                ourImpl.PostMessage(turnItOff);
             }
             Assert.IsTrue(true, "there is no status to check");
         }
@@ -100,14 +100,14 @@ namespace IOIOLibDotNetTest.Device.Impl
             ISetDigitalOutputValueTo turnItOn = new SetDigitalOutputValueTo(31, true);
             ISetDigitalOutputValueTo turnItOff = new SetDigitalOutputValueTo(31, false);
 
-            ourImpl.postMessage(confDigitalOut);
-            ourImpl.postMessage(configDigitalIn);
+            ourImpl.PostMessage(confDigitalOut);
+            ourImpl.PostMessage(configDigitalIn);
             for (int i = 0; i < 8; i++)
             {
                 System.Threading.Thread.Sleep(100);
-                ourImpl.postMessage(turnItOn);
+                ourImpl.PostMessage(turnItOn);
                 System.Threading.Thread.Sleep(100);
-                ourImpl.postMessage(turnItOff);
+                ourImpl.PostMessage(turnItOff);
             }
             System.Threading.Thread.Sleep(100);
 

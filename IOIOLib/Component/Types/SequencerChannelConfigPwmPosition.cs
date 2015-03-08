@@ -36,7 +36,7 @@ using System.Threading.Tasks;
 namespace IOIOLib.Component.Types
 {
     /**
-     * Configuration for a channel of type PWM Position.
+     * Configuration for a channel of Type_ PWM Position.
      * <p>
      * PWM position channels are channels in which a PWM signal is generated, and the pulse width
      * controls the position of the actuator. A good example is a hobby servo motor. The main

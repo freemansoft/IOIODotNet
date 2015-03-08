@@ -44,14 +44,14 @@ namespace IOIOLib.Connection
         /// <returns>connection string used to create this connection</returns>
         string ConnectionString();
 
-        void waitForConnect();
-        void disconnect();
+        void WaitForConnect();
+        void Disconnect();
 
-        Stream getInputStream();
+        Stream GetInputStream();
 
-        Stream getOutputStream();
+        Stream GetOutputStream();
 
-        bool canClose();
+        bool CanClose();
 
 
     }

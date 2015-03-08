@@ -70,8 +70,8 @@ namespace IOIOLibDotNetTest.Device.Impl
             IOIOConnection ourConn = this.CreateGoodSerialConnection();
             this.CreateCaptureLogHandlerSet();
             LOG.Debug("Setup Complete");
-            IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(ourConn.getInputStream(), HandlerContainer_);
-            IOIOProtocolOutgoing fooOut = new IOIOProtocolOutgoing(ourConn.getOutputStream());
+            IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(ourConn.GetInputStream(), HandlerContainer_);
+            IOIOProtocolOutgoing fooOut = new IOIOProtocolOutgoing(ourConn.GetOutputStream());
             System.Threading.Thread.Sleep(100); // wait for us to get the hardware ids
             fooOut.checkInterfaceVersion();
             // wait for reply
@@ -86,8 +86,8 @@ namespace IOIOLibDotNetTest.Device.Impl
             this.CreateCaptureLogHandlerSet();
             LOG.Debug("Setup Complete");
 
-            IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(ourConn.getInputStream(), HandlerContainer_);
-            IOIOProtocolOutgoing fooOut = new IOIOProtocolOutgoing(ourConn.getOutputStream());
+            IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(ourConn.GetInputStream(), HandlerContainer_);
+            IOIOProtocolOutgoing fooOut = new IOIOProtocolOutgoing(ourConn.GetOutputStream());
             System.Threading.Thread.Sleep(100); // wait for us to get the hardware ids
 
             fooOut.setPinDigitalOut(SpecialPin.LED_PIN, false, DigitalOutputSpecMode.NORMAL);

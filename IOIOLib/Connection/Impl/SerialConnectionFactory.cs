@@ -43,19 +43,19 @@ namespace IOIOLib.Connection.Impl
         private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(SerialConnectionFactory));
 
         /// <summary>
-        /// Returns connection object if we can IsOpen the port.
+        /// Returns connection object if we can IsOpen the Port_.
         /// Otherwise throws ConnectioncreatedException
         /// </summary>
-        /// <param name="connectionString"></param>
+        /// <param name="ConnectionString_"></param>
         /// <returns></returns>
-        public IOIOConnection createConnection(string connectionString)
+        public IOIOConnection CreateConnection(string connectionString)
         {
             try
             {
-                // use the serial port object directly.
+                // use the serial Port_ object directly.
                 SerialPort foo = new SerialPort(connectionString);
                 foo.Open();
-                LOG.Debug(connectionString + " is available port");
+                LOG.Debug(connectionString + " is available Port_");
                 foo.Close();
                 foo.Dispose();
                 IOIOConnection conn = new SerialConnection(connectionString);
@@ -69,14 +69,14 @@ namespace IOIOLib.Connection.Impl
         }
 
 
-        public ICollection<IOIOConnection> createConnections(ICollection<string> connectionStrings)
+        public ICollection<IOIOConnection> CreateConnections(ICollection<string> connectionStrings)
         {
             List<IOIOConnection> createdConnections = new List<IOIOConnection>();
             foreach (string singleConnectionString in connectionStrings)
             {
                 try
                 {
-                    IOIOConnection oneConnector = this.createConnection(singleConnectionString);
+                    IOIOConnection oneConnector = this.CreateConnection(singleConnectionString);
                     createdConnections.Add(oneConnector);
                 }
                 catch (ConnectionCreationException e)
@@ -91,7 +91,7 @@ namespace IOIOLib.Connection.Impl
         /// auto-find ports we can IsOpen
         /// </summary>
         /// <returns></returns>
-        public ICollection<IOIOConnection> createConnections()
+        public ICollection<IOIOConnection> CreateConnections()
         {
             string[] portNames = SerialPort.GetPortNames();
             ICollection<string> nameCollection = new List<string>();
@@ -101,7 +101,7 @@ namespace IOIOLib.Connection.Impl
                 try
                 {
                     foo.Open();
-                    LOG.Debug(name + " is available port");
+                    LOG.Debug(name + " is available Port_");
                     foo.Close();
                     foo.Dispose();
                     nameCollection.Add(name);
@@ -112,7 +112,7 @@ namespace IOIOLib.Connection.Impl
                 }
 
             }
-            return createConnections(nameCollection);
+            return CreateConnections(nameCollection);
         }
 
     }

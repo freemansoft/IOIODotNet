@@ -50,7 +50,7 @@ namespace IOIOLib.MessageTo.Impl
         }
 
         /// <summary>
-        /// Create an inbound digital port that notifies on state change
+        /// Create an inbound digital Port_ that notifies on state change
         /// </summary>
         /// <param name="digitalInputSpec"></param>
         /// <param name="notifyOnChange"></param>

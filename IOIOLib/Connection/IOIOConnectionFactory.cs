@@ -37,19 +37,19 @@ namespace IOIOLib.Connection
 {
     public interface IOIOConnectionFactory
     {
-        IOIOConnection createConnection(string connectionString);
+        IOIOConnection CreateConnection(string connectionString);
 
         /// <summary>
         /// Try to create connections to the speicfied connections
         /// </summary>
         /// <param name="connectionStrings"></param>
         /// <returns></returns>
-        ICollection<IOIOConnection> createConnections(ICollection<string> connectionStrings);
+        ICollection<IOIOConnection> CreateConnections(ICollection<string> connectionStrings);
 
         /// <summary>
         /// Attempts to identify available connections and returns them
         /// </summary>
         /// <returns></returns>
-        ICollection<IOIOConnection> createConnections();
+        ICollection<IOIOConnection> CreateConnections();
     }
 }

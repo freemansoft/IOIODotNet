@@ -39,7 +39,7 @@ namespace IOIOLib.Component.Types
 			/**
 			 * Pin is floating. When the Pin is left disconnected the value
 			 * sensed is undefined. Use this mode when an external pull-up or
-			 * pull-down resistor is used or when interfacing push-pull type
+			 * pull-down resistor is used or when interfacing push-pull Type_
 			 * logic circuits.
 			 */
 			FLOATING,

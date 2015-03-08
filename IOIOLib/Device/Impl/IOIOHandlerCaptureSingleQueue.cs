@@ -50,15 +50,15 @@ namespace IOIOLib.Device.Impl
         /// <summary>
         /// Need to come up with an API for this
         /// </summary>
-        internal ConcurrentQueue<IMessageFromIOIO> CapturedMessages =
+        internal ConcurrentQueue<IMessageFromIOIO> CapturedMessages_ =
             new ConcurrentQueue<IMessageFromIOIO>();
 
         public void Enqueue(IMessageFromIOIO message)
         {
-            CapturedMessages.Enqueue(message);
+            CapturedMessages_.Enqueue(message);
         }
 
-        public void handleEstablishConnection(byte[] hardwareId, byte[] bootloaderId, byte[] firmwareId)
+        public void HandleEstablishConnection(byte[] hardwareId, byte[] bootloaderId, byte[] firmwareId)
         {
             IEstablishConnectionFrom EstablishConnectionFrom_ = new EstablishConnectionFrom(
                 System.Text.Encoding.ASCII.GetString(hardwareId),
@@ -69,49 +69,49 @@ namespace IOIOLib.Device.Impl
             this.Enqueue(EstablishConnectionFrom_);
         }
 
-        public void handleConnectionLost()
+        public void HandleConnectionLost()
         {
         }
 
-        public void handleSoftReset()
+        public void HandleSoftReset()
         {
         }
 
-        public void handleCheckInterfaceResponse(bool supported)
+        public void HandleCheckInterfaceResponse(bool supported)
         {
             this.Enqueue(new SupportedInterfaceFrom(supported));
         }
 
-        public void handleSetChangeNotify(int pin, bool changeNotify)
+        public void HandleSetChangeNotify(int pin, bool changeNotify)
         {
             this.Enqueue(new SetChangeNotifyMessageFrom(pin, changeNotify));
         }
 
-        public void handleReportDigitalInStatus(int pin, bool level)
+        public void HandleReportDigitalInStatus(int pin, bool level)
         {
             this.Enqueue(new ReportDigitalInStatusFrom(pin, level));
         }
 
-        public void handleRegisterPeriodicDigitalSampling(int pin, int freqScale)
+        public void HandleRegisterPeriodicDigitalSampling(int pin, int freqScale)
         {
             this.Enqueue(new RegisterPeriodicDigitalSamplingFrom(pin, freqScale));
         }
 
-        public void handleReportPeriodicDigitalInStatus(int frameNum, bool[] values)
+        public void HandleReportPeriodicDigitalInStatus(int frameNum, bool[] values)
         {
             this.Enqueue(new ReportPeriodicDigitalInStatusFrom(frameNum, values));
         }
 
-        public void handleAnalogPinStatus(int pin, bool open)
+        public void HandleAnalogPinStatus(int pin, bool open)
         {
             this.Enqueue(new AnalogPinStatusFrom(pin, open));
         }
 
-        public void handleReportAnalogInStatus(List<int> pins, List<int> values)
+        public void HandleReportAnalogInStatus(List<int> pins, List<int> values)
         {
             if (pins.Count != values.Count)
             {
-                LOG.Warn("handleReportAnalogInStatus has pins:" + pins.Count + " Values:" + values.Count);
+                LOG.Warn("HandleReportAnalogInStatus has pins:" + pins.Count + " Values:" + values.Count);
             }
             for (int i = 0; i < pins.Count; i++)
             {
@@ -123,119 +123,119 @@ namespace IOIOLib.Device.Impl
         ///  empty or close means closed
         ///  IsOpen means IsOpen
         /// </summary>
-        public void handleUartOpen(int uartNum)
+        public void HandleUartOpen(int uartNum)
         {
             this.Enqueue(new UartOpenFrom(uartNum));
         }
 
-        public void handleUartClose(int uartNum)
+        public void HandleUartClose(int uartNum)
         {
             this.Enqueue(new UartCloseFrom(uartNum));
         }
 
-        public void handleUartData(int uartNum, int numBytes, byte[] data)
+        public void HandleUartData(int uartNum, int numBytes, byte[] data)
         {
             this.Enqueue( new UartDataFrom(uartNum, numBytes, data));
         }
 
 
-        public void handleUartReportTxStatus(int uartNum, int bytesRemaining)
+        public void HandleUartReportTxStatus(int uartNum, int bytesRemaining)
         {
             this.Enqueue(new HandleUartReportTxStatusFrom(uartNum, bytesRemaining));
         }
 
-        public void handleSpiOpen(int spiNum)
+        public void HandleSpiOpen(int spiNum)
         {
             this.Enqueue(new SpiOpenFrom(spiNum));
         }
 
-        public void handleSpiClose(int spiNum)
+        public void HandleSpiClose(int spiNum)
         {
             this.Enqueue(new SpiCloseFrom(spiNum));
         }
 
-        public void handleSpiData(int spiNum, int ssPin, byte[] data, int dataBytes)
+        public void HandleSpiData(int spiNum, int ssPin, byte[] data, int dataBytes)
         {
             this.Enqueue(new SpiDataFrom(spiNum, ssPin, data, dataBytes));
         }
 
-        public void handleSpiReportTxStatus(int spiNum, int bytesRemaining)
+        public void HandleSpiReportTxStatus(int spiNum, int bytesRemaining)
         {
             this.Enqueue(new HandleSpiReportTxStatusFrom(spiNum, bytesRemaining));
         }
 
-        public void handleI2cOpen(int i2cNum)
+        public void HandleI2cOpen(int i2cNum)
         {
             this.Enqueue(new I2cOpenFrom(i2cNum));
         }
 
-        public void handleI2cClose(int i2cNum)
+        public void HandleI2cClose(int i2cNum)
         {
             this.Enqueue(new I2cCloseFrom(i2cNum));
         }
 
-        public void handleI2cResult(int i2cNum, int size, byte[] data)
+        public void HandleI2cResult(int i2cNum, int size, byte[] data)
         {
             this.Enqueue(new I2cResultFrom(i2cNum, size, data));
         }
 
-        public void handleI2cReportTxStatus(int i2cNum, int bytesRemaining)
+        public void HandleI2cReportTxStatus(int i2cNum, int bytesRemaining)
         {
             this.Enqueue(new HandleI2cReportTxStatusFrom(i2cNum));
         }
 
         // default to close
-        public void handleIcspOpen()
+        public void HandleIcspOpen()
         {
             this.Enqueue(new IcspOpenFrom());
         }
 
-        public void handleIcspClose()
+        public void HandleIcspClose()
         {
             this.Enqueue(new IcspCloseFrom());
         }
 
-        public void handleIcspReportRxStatus(int bytesRemaining)
+        public void HandleIcspReportRxStatus(int bytesRemaining)
         {
             this.Enqueue(new IcspReportRxStatusFrom(bytesRemaining));
         }
 
-        public void handleIcspResult(int size, byte[] data)
+        public void HandleIcspResult(int size, byte[] data)
         {
             this.Enqueue(new IcspResultFrom(size, data));
         }
 
-        public void handleIncapReport(int incapNum, int size, byte[] data)
+        public void HandleIncapReport(int incapNum, int size, byte[] data)
         {
             this.Enqueue(new IncapReportFrom(incapNum, size, data));
         }
 
-        public void handleIncapClose(int incapNum)
+        public void HandleIncapClose(int incapNum)
         {
             this.Enqueue(new IncapOpenFrom(incapNum));
         }
 
-        public void handleIncapOpen(int incapNum)
+        public void HandleIncapOpen(int incapNum)
         {
             this.Enqueue(new IncapCloseFrom(incapNum));
         }
 
-        public void handleCapSenseReport(int pinNum, int value)
+        public void HandleCapSenseReport(int pinNum, int value)
         {
             this.Enqueue(new CapSenseReportFrom(pinNum, value));
         }
 
-        public void handleSetCapSenseSampling(int pinNum, bool enable)
+        public void HandleSetCapSenseSampling(int pinNum, bool enable)
         {
             this.Enqueue(new CapSenseSamplingFrom(pinNum, enable));
         }
 
-        public void handleSequencerEvent(Types.SequencerEvent seqEvent, int arg)
+        public void HandleSequencerEvent(Types.SequencerEvent seqEvent, int arg)
         {
             this.Enqueue(new SequencerEventFrom(seqEvent, arg));
         }
 
-        public void handleSync()
+        public void HandleSync()
         {
         }
     }

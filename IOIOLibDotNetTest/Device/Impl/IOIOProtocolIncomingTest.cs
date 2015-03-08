@@ -57,7 +57,7 @@ namespace IOIOLibDotNetTest.Device.Impl
             IOIOConnection ourConn = this.CreateGoodSerialConnection();
             this.CreateCaptureLogHandlerSet();
             LOG.Debug("Setup Complete");
-            IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(ourConn.getInputStream(), HandlerContainer_);
+            IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(ourConn.GetInputStream(), HandlerContainer_);
             // wait for reply
             System.Threading.Thread.Sleep(2000);
             Assert.IsNotNull(HandlerQueuePerType_.EstablishConnectionFrom_);
@@ -80,8 +80,8 @@ namespace IOIOLibDotNetTest.Device.Impl
             this.CreateCaptureLogHandlerSet();
             LOG.Debug("Setup Complete");
 
-            IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(ourConn.getInputStream(), HandlerContainer_);
-            IOIOProtocolOutgoing fooOut = new IOIOProtocolOutgoing(ourConn.getOutputStream());
+            IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(ourConn.GetInputStream(), HandlerContainer_);
+            IOIOProtocolOutgoing fooOut = new IOIOProtocolOutgoing(ourConn.GetOutputStream());
             System.Threading.Thread.Sleep(100); // receive the HW ID
             LOG.Info("This test requires Pin 31 and 32 be shorted together");
             fooOut.setPinDigitalIn(31, DigitalInputSpecMode.FLOATING);
@@ -95,7 +95,7 @@ namespace IOIOLibDotNetTest.Device.Impl
             System.Threading.Thread.Sleep(200);
             // all log  methods contain method name which is in the interface so this is reasonably safe
             // we get one change event as soon as the Pin input Pin is configured + 2 changes in test
-            int matchingLogs = this.HandlerLog_.capturedLogs.Count(s => s.StartsWith("handleReportDigitalInStatus"));
+            int matchingLogs = this.HandlerLog_.CapturedLogs_.Count(s => s.StartsWith("HandleReportDigitalInStatus"));
             Assert.AreEqual(3, matchingLogs, "Should have captured input changes, not " + matchingLogs + ".  Are pins 31 and 32 shorted together");
             // verify the system acknowledged our request to be notified of state change
             Assert.AreEqual(1, this.HandlerQueuePerType_.GetClassified(typeof(ISetChangeNotifyMessageFrom))

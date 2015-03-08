@@ -36,7 +36,7 @@ using System.Threading.Tasks;
 namespace IOIOLib.Component.Types
 {
     /**
-     * Configuration for a channel of type PWM speed.
+     * Configuration for a channel of Type_ PWM speed.
      * <p>
      * PWM speed channels are channels in which a PWM signal is generated, and the pulse width
      * controls the speed of the actuator. A good example is a DC motor. The main difference from a

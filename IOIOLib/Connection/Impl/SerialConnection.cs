@@ -42,41 +42,41 @@ namespace IOIOLib.Connection.Impl
     {
         private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(SerialConnection));
 
-        private string connectionString;
-        private SerialPort port = null;
+        private string ConnectionString_;
+        private SerialPort Port_ = null;
 
         public SerialConnection(string connectionString)
         {
-            this.connectionString = connectionString;
+            this.ConnectionString_ = connectionString;
         }
 
         public string ConnectionString()
         {
-            return connectionString;
+            return ConnectionString_;
         }
 
-        public void waitForConnect()
+        public void WaitForConnect()
         {
-            port = new SerialPort(connectionString);
-            port.ReceivedBytesThreshold = 1;
-            port.ReadTimeout = 2000;
-            //port.ReadTimeout = SerialPort.InfiniteTimeout;
+            Port_ = new SerialPort(ConnectionString_);
+            Port_.ReceivedBytesThreshold = 1;
+            Port_.ReadTimeout = 2000;
+            //Port_.ReadTimeout = SerialPort.InfiniteTimeout;
             // from the IOIO java code
-            port.DtrEnable = true;
-            port.Open();
+            Port_.DtrEnable = true;
+            Port_.Open();
             System.Threading.Thread.Sleep(100);
         }
 
-        public void disconnect()
+        public void Disconnect()
         {
-            if (port != null && port.IsOpen)
+            if (Port_ != null && Port_.IsOpen)
             {
-                port.Close();
-                port = null;
+                Port_.Close();
+                Port_ = null;
             }
             else
             {
-                port = null;
+                Port_ = null;
             }
         }
 
@@ -84,15 +84,15 @@ namespace IOIOLib.Connection.Impl
         /// throws ConnectionLostException if connection closed or was never opened
         /// </summary>
         /// <returns></returns>
-        public System.IO.Stream getInputStream()
+        public System.IO.Stream GetInputStream()
         {
-            if (port != null)
+            if (Port_ != null)
             {
-                return port.BaseStream;
+                return Port_.BaseStream;
             }
             else
             {
-                throw new ConnectionLostException("Did you run waitForConnection on " + this.connectionString);
+                throw new ConnectionLostException("Did you run waitForConnection on " + this.ConnectionString_);
             }
         }
 
@@ -100,22 +100,22 @@ namespace IOIOLib.Connection.Impl
         /// throws ConnectionLostException if connection closed or was never opened
         /// </summary>
         /// <returns></returns>
-        public System.IO.Stream getOutputStream()
+        public System.IO.Stream GetOutputStream()
         {
-            if (port != null)
+            if (Port_ != null)
             {
-                return port.BaseStream;
+                return Port_.BaseStream;
             }
             else
             {
-                throw new ConnectionLostException("Did you run waitForConnection on " + this.connectionString);
+                throw new ConnectionLostException("Did you run waitForConnection on " + this.ConnectionString_);
             }
         }
 
-        public bool canClose()
+        public bool CanClose()
         {
             // should we check more state here?
-            if (port != null)
+            if (Port_ != null)
             {
                 return true;
             }

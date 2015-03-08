@@ -51,14 +51,14 @@ namespace IOIOLibDotNetTest.Connection.Impl
         public void SerialConnectionFactory_CreateConnections()
         {
             IOIOConnectionFactory factory = new SerialConnectionFactory();
-            ICollection<IOIOConnection> connections = factory.createConnections();
+            ICollection<IOIOConnection> connections = factory.CreateConnections();
             Assert.IsTrue(connections.Count > 0);
             LOG.Info("Found " + connections.Count + " possible com ports");
 
             /// probably don't need this since we aren't connected.
             foreach (IOIOConnection oneConn in connections)
             {
-                oneConn.disconnect();
+                oneConn.Disconnect();
             }
         }
 
@@ -68,7 +68,7 @@ namespace IOIOLibDotNetTest.Connection.Impl
         public void SerialConnectionFactory_CreateConnectionBad()
         {
             IOIOConnectionFactory factory = new SerialConnectionFactory();
-            IOIOConnection connection = factory.createConnection(TestHarnessSetup.BAD_CONN_NAME);
+            IOIOConnection connection = factory.CreateConnection(TestHarnessSetup.BAD_CONN_NAME);
             LOG.Info("Should have failed test on " + TestHarnessSetup.BAD_CONN_NAME);
         }
     }

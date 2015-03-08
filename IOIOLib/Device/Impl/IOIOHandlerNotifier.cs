@@ -41,167 +41,167 @@ namespace IOIOLib.Device.Impl
     /// </summary>
     class IOIOHandlerNotifier : IOIOIncomingHandler
     {
-        public void handleEstablishConnection(byte[] hardwareId, byte[] bootloaderId, byte[] firmwareId)
+        public void HandleEstablishConnection(byte[] hardwareId, byte[] bootloaderId, byte[] firmwareId)
         {
             throw new NotImplementedException();
         }
 
-        public void handleConnectionLost()
+        public void HandleConnectionLost()
         {
             throw new NotImplementedException();
         }
 
-        public void handleSoftReset()
+        public void HandleSoftReset()
         {
             throw new NotImplementedException();
         }
 
-        public void handleCheckInterfaceResponse(bool supported)
+        public void HandleCheckInterfaceResponse(bool supported)
         {
             throw new NotImplementedException();
         }
 
-        public void handleSetChangeNotify(int pin, bool changeNotify)
+        public void HandleSetChangeNotify(int pin, bool changeNotify)
         {
             throw new NotImplementedException();
         }
 
-        public void handleReportDigitalInStatus(int pin, bool level)
+        public void HandleReportDigitalInStatus(int pin, bool level)
         {
             throw new NotImplementedException();
         }
 
-        public void handleRegisterPeriodicDigitalSampling(int pin, int freqScale)
+        public void HandleRegisterPeriodicDigitalSampling(int pin, int freqScale)
         {
             throw new NotImplementedException();
         }
 
-        public void handleReportPeriodicDigitalInStatus(int frameNum, bool[] values)
+        public void HandleReportPeriodicDigitalInStatus(int frameNum, bool[] values)
         {
             throw new NotImplementedException();
         }
 
-        public void handleAnalogPinStatus(int pin, bool open)
+        public void HandleAnalogPinStatus(int pin, bool open)
         {
             throw new NotImplementedException();
         }
 
-        public void handleReportAnalogInStatus(List<int> pins, List<int> values)
+        public void HandleReportAnalogInStatus(List<int> pins, List<int> values)
         {
             throw new NotImplementedException();
         }
 
-        public void handleUartOpen(int uartNum)
+        public void HandleUartOpen(int uartNum)
         {
             throw new NotImplementedException();
         }
 
-        public void handleUartClose(int uartNum)
+        public void HandleUartClose(int uartNum)
         {
             throw new NotImplementedException();
         }
 
-        public void handleUartData(int uartNum, int numBytes, byte[] data)
+        public void HandleUartData(int uartNum, int numBytes, byte[] data)
         {
             throw new NotImplementedException();
         }
 
-        public void handleUartReportTxStatus(int uartNum, int bytesRemaining)
+        public void HandleUartReportTxStatus(int uartNum, int bytesRemaining)
         {
             throw new NotImplementedException();
         }
 
-        public void handleSpiOpen(int spiNum)
+        public void HandleSpiOpen(int spiNum)
         {
             throw new NotImplementedException();
         }
 
-        public void handleSpiClose(int spiNum)
+        public void HandleSpiClose(int spiNum)
         {
             throw new NotImplementedException();
         }
 
-        public void handleSpiData(int spiNum, int ssPin, byte[] data, int dataBytes)
+        public void HandleSpiData(int spiNum, int ssPin, byte[] data, int dataBytes)
         {
             throw new NotImplementedException();
         }
 
-        public void handleSpiReportTxStatus(int spiNum, int bytesRemaining)
+        public void HandleSpiReportTxStatus(int spiNum, int bytesRemaining)
         {
             throw new NotImplementedException();
         }
 
-        public void handleI2cOpen(int i2cNum)
+        public void HandleI2cOpen(int i2cNum)
         {
             throw new NotImplementedException();
         }
 
-        public void handleI2cClose(int i2cNum)
+        public void HandleI2cClose(int i2cNum)
         {
             throw new NotImplementedException();
         }
 
-        public void handleI2cResult(int i2cNum, int size, byte[] data)
+        public void HandleI2cResult(int i2cNum, int size, byte[] data)
         {
             throw new NotImplementedException();
         }
 
-        public void handleI2cReportTxStatus(int spiNum, int bytesRemaining)
+        public void HandleI2cReportTxStatus(int spiNum, int bytesRemaining)
         {
             throw new NotImplementedException();
         }
 
-        public void handleIcspOpen()
+        public void HandleIcspOpen()
         {
             throw new NotImplementedException();
         }
 
-        public void handleIcspClose()
+        public void HandleIcspClose()
         {
             throw new NotImplementedException();
         }
 
-        public void handleIcspReportRxStatus(int bytesRemaining)
+        public void HandleIcspReportRxStatus(int bytesRemaining)
         {
             throw new NotImplementedException();
         }
 
-        public void handleIcspResult(int size, byte[] data)
+        public void HandleIcspResult(int size, byte[] data)
         {
             throw new NotImplementedException();
         }
 
-        public void handleIncapReport(int incapNum, int size, byte[] data)
+        public void HandleIncapReport(int incapNum, int size, byte[] data)
         {
             throw new NotImplementedException();
         }
 
-        public void handleIncapClose(int incapNum)
+        public void HandleIncapClose(int incapNum)
         {
             throw new NotImplementedException();
         }
 
-        public void handleIncapOpen(int incapNum)
+        public void HandleIncapOpen(int incapNum)
         {
             throw new NotImplementedException();
         }
 
-        public void handleCapSenseReport(int pinNum, int value)
+        public void HandleCapSenseReport(int pinNum, int value)
         {
             throw new NotImplementedException();
         }
 
-        public void handleSetCapSenseSampling(int pinNum, bool enable)
+        public void HandleSetCapSenseSampling(int pinNum, bool enable)
         {
             throw new NotImplementedException();
         }
 
-        public void handleSequencerEvent(Types.SequencerEvent seqEvent, int arg)
+        public void HandleSequencerEvent(Types.SequencerEvent seqEvent, int arg)
         {
             throw new NotImplementedException();
         }
 
-        public void handleSync()
+        public void HandleSync()
         {
             throw new NotImplementedException();
         }

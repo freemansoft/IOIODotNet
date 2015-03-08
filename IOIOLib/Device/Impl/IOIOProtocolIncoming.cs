@@ -51,7 +51,7 @@ namespace IOIOLib.Device.Impl
         private List<int> AnalogPinValues_ = new List<int>();
         private List<int> AnalogFramePins_ = new List<int>();
         private List<int> NewFramePins_ = new List<int>();
-        // use type HashSet because it implements RemoveWhere
+        // use Type_ HashSet because it implements RemoveWhere
         private HashSet<int> RemovedPins_ = new HashSet<int>();
         private HashSet<int> AddedPins_ = new HashSet<int>();
         private Stream Stream_;
@@ -71,7 +71,7 @@ namespace IOIOLib.Device.Impl
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="Stream">incoming Stream from the IOIO</param>
+        /// <param name="Stream_">incoming Stream_ from the IOIO</param>
         /// <param name="handler">handler or handler distributor that will added to the notification list</param>
         /// <param name="cancelTokenSource">A cancellation token so that this will be stopped with other threads. Creates a token if none passed in</param>
         public IOIOProtocolIncoming(Stream stream, IOIOIncomingHandler handler, CancellationTokenSource cancelTokenSource)
@@ -93,7 +93,7 @@ namespace IOIOLib.Device.Impl
         /// <summary>
         /// This object will generate its own cancellation token
         /// </summary>
-        /// <param name="Stream"></param>
+        /// <param name="Stream_"></param>
         /// <param name="handler"></param>
         public IOIOProtocolIncoming(Stream stream, IOIOIncomingHandler handler) :
             this(stream, handler, new CancellationTokenSource())
@@ -183,7 +183,7 @@ namespace IOIOLib.Device.Impl
                 {
                     CancelTokenSource_.Token.ThrowIfCancellationRequested();
                     arg1 = readByte();
-                    LOG.Debug(IncomingTask_.Id + " Processing reply type " + arg1.ToString("X"));
+                    LOG.Debug(IncomingTask_.Id + " Processing reply Type_ " + arg1.ToString("X"));
                     switch (arg1)
                     {
                         case (int)IOIOProtocolCommands.ESTABLISH_CONNECTION:
@@ -199,24 +199,24 @@ namespace IOIOLib.Device.Impl
                             readBytes(8, bootloaderId);
                             readBytes(8, firmwareId);
 
-                            Handler_.handleEstablishConnection(hardwareId, bootloaderId, firmwareId);
+                            Handler_.HandleEstablishConnection(hardwareId, bootloaderId, firmwareId);
                             break;
 
                         case (int)IOIOProtocolCommands.SOFT_RESET:
                             AnalogFramePins_.Clear();
-                            Handler_.handleSoftReset();
+                            Handler_.HandleSoftReset();
                             break;
 
                         case (int)IOIOProtocolCommands.REPORT_DIGITAL_IN_STATUS:
                             // Pin number and state are in same byte
                             arg1 = readByte();
-                            Handler_.handleReportDigitalInStatus(arg1 >> 2, (arg1 & 0x01) == 1);
+                            Handler_.HandleReportDigitalInStatus(arg1 >> 2, (arg1 & 0x01) == 1);
                             break;
 
                         case (int)IOIOProtocolCommands.SET_CHANGE_NOTIFY:
                             // Pin number and state are in same byte
                             arg1 = readByte();
-                            Handler_.handleSetChangeNotify(arg1 >> 2, (arg1 & 0x01) == 1);
+                            Handler_.HandleSetChangeNotify(arg1 >> 2, (arg1 & 0x01) == 1);
                             break;
 
                         case (int)IOIOProtocolCommands.REGISTER_PERIODIC_DIGITAL_SAMPLING:
@@ -237,11 +237,11 @@ namespace IOIOLib.Device.Impl
                             calculateAnalogFrameDelta();
                             foreach (int i in RemovedPins_)
                             {
-                                Handler_.handleAnalogPinStatus(i, false);
+                                Handler_.HandleAnalogPinStatus(i, false);
                             }
                             foreach (int i in AddedPins_)
                             {
-                                Handler_.handleAnalogPinStatus(i, true);
+                                Handler_.HandleAnalogPinStatus(i, true);
                             }
                             break;
 
@@ -258,31 +258,31 @@ namespace IOIOLib.Device.Impl
                                 AnalogPinValues_.Add((readByte() << 2) | (header & 0x03));
                                 header >>= 2;
                             }
-                            Handler_.handleReportAnalogInStatus(AnalogFramePins_, AnalogPinValues_);
+                            Handler_.HandleReportAnalogInStatus(AnalogFramePins_, AnalogPinValues_);
                             break;
 
                         case (int)IOIOProtocolCommands.UART_REPORT_TX_STATUS:
                             arg1 = readByte();
                             arg2 = readByte();
-                            Handler_.handleUartReportTxStatus(arg1 & 0x03, (arg1 >> 2) | (arg2 << 6));
+                            Handler_.HandleUartReportTxStatus(arg1 & 0x03, (arg1 >> 2) | (arg2 << 6));
                             break;
 
                         case (int)IOIOProtocolCommands.UART_DATA:
                             arg1 = readByte();
                             size = (arg1 & 0x3F) + 1;
                             readBytes(size, data);
-                            Handler_.handleUartData(arg1 >> 6, size, data);
+                            Handler_.HandleUartData(arg1 >> 6, size, data);
                             break;
 
                         case (int)IOIOProtocolCommands.UART_STATUS:
                             arg1 = readByte();
                             if ((arg1 & 0x80) != 0)
                             {
-                                Handler_.handleUartOpen(arg1 & 0x03);
+                                Handler_.HandleUartOpen(arg1 & 0x03);
                             }
                             else
                             {
-                                Handler_.handleUartClose(arg1 & 0x03);
+                                Handler_.HandleUartClose(arg1 & 0x03);
                             }
                             break;
 
@@ -291,24 +291,24 @@ namespace IOIOLib.Device.Impl
                             arg2 = readByte();
                             size = (arg1 & 0x3F) + 1;
                             readBytes(size, data);
-                            Handler_.handleSpiData(arg1 >> 6, arg2 & 0x3F, data, size);
+                            Handler_.HandleSpiData(arg1 >> 6, arg2 & 0x3F, data, size);
                             break;
 
                         case (int)IOIOProtocolCommands.SPI_REPORT_TX_STATUS:
                             arg1 = readByte();
                             arg2 = readByte();
-                            Handler_.handleSpiReportTxStatus(arg1 & 0x03, (arg1 >> 2) | (arg2 << 6));
+                            Handler_.HandleSpiReportTxStatus(arg1 & 0x03, (arg1 >> 2) | (arg2 << 6));
                             break;
 
                         case (int)IOIOProtocolCommands.SPI_STATUS:
                             arg1 = readByte();
                             if ((arg1 & 0x80) != 0)
                             {
-                                Handler_.handleSpiOpen(arg1 & 0x03);
+                                Handler_.HandleSpiOpen(arg1 & 0x03);
                             }
                             else
                             {
-                                Handler_.handleSpiClose(arg1 & 0x03);
+                                Handler_.HandleSpiClose(arg1 & 0x03);
                             }
                             break;
 
@@ -316,11 +316,11 @@ namespace IOIOLib.Device.Impl
                             arg1 = readByte();
                             if ((arg1 & 0x80) != 0)
                             {
-                                Handler_.handleI2cOpen(arg1 & 0x03);
+                                Handler_.HandleI2cOpen(arg1 & 0x03);
                             }
                             else
                             {
-                                Handler_.handleI2cClose(arg1 & 0x03);
+                                Handler_.HandleI2cClose(arg1 & 0x03);
                             }
                             break;
 
@@ -331,41 +331,41 @@ namespace IOIOLib.Device.Impl
                             {
                                 readBytes(arg2, data);
                             }
-                            Handler_.handleI2cResult(arg1 & 0x03, arg2, data);
+                            Handler_.HandleI2cResult(arg1 & 0x03, arg2, data);
                             break;
 
                         case (int)IOIOProtocolCommands.I2C_REPORT_TX_STATUS:
                             arg1 = readByte();
                             arg2 = readByte();
-                            Handler_.handleI2cReportTxStatus(arg1 & 0x03, (arg1 >> 2) | (arg2 << 6));
+                            Handler_.HandleI2cReportTxStatus(arg1 & 0x03, (arg1 >> 2) | (arg2 << 6));
                             break;
 
                         case (int)IOIOProtocolCommands.CHECK_INTERFACE_RESPONSE:
                             // this is 0x63 on my sparkfun 016 running 503 sw
                             arg1 = readByte();
-                            Handler_.handleCheckInterfaceResponse((arg1 & 0x01) == 1);
+                            Handler_.HandleCheckInterfaceResponse((arg1 & 0x01) == 1);
                             break;
 
                         case (int)IOIOProtocolCommands.ICSP_REPORT_RX_STATUS:
                             arg1 = readByte();
                             arg2 = readByte();
-                            Handler_.handleIcspReportRxStatus(arg1 | (arg2 << 8));
+                            Handler_.HandleIcspReportRxStatus(arg1 | (arg2 << 8));
                             break;
 
                         case (int)IOIOProtocolCommands.ICSP_RESULT:
                             readBytes(2, data);
-                            Handler_.handleIcspResult(2, data);
+                            Handler_.HandleIcspResult(2, data);
                             break;
 
                         case (int)IOIOProtocolCommands.ICSP_CONFIG:
                             arg1 = readByte();
                             if ((arg1 & 0x01) == 1)
                             {
-                                Handler_.handleIcspOpen();
+                                Handler_.HandleIcspOpen();
                             }
                             else
                             {
-                                Handler_.handleIcspClose();
+                                Handler_.HandleIcspClose();
                             }
                             break;
 
@@ -373,11 +373,11 @@ namespace IOIOLib.Device.Impl
                             arg1 = readByte();
                             if ((arg1 & 0x80) != 0)
                             {
-                                Handler_.handleIncapOpen(arg1 & 0x0F);
+                                Handler_.HandleIncapOpen(arg1 & 0x0F);
                             }
                             else
                             {
-                                Handler_.handleIncapClose(arg1 & 0x0F);
+                                Handler_.HandleIncapClose(arg1 & 0x0F);
                             }
                             break;
 
@@ -389,7 +389,7 @@ namespace IOIOLib.Device.Impl
                                 size = 4;
                             }
                             readBytes(size, data);
-                            Handler_.handleIncapReport(arg1 & 0x0F, size, data);
+                            Handler_.HandleIncapReport(arg1 & 0x0F, size, data);
                             break;
 
                         case (int)IOIOProtocolCommands.SOFT_CLOSE:
@@ -399,12 +399,12 @@ namespace IOIOLib.Device.Impl
                         case (int)IOIOProtocolCommands.CAPSENSE_REPORT:
                             arg1 = readByte();
                             arg2 = readByte();
-                            Handler_.handleCapSenseReport(arg1 & 0x3F, (arg1 >> 6) | (arg2 << 2));
+                            Handler_.HandleCapSenseReport(arg1 & 0x3F, (arg1 >> 6) | (arg2 << 2));
                             break;
 
                         case (int)IOIOProtocolCommands.SET_CAPSENSE_SAMPLING:
                             arg1 = readByte();
-                            Handler_.handleSetCapSenseSampling(arg1 & 0x3F, (arg1 & 0x80) != 0);
+                            Handler_.HandleSetCapSenseSampling(arg1 & 0x3F, (arg1 & 0x80) != 0);
                             break;
 
                         case (int)IOIOProtocolCommands.SEQUENCER_EVENT:
@@ -421,7 +421,7 @@ namespace IOIOLib.Device.Impl
                             try
                             {
                                 // should be able to cast since enums are really int (gag)
-                                Handler_.handleSequencerEvent((SequencerEvent)arg1, arg2);
+                                Handler_.HandleSequencerEvent((SequencerEvent)arg1, arg2);
                             }
                             catch (Exception e)
                             {
@@ -430,7 +430,7 @@ namespace IOIOLib.Device.Impl
                             break;
 
                         case (int)IOIOProtocolCommands.SYNC:
-                            Handler_.handleSync();
+                            Handler_.HandleSync();
                             break;
 
                         default:
@@ -447,7 +447,7 @@ namespace IOIOLib.Device.Impl
             catch (ObjectDisposedException e)
             {
                 //// see this when steram is closed
-                LOG.Error(IncomingTask_.Id + " Probably closed incoming Stream: (ODE)" + e.Message);
+                LOG.Error(IncomingTask_.Id + " Probably closed incoming Stream_: (ODE)" + e.Message);
             }
             catch (Exception e)
             {
@@ -455,11 +455,11 @@ namespace IOIOLib.Device.Impl
             }
             finally
             {
-                // we don't play swith Stream since we didn't create it
-                Handler_.handleConnectionLost();
+                // we don't play swith Stream_ since we didn't create it
+                Handler_.HandleConnectionLost();
                 LOG.Info(IncomingTask_.Id + " Throwing thread cancel to stop incoming thread");
                 CancelTokenSource_.Cancel();
-                // debugger will always stop here in unit tests if test dynamically determines what port ot use
+                // debugger will always stop here in unit tests if test dynamically determines what Port_ ot use
                 // just hit continue in the debugger
                 CancelTokenSource_.Token.ThrowIfCancellationRequested();
                 Stream_ = null;
