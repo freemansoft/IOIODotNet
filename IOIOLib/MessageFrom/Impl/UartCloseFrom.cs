@@ -26,7 +26,8 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied.
  */
- 
+
+using IOIOLib.Device.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;

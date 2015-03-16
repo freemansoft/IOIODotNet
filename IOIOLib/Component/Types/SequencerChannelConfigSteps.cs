@@ -36,8 +36,8 @@ using System.Threading.Tasks;
 namespace IOIOLib.Component.Types
 {
     /**
-     * Configuration for a channel of Type_ steps.
-     * <p>
+     * Configuration for a channel of Type steps.
+     * <Ids_>
      * Steps channels are channels in which fixed-width pulses are generated with varying frequency,
      * which corresponds to the actuator speed. A good example is a stepper motor in an application
      * which requires position control. Unlike the FM speed channel, steps channels will generate a
@@ -54,7 +54,7 @@ namespace IOIOLib.Component.Types
 
         /**
          * Constructor.
-         * <p>
+         * <Ids_>
          *
          * @param pinSpec
          *            See {@link #pinSpec}.

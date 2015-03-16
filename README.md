@@ -60,6 +60,12 @@ Visual Studio 2013 with .Net 4 on Windows 8.
 * The LED test should flash the LED twice on your device.
 * Either let the integration tests find your device or set a device name by in _IOIOLibDotNetTest.TestHarnessSetup.cs_
 
+Connection and resource setup and teardown occur in the testing base class. 
+The teardown code closes connections.  Failure to do this correctly may force you to remove and re-pair the IOIO.
+The teardown code requests thread cancellation for all IOIOImpl based tests. Failure to do this results in thread abandonment messages in the Visual Studio log window.
+
+It is important to clean up after every test.  
+
 ##What Doesn't Work##
 
 1. Resource management is not yet implemented.  This will probably be done in _IOIOMessageToFactory_

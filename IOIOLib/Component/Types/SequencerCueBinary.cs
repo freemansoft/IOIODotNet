@@ -37,7 +37,7 @@ namespace IOIOLib.Component.Types
 {
     /**
      * A cue for a binary channel.
-     * <p>
+     * <Ids_>
      * This cue determines whether the output should be high or low while the cue is executing.
      */
     public  class SequencerCueBinary : ISequencerChannelCue

@@ -38,7 +38,7 @@ namespace IOIOLib.Component.Types
     public class SequencerEvent
     {
         /**
-         * The event Type_.
+         * The event Type.
          */
         public SequencerEventType type;
 

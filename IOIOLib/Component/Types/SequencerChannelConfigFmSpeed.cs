@@ -36,8 +36,8 @@ using System.Threading.Tasks;
 namespace IOIOLib.Component.Types
 {
     /**
-     * Configuration for a channel of Type_ FM speed.
-     * <p>
+     * Configuration for a channel of Type FM speed.
+     * <Ids_>
      * FM speed channels are channels in which fixed-width pulses are generated with varying
      * frequency, which corresponds to the actuator speed. A good example is a stepper motor in an
      * application which requires speed control and not position control (for the latter see
@@ -64,7 +64,7 @@ namespace IOIOLib.Component.Types
 
         /**
          * Constructor.
-         * <p>
+         * <Ids_>
          *
          * @param clk
          *            See {@link #clk}.

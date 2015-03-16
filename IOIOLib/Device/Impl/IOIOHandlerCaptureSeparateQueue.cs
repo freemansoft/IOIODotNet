@@ -81,7 +81,7 @@ namespace IOIOLib.Device.Impl
 
         private void AddToClassifiedStorage(Type t, IMessageFromIOIO message)
         {
-            // FIXME should verify message is of Type_ t
+            // FIXME should verify message is of Type t
             if (!ClassifiedStorage_.ContainsKey(t))
             {
                 ClassifiedStorage_.TryAdd(t, new ConcurrentQueue<IMessageFromIOIO>());
@@ -108,7 +108,7 @@ namespace IOIOLib.Device.Impl
             }
             else
             {
-                throw new IllegalStateException("couldn't make Type_ work with classified storage " + t.Name);
+                throw new IllegalStateException("couldn't make Type work with classified storage " + t.Name);
             }
         }
 
@@ -173,7 +173,7 @@ namespace IOIOLib.Device.Impl
 
         public void HandleUartReportTxStatus(int uartNum, int bytesRemaining)
         {
-            AddToClassifiedStorage(typeof(IUartFrom), new HandleUartReportTxStatusFrom(uartNum, bytesRemaining));
+            AddToClassifiedStorage(typeof(IUartFrom), new UartReportTxStatusFrom(uartNum, bytesRemaining));
         }
 
         public void HandleSpiOpen(int spiNum)
@@ -193,7 +193,7 @@ namespace IOIOLib.Device.Impl
 
         public void HandleSpiReportTxStatus(int spiNum, int bytesRemaining)
         {
-            AddToClassifiedStorage(typeof(ISpiFrom), new HandleSpiReportTxStatusFrom(spiNum, bytesRemaining));
+            AddToClassifiedStorage(typeof(ISpiFrom), new SpiReportTxStatusFrom(spiNum, bytesRemaining));
         }
 
         public void HandleI2cOpen(int i2cNum)
@@ -213,7 +213,7 @@ namespace IOIOLib.Device.Impl
 
         public void HandleI2cReportTxStatus(int spiNum, int bytesRemaining)
         {
-            AddToClassifiedStorage(typeof(II2cFrom), new HandleI2cReportTxStatusFrom(spiNum));
+            AddToClassifiedStorage(typeof(II2cFrom), new I2cReportTxStatusFrom(spiNum));
         }
 
         // default to close

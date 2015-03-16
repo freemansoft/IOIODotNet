@@ -64,10 +64,10 @@ namespace IOIOLibDotNetTest.Device.Impl
             System.Threading.Thread.Sleep(100); // wait for us to get the hardware ids
 
             // SHOULD USE THE FACTORY instead of this lame ...
-            IConfigureDigitalOutputTo confDigitalOut = new ConfigureDigitalOutputTo(
+            IDigitalOutputConfigureCommand confDigitalOut = new DigitalOutputConfigureCommand(
                 new IOIOLib.Component.Types.DigitalOutputSpec(SpecialPin.LED_PIN));
-            ISetDigitalOutputValueTo turnItOn = new SetDigitalOutputValueTo(SpecialPin.LED_PIN, true);
-            ISetDigitalOutputValueTo turnItOff = new SetDigitalOutputValueTo(SpecialPin.LED_PIN, false);
+            IDigitalOutputValueSetCommand turnItOn = new DigitalOutputSetValueCommand(SpecialPin.LED_PIN, true);
+            IDigitalOutputValueSetCommand turnItOff =new DigitalOutputSetValueCommand(SpecialPin.LED_PIN, false);
 
             ourImpl.PostMessage(confDigitalOut);
             for (int i = 0; i < 8; i++)
@@ -92,13 +92,13 @@ namespace IOIOLibDotNetTest.Device.Impl
             System.Threading.Thread.Sleep(100); // wait for us to get the hardware ids
 
             // SHOULD USE THE FACTORY instead of this lame ...
-            IConfigureDigitalOutputTo confDigitalOut =
-                new ConfigureDigitalOutputTo(new DigitalOutputSpec(31));
-            IConfigureDigitalInputTo configDigitalIn =
-                new ConfigureDigitalInputTo(new DigitalInputSpec(32, DigitalInputSpecMode.PULL_UP), true);
+            IDigitalOutputConfigureCommand confDigitalOut =
+                new DigitalOutputConfigureCommand(new DigitalOutputSpec(31));
+            IDigitalInputConfigureCommand configDigitalIn =
+                new DigitalInputConfigureCommand(new DigitalInputSpec(32, DigitalInputSpecMode.PULL_UP), true);
 
-            ISetDigitalOutputValueTo turnItOn = new SetDigitalOutputValueTo(31, true);
-            ISetDigitalOutputValueTo turnItOff = new SetDigitalOutputValueTo(31, false);
+            IDigitalOutputValueSetCommand turnItOn =new DigitalOutputSetValueCommand(31, true);
+            IDigitalOutputValueSetCommand turnItOff =new DigitalOutputSetValueCommand(31, false);
 
             ourImpl.PostMessage(confDigitalOut);
             ourImpl.PostMessage(configDigitalIn);

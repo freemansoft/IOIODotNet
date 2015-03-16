@@ -37,7 +37,7 @@ namespace IOIOLib.Component.Types
 {
     /**
      * A cue for a PWM speed channel.
-     * <p>
+     * <Ids_>
      * Determines what is going to be the pulse width while this cue is executing.
      */
     public  class SequencerChannelCuePwmSpeed : ISequencerChannelCue

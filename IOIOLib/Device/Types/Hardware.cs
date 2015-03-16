@@ -26,7 +26,7 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied.
  */
- 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +38,7 @@ namespace IOIOLib.Device.Types
     public class Hardware
     {
         internal static bool[,] MAP_IOIO0002_IOIO0003 = {
-            // p. out  p. in  analog
+            // Ids_. out  Ids_. in  analog
             { true,    true,  false },  // 0
             { false,  false,  false },  // 1
             { false,  false,  false },  // 2
@@ -90,7 +90,7 @@ namespace IOIOLib.Device.Types
             { true,    true,  false }   // 48
         };
         internal static bool[,] MAP_IOIO0004 = {
-            // p. out  p. in  analog
+            // Ids_. out  Ids_. in  analog
             { false,  false,  false },  // 0
             { true,    true,  false },  // 1
             { true,    true,  false },  // 2
@@ -172,12 +172,12 @@ namespace IOIOLib.Device.Types
             this.IcspPins = icspPins;
         }
 
-        int numPins()
+        internal int NumPins()
         {
             return PinMap.GetLength(0);
         }
 
-        int numAnalogPins()
+        internal int NumAnalogPins()
         {
             int result = 0;
             for (int index = 0; index < PinMap.GetLength(0); index++)
@@ -190,49 +190,16 @@ namespace IOIOLib.Device.Types
             return result;
         }
 
-        int numPwmModules()
-        {
-            return NumPwmModules;
-        }
-
-        int numUartModules()
-        {
-            return NumUartModules;
-        }
-
-        int numSpiModules()
-        {
-            return NumSpiModules;
-        }
-
-        int numTwiModules()
+        internal int NumTwiModules()
         {
             return TwiPins.Length;
         }
 
-        int[] incapSingleModules()
-        {
-            return IncapSingleModules;
-        }
 
-        int[] incapDoubleModules()
-        {
-            return IncapDoubleModules;
-        }
 
-        int[,] twiPins()
+        internal void CheckSupportsAnalogInput(int pin)
         {
-            return TwiPins;
-        }
-
-        int[] icspPins()
-        {
-            return IcspPins;
-        }
-
-        void checkSupportsAnalogInput(int pin)
-        {
-            checkValidPin(pin);
+            CheckValidPin(pin);
             if (!PinMap[pin, (int)Function.ANALOG_IN])
             {
                 throw new ArgumentException("Pin " + pin
@@ -240,9 +207,9 @@ namespace IOIOLib.Device.Types
             }
         }
 
-        void checkSupportsPeripheralInput(int pin)
+        internal void CheckSupportsPeripheralInput(int pin)
         {
-            checkValidPin(pin);
+            CheckValidPin(pin);
             if (!PinMap[pin, (int)Function.PERIPHERAL_IN])
             {
                 throw new ArgumentException("Pin " + pin
@@ -250,9 +217,9 @@ namespace IOIOLib.Device.Types
             }
         }
 
-        void checkSupportsPeripheralOutput(int pin)
+        internal void CheckSupportsPeripheralOutput(int pin)
         {
-            checkValidPin(pin);
+            CheckValidPin(pin);
             if (!PinMap[pin, (int)Function.PERIPHERAL_OUT])
             {
                 throw new ArgumentException("Pin " + pin
@@ -260,7 +227,7 @@ namespace IOIOLib.Device.Types
             }
         }
 
-        void checkValidPin(int pin)
+        internal void CheckValidPin(int pin)
         {
             if (pin < 0 || pin >= PinMap.GetLength(0))
             {
@@ -268,9 +235,9 @@ namespace IOIOLib.Device.Types
             }
         }
 
-        void checkSupportsCapSense(int pin)
+        internal void CheckSupportsCapSense(int pin)
         {
-            checkValidPin(pin);
+            CheckValidPin(pin);
             // Currently, all analog pins are also cap-sense.
             if (!PinMap[pin, (int)Function.ANALOG_IN])
             {

@@ -51,7 +51,7 @@ namespace IOIOLib.Device.Impl
         private List<int> AnalogPinValues_ = new List<int>();
         private List<int> AnalogFramePins_ = new List<int>();
         private List<int> NewFramePins_ = new List<int>();
-        // use Type_ HashSet because it implements RemoveWhere
+        // use Type HashSet because it implements RemoveWhere
         private HashSet<int> RemovedPins_ = new HashSet<int>();
         private HashSet<int> AddedPins_ = new HashSet<int>();
         private Stream Stream_;
@@ -183,7 +183,7 @@ namespace IOIOLib.Device.Impl
                 {
                     CancelTokenSource_.Token.ThrowIfCancellationRequested();
                     arg1 = readByte();
-                    LOG.Debug(IncomingTask_.Id + " Processing reply Type_ " + arg1.ToString("X"));
+                    LOG.Debug(IncomingTask_.Id + " Processing reply Type " + arg1.ToString("X"));
                     switch (arg1)
                     {
                         case (int)IOIOProtocolCommands.ESTABLISH_CONNECTION:

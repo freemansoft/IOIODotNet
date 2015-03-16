@@ -40,19 +40,19 @@ namespace IOIOLib.MessageFrom
         /// <summary>
         /// provided by IOIO when connects
         /// </summary>
-        string HardwareId_ { get; }
+        string HardwareId { get; }
         /// <summary>
         /// provided by IOIO when connects
         /// </summary>
-        string BootloaderId_ { get; }
+        string BootloaderId { get; }
         /// <summary>
         /// provided by IOIO when connects
         /// </summary>
-        string FirmwareId_ { get; }
+        string FirmwareId { get; }
         /// <summary>
         /// should we have a variable here or just look it up each time?
         /// this should probably not exist.  It should be posted as part of event to listeners
         /// </summary>
-        Device.Types.Hardware Hardware_ { get; }
+        Device.Types.Hardware Hardware { get; }
     }
 }

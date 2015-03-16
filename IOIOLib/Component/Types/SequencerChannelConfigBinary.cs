@@ -37,7 +37,7 @@ namespace IOIOLib.Component.Types
 {
     /**
      * Configuration for a binary channel.
-     * <p>
+     * <Ids_>
      * A binary channel is a simple digital output, which is driven in synchronization with the
      * sequence. Solenoids, DC motors running at full speed (no PWM) or LED are all examples for
      * actuators that can be controlled by a binary channel. During a stall event, the channel can
@@ -63,7 +63,7 @@ namespace IOIOLib.Component.Types
 
         /**
          * Constructor.
-         * <p>
+         * <Ids_>
          *
          * @param initialValue
          *            See {@link #initialValue}.

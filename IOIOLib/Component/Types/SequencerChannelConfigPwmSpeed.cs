@@ -36,8 +36,8 @@ using System.Threading.Tasks;
 namespace IOIOLib.Component.Types
 {
     /**
-     * Configuration for a channel of Type_ PWM speed.
-     * <p>
+     * Configuration for a channel of Type PWM speed.
+     * <Ids_>
      * PWM speed channels are channels in which a PWM signal is generated, and the pulse width
      * controls the speed of the actuator. A good example is a DC motor. The main difference from a
      * PWM position channel is that the position channel will go back to its initial pulse width
@@ -69,7 +69,7 @@ namespace IOIOLib.Component.Types
 
         /**
          * Constructor.
-         * <p>
+         * <Ids_>
          *
          * @param clk
          *            See {@link #clk}.

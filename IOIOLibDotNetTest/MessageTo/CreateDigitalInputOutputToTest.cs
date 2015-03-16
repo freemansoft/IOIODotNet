@@ -31,6 +31,7 @@ using IOIOLib.Component.Types;
 using IOIOLib.Connection;
 using IOIOLib.Device.Impl;
 using IOIOLib.Device.Types;
+using IOIOLib.MessageTo;
 using IOIOLib.MessageTo.Impl;
 using IOIOLib.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -56,10 +57,10 @@ namespace IOIOLibDotNetTest.MessageTo
             IOIOProtocolOutgoing fooOut = new IOIOProtocolOutgoing(ourConn.GetOutputStream());
             System.Threading.Thread.Sleep(100); // wait for us to get the hardware ids
 
-            ConfigureDigitalOutputTo commandSetup = new ConfigureDigitalOutputTo(
+            IDigitalOutputConfigureCommand commandSetup = new DigitalOutputConfigureCommand(
                 new DigitalOutputSpec(SpecialPin.LED_PIN, DigitalOutputSpecMode.NORMAL), false);
-            SetDigitalOutputValueTo commandOn = new SetDigitalOutputValueTo(SpecialPin.LED_PIN, true);
-            SetDigitalOutputValueTo commandOff = new SetDigitalOutputValueTo(SpecialPin.LED_PIN, false);
+            IDigitalOutputValueSetCommand commandOn = new DigitalOutputSetValueCommand(SpecialPin.LED_PIN, true);
+            IDigitalOutputValueSetCommand commandOff = new DigitalOutputSetValueCommand(SpecialPin.LED_PIN, false);
 
             commandSetup.ExecuteMessage(fooOut);
             for (int i = 0; i < 8; i++)

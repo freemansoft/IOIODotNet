@@ -37,13 +37,13 @@ namespace IOIOLib.Component.Types
 {
     /**
      * A cue for a steps channel.
-     * <p>
+     * <Ids_>
      * Determines the clock rate, pulse width and period durations while this cue is executing. This
      * kind of channel produces deterministic waveforms, which are typically used to generate a
      * precise number of steps during a given cue period. However, this comes at a cost of being a
      * little more involved from the user's perspective, since delicate timing considerations need
      * to be taken into account.
-     * <p>
+     * <Ids_>
      * The number of steps within a given cue period is given by floor(Tc / Ts), where Tc is the cue
      * duration and Ts is the step period duration. Each pulse is center-aligned within its period.
      * In order to maintain a deterministic result, the user must guarantee that no pulse falls
@@ -56,7 +56,7 @@ namespace IOIOLib.Component.Types
      * problems is splitting a single cue into two or more cues of shorted durations, until
      * eventually the precision is sufficient (this always converges, since eventually we can always
      * go to arbitrarily short cue durations, so that each one contains either zero or one steps.
-     * <p>
+     * <Ids_>
      * A steps channel allows determining the clock rate on a per-cue basis. This often allows
      * avoiding having to split cues, thus resulting in a less total cues and more efficient
      * execution. The rule for choosing the correct clock is to always use the highest rate that

@@ -36,7 +36,7 @@ using System.Threading.Tasks;
 namespace IOIOLib.Component.Types
 {
     /**
-     * Event Type_.
+     * Event Type.
      */
     public enum SequencerEventType
     {
@@ -62,7 +62,7 @@ namespace IOIOLib.Component.Types
          */
         STALLED,
         /**
-         * This event Type_ is only sent once, when the sequencer has been closed. It is mostly
+         * This event Type is only sent once, when the sequencer has been closed. It is mostly
          * intended to release a client blocking on {@link Sequencer#waitEvent()}. It is also
          * used if {@link Sequencer#getLastEvent()} is called before any event has been sent.
          */

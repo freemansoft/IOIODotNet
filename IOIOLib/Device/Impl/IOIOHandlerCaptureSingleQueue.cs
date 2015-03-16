@@ -141,7 +141,7 @@ namespace IOIOLib.Device.Impl
 
         public void HandleUartReportTxStatus(int uartNum, int bytesRemaining)
         {
-            this.Enqueue(new HandleUartReportTxStatusFrom(uartNum, bytesRemaining));
+            this.Enqueue(new UartReportTxStatusFrom(uartNum, bytesRemaining));
         }
 
         public void HandleSpiOpen(int spiNum)
@@ -161,7 +161,7 @@ namespace IOIOLib.Device.Impl
 
         public void HandleSpiReportTxStatus(int spiNum, int bytesRemaining)
         {
-            this.Enqueue(new HandleSpiReportTxStatusFrom(spiNum, bytesRemaining));
+            this.Enqueue(new SpiReportTxStatusFrom(spiNum, bytesRemaining));
         }
 
         public void HandleI2cOpen(int i2cNum)
@@ -181,7 +181,7 @@ namespace IOIOLib.Device.Impl
 
         public void HandleI2cReportTxStatus(int i2cNum, int bytesRemaining)
         {
-            this.Enqueue(new HandleI2cReportTxStatusFrom(i2cNum));
+            this.Enqueue(new I2cReportTxStatusFrom(i2cNum));
         }
 
         // default to close

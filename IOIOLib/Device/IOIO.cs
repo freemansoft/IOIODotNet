@@ -43,7 +43,7 @@ namespace IOIOLib.Device
     {
         /**
          * Establishes connection with the IOIO board.
-         * <p>
+         * <Ids_>
          * This method is blocking until connection is established. This method can be aborted by
          * calling {@link #Disconnect()}. In this case, it will throw a {@link ConnectionLostException}.
          *
@@ -61,10 +61,10 @@ namespace IOIOLib.Device
         /**
          * Closes the connection to the board, or aborts a connection process started with
          * WaitForConnect().
-         * <p>
+         * <Ids_>
          * Once this method is called, this IOIO instance and all the instances obtain from it become
          * invalid and will throw an exception on every operation.
-         * <p>
+         * <Ids_>
          * This method is asynchronous, i.e. it returns immediately, but it is not guaranteed that all
          * connection-related resources has already been freed and can be reused upon return. In cases
          * when this is important, client can call {@link #WaitForDisconnect()}, which will block until
@@ -94,7 +94,7 @@ namespace IOIOLib.Device
 
         /**
          * Resets the entire state (returning to initial state), without dropping the connection.
-         * <p>
+         * <Ids_>
          * It is equivalent to calling {@link Closeable#close()} on every interface obtained from this
          * instance. A connection must have been established prior to calling this method, by invoking
          * {@link #WaitForConnect()}.
@@ -107,7 +107,7 @@ namespace IOIOLib.Device
 
         /**
          * Equivalent to disconnecting and reconnecting the board power supply.
-         * <p>
+         * <Ids_>
          * The connection will be dropped and not reestablished. Full boot sequence will take place, so
          * firmware upgrades can be performed. A connection must have been established prior to calling
          * this method, by invoking {@link #WaitForConnect()}.
@@ -118,7 +118,7 @@ namespace IOIOLib.Device
          */
         void HardReset();
 
-        void PostMessage(IPostMessageTo message);
+        void PostMessage(IPostMessageCommand message);
 
 
 

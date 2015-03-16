@@ -80,7 +80,7 @@ namespace IOIOLib.Device.Impl
         /// <summary>
         /// Should use ConcurrentCollection under the hood
         /// </summary>
-        private BlockingCollection<IPostMessageTo> WorkQueue = new BlockingCollection<IPostMessageTo>();
+        private BlockingCollection<IPostMessageCommand> WorkQueue = new BlockingCollection<IPostMessageCommand>();
 
 
 
@@ -166,7 +166,7 @@ namespace IOIOLib.Device.Impl
         /// </summary>
         private void checkInterfaceVersion()
         {
-            ICheckInterfaceVersionTo CheckInterfaceVersionTo_ = new CheckInterfaceVersionTo(IOIORequiredInterfaceId.REQUIRED_INTERFACE_ID);
+            ICheckInterfaceVersionTo CheckInterfaceVersionTo_ = new CheckInterfaceVersionCommand(IOIORequiredInterfaceId.REQUIRED_INTERFACE_ID);
             this.PostMessage(CheckInterfaceVersionTo_);
             LOG.Warn("checkInterfaceVersion should poll for the response");
             //State_ = IOIOState.INCOMPATIBLE;
@@ -213,7 +213,7 @@ namespace IOIOLib.Device.Impl
         }
 
 
-        public void PostMessage(IPostMessageTo message)
+        public void PostMessage(IPostMessageCommand message)
         {
             WorkQueue.Add(message);
         }
@@ -234,7 +234,7 @@ namespace IOIOLib.Device.Impl
                 while (true)
                 {
                     this.CancelTokenSource_.Token.ThrowIfCancellationRequested();
-                    IPostMessageTo result;
+                    IPostMessageCommand result;
                     // use timeout so we can get cancellation token
                     // use blocking queue so that we aren't spinning
                     bool didTake = WorkQueue.TryTake(out result, timeout);

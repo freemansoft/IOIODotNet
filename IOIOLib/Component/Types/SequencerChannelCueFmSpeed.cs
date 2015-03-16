@@ -37,7 +37,7 @@ namespace IOIOLib.Component.Types
 {
     /**
      * A cue for a FM speed channel.
-     * <p>
+     * <Ids_>
      * Determines what is going to be the period duration (frequency) while this cue is executing.
      */
     public class SequencerChannelCueFmSpeed : ISequencerChannelCue

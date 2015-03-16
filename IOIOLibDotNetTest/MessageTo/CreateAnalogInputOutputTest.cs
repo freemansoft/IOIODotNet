@@ -56,16 +56,16 @@ namespace IOIOLibDotNetTest.MessageTo
             IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(ourConn.GetInputStream(), HandlerContainer_);
             IOIOProtocolOutgoing fooOut = new IOIOProtocolOutgoing(ourConn.GetOutputStream());
             System.Threading.Thread.Sleep(100); // wait for us to get the hardware ids
-            ConfigureAnalogInputTo commandCreateIn = new ConfigureAnalogInputTo(31, true);
+            AnalogInputConfigureCommand commandCreateIn = new AnalogInputConfigureCommand(31, true);
             commandCreateIn.ExecuteMessage(fooOut);
             System.Threading.Thread.Sleep(10);
 
             // set analog "voltage"
-            ConfigurePwmOutputTo commandCreatePWM = new ConfigurePwmOutputTo(32, 1000, 0.3f);
+            PwmOutputConfigureCommand commandCreatePWM = new PwmOutputConfigureCommand(32, 1000, 0.3f);
             commandCreatePWM.ExecuteMessage(fooOut);
             System.Threading.Thread.Sleep(100);
             // change it after settling
-            ConfigurePwmOutputTo commandChangePWM = new ConfigurePwmOutputTo(32, 1000, 0.7f);
+            PwmOutputConfigureCommand commandChangePWM = new PwmOutputConfigureCommand(32, 1000, 0.7f);
             commandChangePWM.ExecuteMessage(fooOut);
             System.Threading.Thread.Sleep(100);
 
