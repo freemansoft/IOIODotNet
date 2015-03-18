@@ -46,8 +46,8 @@ namespace IOIOLib.MessageTo.Impl
             this.FilterCoefficent = filterCoefficent;
         }
 
-        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound)
-        {
+        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound, Device.Impl.ResourceManager rManager)
+		{
             throw new NotImplementedException();
         }
     }

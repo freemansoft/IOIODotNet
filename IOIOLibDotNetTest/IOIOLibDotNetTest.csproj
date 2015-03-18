@@ -60,6 +60,9 @@
     <Compile Include="Device\Impl\IOIOImplTest.cs" />
     <Compile Include="Device\Impl\IOIOProtocolOutgoingTest.cs" />
     <Compile Include="Device\Impl\IOIOProtocolIncomingTest.cs" />
+    <Compile Include="Device\Impl\ResourceManagerTest.cs" />
+    <Compile Include="Device\Impl\ResourceAllocatorGenericTest.cs" />
+    <Compile Include="Device\Impl\ResourceAllocatorSpecificTest.cs" />
     <Compile Include="MessageTo\CreateAnalogInputOutputTest.cs" />
     <Compile Include="MessageTo\CreateDigitalInputOutputToTest.cs" />
     <Compile Include="TestHarnessSetup.cs" />

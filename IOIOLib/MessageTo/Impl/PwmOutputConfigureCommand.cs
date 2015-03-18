@@ -103,7 +103,7 @@ namespace IOIOLib.MessageTo.Impl
             }
         }
 
-        public bool ExecuteMessage(IOIOProtocolOutgoing outBound)
+        public bool ExecuteMessage(IOIOProtocolOutgoing outBound, Device.Impl.ResourceManager rManager)
         {
             outBound.setPinPwm(this.Pin, this.PwmNumber, this.Enable);
             outBound.setPwmPeriod(this.PwmNumber, this.Period, this.Scale);

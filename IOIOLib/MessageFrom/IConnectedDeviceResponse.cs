@@ -35,7 +35,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom
 {
-    public interface IEstablishConnectionFrom : IMessageFromIOIO
+    public interface IConnectedDeviceResponse : IMessageFromIOIO
     {
         /// <summary>
         /// provided by IOIO when connects

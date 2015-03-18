@@ -52,11 +52,11 @@ namespace IOIOLib.Device.Impl
         /// </summary>
         internal ISupportedInterfaceFrom Supported_;
 
-        internal IEstablishConnectionFrom EstablishConnectionFrom_;
+        internal IConnectedDeviceResponse EstablishConnectionFrom_;
 
         public void HandleEstablishConnection(byte[] hardwareId, byte[] bootloaderId, byte[] firmwareId)
         {
-            EstablishConnectionFrom_ = new EstablishConnectionFrom(
+            EstablishConnectionFrom_ = new ConnectedDeviceResponse(
                 System.Text.Encoding.ASCII.GetString(hardwareId),
                 System.Text.Encoding.ASCII.GetString(bootloaderId),
                 System.Text.Encoding.ASCII.GetString(firmwareId),

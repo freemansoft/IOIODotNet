@@ -11,8 +11,10 @@ namespace IOIOLib.Device.Types
         public ResourceType Type { get; private set; }
         public int Id_ { get; internal set; }
 
+		public static int ID_NOT_SET = -1;
+
         public Resource(ResourceType t)
-            : this(t, -1)
+            : this(t, ID_NOT_SET)
         {
         }
 
@@ -24,7 +26,7 @@ namespace IOIOLib.Device.Types
 
         public override string ToString()
         {
-            if (Id_ == -1)
+            if (Id_ == ID_NOT_SET)
             {
                 return Type.ToString();
             }

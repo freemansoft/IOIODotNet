@@ -51,22 +51,23 @@ namespace IOIOLibDotNetTest.MessageTo
         [TestMethod]
         public void CreateAnalogInputOutputTo_AnalogLoopbackOut31In32()
         {
-            IOIOConnection ourConn = this.CreateGoodSerialConnection();
+			IOIOLib.Device.Impl.ResourceManager rManager = null;
+			IOIOConnection ourConn = this.CreateGoodSerialConnection();
             this.CreateCaptureLogHandlerSet();
             IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(ourConn.GetInputStream(), HandlerContainer_);
             IOIOProtocolOutgoing fooOut = new IOIOProtocolOutgoing(ourConn.GetOutputStream());
             System.Threading.Thread.Sleep(100); // wait for us to get the hardware ids
             AnalogInputConfigureCommand commandCreateIn = new AnalogInputConfigureCommand(31, true);
-            commandCreateIn.ExecuteMessage(fooOut);
+            commandCreateIn.ExecuteMessage(fooOut,rManager);
             System.Threading.Thread.Sleep(10);
 
             // set analog "voltage"
             PwmOutputConfigureCommand commandCreatePWM = new PwmOutputConfigureCommand(32, 1000, 0.3f);
-            commandCreatePWM.ExecuteMessage(fooOut);
+            commandCreatePWM.ExecuteMessage(fooOut, rManager);
             System.Threading.Thread.Sleep(100);
             // change it after settling
             PwmOutputConfigureCommand commandChangePWM = new PwmOutputConfigureCommand(32, 1000, 0.7f);
-            commandChangePWM.ExecuteMessage(fooOut);
+            commandChangePWM.ExecuteMessage(fooOut, rManager);
             System.Threading.Thread.Sleep(100);
 
             IEnumerable<IReportAnalogPinValuesFrom> readValues = this.HandlerQueuePerType_

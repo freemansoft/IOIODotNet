@@ -48,7 +48,7 @@ namespace IOIOLib.MessageTo.Impl
             this.Level = level;
         }
 
-        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound)
+        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound, Device.Impl.ResourceManager rManager)
         {
             outBound.setDigitalOutLevel(Pin, Level);
             return true;

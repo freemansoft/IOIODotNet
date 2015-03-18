@@ -35,7 +35,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom.Impl
 {
-    public class EstablishConnectionFrom : IEstablishConnectionFrom
+    public class ConnectedDeviceResponse : IConnectedDeviceResponse
     {
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace IOIOLib.MessageFrom.Impl
         public Device.Types.Hardware Hardware { get; private set; }
 
 
-        internal EstablishConnectionFrom(string hardwareId, string bootloaderId, string firmwareId, Device.Types.Hardware hardware)
+        internal ConnectedDeviceResponse(string hardwareId, string bootloaderId, string firmwareId, Device.Types.Hardware hardware)
         {
             this.Hardware = null;
 

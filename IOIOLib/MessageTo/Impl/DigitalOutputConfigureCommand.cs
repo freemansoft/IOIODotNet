@@ -54,7 +54,7 @@ namespace IOIOLib.MessageTo.Impl
             this.StartValue = false;
         }
 
-        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound)
+        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound, Device.Impl.ResourceManager rManager)
         {
             outBound.setPinDigitalOut(this.Spec.pin, this.StartValue, this.Spec.mode);
             return true;

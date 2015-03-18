@@ -42,7 +42,7 @@ namespace IOIOLib.MessageTo
         /// </summary>
         /// <param name="outBound">the protocol bond to the device</param>
         /// <returns>return true if processing successful</returns>
-        bool ExecuteMessage(IOIOProtocolOutgoing outBound);
+        bool ExecuteMessage(IOIOProtocolOutgoing outBound, ResourceManager r);
 
     }
 }

@@ -62,13 +62,15 @@ namespace IOIOLibDotNetTest.MessageTo
             IDigitalOutputValueSetCommand commandOn = new DigitalOutputSetValueCommand(SpecialPin.LED_PIN, true);
             IDigitalOutputValueSetCommand commandOff = new DigitalOutputSetValueCommand(SpecialPin.LED_PIN, false);
 
-            commandSetup.ExecuteMessage(fooOut);
+			IOIOLib.Device.Impl.ResourceManager rManager = null;
+
+            commandSetup.ExecuteMessage(fooOut, rManager);
             for (int i = 0; i < 8; i++)
             {
                 System.Threading.Thread.Sleep(200);
-                commandOn.ExecuteMessage(fooOut);
+                commandOn.ExecuteMessage(fooOut, rManager);
                 System.Threading.Thread.Sleep(200);
-                commandOff.ExecuteMessage(fooOut);
+                commandOff.ExecuteMessage(fooOut, rManager);
             }
             Assert.IsTrue(true, "there is no status to check");
         }

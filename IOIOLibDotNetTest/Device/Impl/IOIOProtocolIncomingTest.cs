@@ -52,7 +52,7 @@ namespace IOIOLibDotNetTest.Device.Impl
         private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(IOIOProtocolIncomingTest));
 
         [TestMethod]
-        public void IOIOProtocolIncoming_TestStartRunLoop()
+        public void IOIOProtocolIncoming_StartRunLoop()
         {
             IOIOConnection ourConn = this.CreateGoodSerialConnection();
             this.CreateCaptureLogHandlerSet();

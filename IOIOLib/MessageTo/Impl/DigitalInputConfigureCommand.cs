@@ -60,7 +60,7 @@ namespace IOIOLib.MessageTo.Impl
             ChangeNotify = notifyOnChange;
         }
 
-        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound)
+        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound, Device.Impl.ResourceManager rManager)
         {
             outBound.setPinDigitalIn(this.Spec.pin, this.Spec.mode);
             if (ChangeNotify.HasValue && ChangeNotify.Value)

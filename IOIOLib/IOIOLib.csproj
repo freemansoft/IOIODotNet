@@ -124,10 +124,10 @@
     <Compile Include="IOIOException\IncompatabilityException.cs" />
     <Compile Include="IOIOException\ConnectionLostException.cs" />
     <Compile Include="IOIOException\ProtocolError.cs" />
-    <Compile Include="MessageFrom\IEstablishConnectionFrom.cs" />
+    <Compile Include="MessageFrom\IConnectedDeviceResponse.cs" />
     <Compile Include="MessageFrom\IIcspReportRxStatusFrom.cs" />
     <Compile Include="MessageFrom\IMessageFromIOIO.cs" />
-    <Compile Include="MessageFrom\Impl\EstablishConnectionFrom.cs" />
+    <Compile Include="MessageFrom\Impl\ConnectedDeviceResponse.cs" />
     <Compile Include="MessageFrom\Impl\IcspReportRxStatusFrom.cs" />
     <Compile Include="MessageFrom\Impl\ReportAnalogPinValuesFrom.cs" />
     <Compile Include="MessageFrom\Impl\CapSenseReportFrom.cs" />

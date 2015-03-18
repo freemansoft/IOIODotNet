@@ -60,7 +60,7 @@ namespace IOIOLib.Device.Impl
 
         public void HandleEstablishConnection(byte[] hardwareId, byte[] bootloaderId, byte[] firmwareId)
         {
-            IEstablishConnectionFrom EstablishConnectionFrom_ = new EstablishConnectionFrom(
+            IConnectedDeviceResponse EstablishConnectionFrom_ = new ConnectedDeviceResponse(
                 System.Text.Encoding.ASCII.GetString(hardwareId),
                 System.Text.Encoding.ASCII.GetString(bootloaderId),
                 System.Text.Encoding.ASCII.GetString(firmwareId),

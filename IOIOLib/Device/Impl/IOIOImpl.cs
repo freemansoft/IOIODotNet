@@ -66,6 +66,7 @@ namespace IOIOLib.Device.Impl
         private IOIOIncomingHandler InboundHandler_;
         private IOIOHandlerCaptureConnectionState CapturedConnectionInformation_;
         private IOIOHandlerCaptureLog CapturedLogs_;
+		private ResourceManager BoardResourceManager_;
 
         /// <summary>
         /// Used to stop this protocol thread
@@ -155,6 +156,7 @@ namespace IOIOLib.Device.Impl
             else
             {
                 State_ = IOIOState.CONNECTED;
+				BoardResourceManager_ = new ResourceManager(CapturedConnectionInformation_.EstablishConnectionFrom_.Hardware);
             }
             LOG.Info("Hardware is " + CapturedConnectionInformation_.EstablishConnectionFrom_);
         }
@@ -240,7 +242,7 @@ namespace IOIOLib.Device.Impl
                     bool didTake = WorkQueue.TryTake(out result, timeout);
                     if (didTake && result != null)
                     {
-                        result.ExecuteMessage(this.OutProt_);
+                        result.ExecuteMessage(this.OutProt_, this.BoardResourceManager_);
                     }
                 }
             }
