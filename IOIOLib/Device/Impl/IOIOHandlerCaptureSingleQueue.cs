@@ -48,7 +48,7 @@ namespace IOIOLib.Device.Impl
         private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(IOIOHandlerCaptureSingleQueue));
 
         /// <summary>
-        /// Need to come up with an API for this
+        /// Need to come up with an API to get the data!
         /// </summary>
         internal ConcurrentQueue<IMessageFromIOIO> CapturedMessages_ =
             new ConcurrentQueue<IMessageFromIOIO>();

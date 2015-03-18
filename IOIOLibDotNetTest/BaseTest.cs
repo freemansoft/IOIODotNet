@@ -56,7 +56,7 @@ namespace IOIOLibDotNetTest
         private IOIOConnection GoodConnection_ = null;
 
         internal IOIOHandlerCaptureLog HandlerLog_;
-        internal IOIOHandlerCaptureSeparateQueue HandlerQueuePerType_;
+        internal IOIOHandlerCaptureConnectionState HandlerCaptureConnectionState_;
         internal IOIOHandlerCaptureSingleQueue HandlerSingleQueueAllType_;
         internal IOIOHandlerDistributor HandlerContainer_;
 
@@ -126,13 +126,12 @@ namespace IOIOLibDotNetTest
         internal void CreateCaptureLogHandlerSet()
         {
             HandlerLog_ = new IOIOHandlerCaptureLog(10);
-            HandlerQueuePerType_ = new IOIOHandlerCaptureSeparateQueue();
             HandlerSingleQueueAllType_ = new IOIOHandlerCaptureSingleQueue();
-            HandlerContainer_ = new IOIOHandlerDistributor(
+			HandlerCaptureConnectionState_ = new IOIOHandlerCaptureConnectionState(); 
+			HandlerContainer_ = new IOIOHandlerDistributor(
                new List<IOIOIncomingHandler> { HandlerLog_, 
-                   HandlerQueuePerType_, 
-                   HandlerSingleQueueAllType_ 
-               });
+                   HandlerSingleQueueAllType_ ,HandlerCaptureConnectionState_
+			   });
         }
 
         /// <summary>

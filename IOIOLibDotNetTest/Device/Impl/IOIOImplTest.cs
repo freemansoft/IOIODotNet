@@ -60,7 +60,7 @@ namespace IOIOLibDotNetTest.Device.Impl
             LOG.Debug("Setup Complete");
 
             // we'll add the handler state on top of the default handlers so we don't have to peek into impl
-            IOIO ourImpl = CreateIOIOImplAndConnect(ourConn, this.HandlerQueuePerType_);
+            IOIO ourImpl = CreateIOIOImplAndConnect(ourConn, this.HandlerSingleQueueAllType_);
             System.Threading.Thread.Sleep(100); // wait for us to get the hardware ids
 
             // SHOULD USE THE FACTORY instead of this lame ...
@@ -88,7 +88,7 @@ namespace IOIOLibDotNetTest.Device.Impl
             LOG.Debug("Setup Complete");
 
             // we'll add the handler state on top of the default handlers so we don't have to peek into impl
-            IOIO ourImpl = CreateIOIOImplAndConnect(ourConn, this.HandlerQueuePerType_);
+            IOIO ourImpl = CreateIOIOImplAndConnect(ourConn, this.HandlerSingleQueueAllType_);
             System.Threading.Thread.Sleep(100); // wait for us to get the hardware ids
 
             // SHOULD USE THE FACTORY instead of this lame ...
@@ -111,7 +111,7 @@ namespace IOIOLibDotNetTest.Device.Impl
             }
             System.Threading.Thread.Sleep(100);
 
-            ConcurrentQueue<IMessageFromIOIO> digitalMessagesIn = this.HandlerQueuePerType_.GetClassified(typeof(IDigitalInFrom));
+			ConcurrentQueue<IMessageFromIOIO> digitalMessagesIn = this.HandlerSingleQueueAllType_.CapturedMessages_;
             int changeCount =
                 digitalMessagesIn.OfType<IReportDigitalInStatusFrom>().Where(m => m.Pin == 32).Count();
 

@@ -70,8 +70,8 @@ namespace IOIOLibDotNetTest.MessageTo
             commandChangePWM.ExecuteMessage(fooOut, rManager);
             System.Threading.Thread.Sleep(100);
 
-            IEnumerable<IReportAnalogPinValuesFrom> readValues = this.HandlerQueuePerType_
-                .GetClassified(typeof(IAnalogInFrom)).OfType<IReportAnalogPinValuesFrom>();
+            IEnumerable<IReportAnalogPinValuesFrom> readValues = this.HandlerSingleQueueAllType_.CapturedMessages_
+				.OfType<IReportAnalogPinValuesFrom>();
             Assert.IsTrue(readValues.Count() >= 1, "Unexpected count for IReportAnalogPinValuesFrom: "+readValues.Count());
         }
 

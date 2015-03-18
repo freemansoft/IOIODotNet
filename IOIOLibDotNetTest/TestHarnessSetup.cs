@@ -94,7 +94,7 @@ namespace IOIOLibDotNetTest
                     // logging without real capture
                     IOIOHandlerCaptureLog handlerLog = new IOIOHandlerCaptureLog(1);
                     // so we can verifys
-                    IOIOHandlerCaptureSeparateQueue handlerState = new IOIOHandlerCaptureSeparateQueue();
+                    IOIOHandlerCaptureConnectionState handlerState = new IOIOHandlerCaptureConnectionState();
                     IOIOIncomingHandler handler = new IOIOHandlerDistributor(
                         new List<IOIOIncomingHandler> { handlerLog, handlerState });
                     IOIOProtocolIncoming foo = new IOIOProtocolIncoming(oneConn.GetInputStream(), handler);

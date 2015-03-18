@@ -96,7 +96,6 @@
     <Compile Include="MessageFrom\IUartDataFrom.cs" />
     <Compile Include="MessageTo\ICheckInterfaceVersionCommand.cs" />
     <Compile Include="Device\Impl\IOIOHandlerCaptureLog.cs" />
-    <Compile Include="Device\Impl\IOIOHandlerCaptureSeparateQueue.cs" />
     <Compile Include="Device\Impl\IOIOHandlerDistributor.cs" />
     <Compile Include="Device\Impl\IOIOHandlerNotifier.cs" />
     <Compile Include="Device\Impl\IOIOProtocolIncoming.cs" />

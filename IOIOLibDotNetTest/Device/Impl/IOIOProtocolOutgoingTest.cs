@@ -76,7 +76,7 @@ namespace IOIOLibDotNetTest.Device.Impl
             fooOut.checkInterfaceVersion();
             // wait for reply
             System.Threading.Thread.Sleep(2000);
-            Assert.IsTrue(HandlerQueuePerType_.Supported_.IsSupported, " the HandlerContainer_ returned not supported interface.");
+            Assert.IsTrue(HandlerCaptureConnectionState_.Supported_.IsSupported, " the HandlerContainer_ returned not supported interface.");
         }
 
         [TestMethod]

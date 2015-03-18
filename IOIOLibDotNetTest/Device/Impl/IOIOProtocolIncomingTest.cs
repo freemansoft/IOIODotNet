@@ -60,7 +60,7 @@ namespace IOIOLibDotNetTest.Device.Impl
             IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(ourConn.GetInputStream(), HandlerContainer_);
             // wait for reply
             System.Threading.Thread.Sleep(2000);
-            Assert.IsNotNull(HandlerQueuePerType_.EstablishConnectionFrom_);
+            Assert.IsNotNull(HandlerCaptureConnectionState_.EstablishConnectionFrom_);
         }
 
         [TestMethod]
@@ -98,12 +98,12 @@ namespace IOIOLibDotNetTest.Device.Impl
             int matchingLogs = this.HandlerLog_.CapturedLogs_.Count(s => s.StartsWith("HandleReportDigitalInStatus"));
             Assert.AreEqual(3, matchingLogs, "Should have captured input changes, not " + matchingLogs + ".  Are pins 31 and 32 shorted together");
             // verify the system acknowledged our request to be notified of state change
-            Assert.AreEqual(1, this.HandlerQueuePerType_.GetClassified(typeof(ISetChangeNotifyMessageFrom))
-                .OfType<ISetChangeNotifyMessageFrom>().Where(m => m.Pin == 31).Count()
+            Assert.AreEqual(1, this.HandlerSingleQueueAllType_.CapturedMessages_
+				.OfType<ISetChangeNotifyMessageFrom>().Where(m => m.Pin == 31).Count()
                 , "Unexpected count for IReportDigitalInStatusFrom");
             // verify we got Pin state changes for 31
-            Assert.AreEqual(3, this.HandlerQueuePerType_.GetClassified(typeof(IDigitalInFrom))
-                .OfType<IReportDigitalInStatusFrom>().Where(m => m.Pin == 31).Count()
+            Assert.AreEqual(3, this.HandlerSingleQueueAllType_.CapturedMessages_
+				.OfType<IReportDigitalInStatusFrom>().Where(m => m.Pin == 31).Count()
                 , "Unexpected count for IReportDigitalInStatusFrom");
         }
     }
