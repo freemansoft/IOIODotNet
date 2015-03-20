@@ -45,7 +45,7 @@ namespace IOIOLib.MessageTo.Impl
             this.UartNum = uartNum;
         }
 
-        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound, Device.Impl.ResourceManager rManager)
+        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound, Device.IResourceManager rManager)
         {
             throw new NotImplementedException();
         }

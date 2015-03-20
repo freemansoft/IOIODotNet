@@ -26,8 +26,9 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied.
  */
- 
+
 using IOIOLib.Component.Types;
+using IOIOLib.Device.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,12 +61,13 @@ namespace IOIOLib.MessageTo.Impl
             ChangeNotify = notifyOnChange;
         }
 
-        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound, Device.Impl.ResourceManager rManager)
+        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound, Device.IResourceManager rManager)
         {
-            outBound.setPinDigitalIn(this.Spec.pin, this.Spec.mode);
+			rManager.Alloc(new Resource(ResourceType.PIN, Spec.Pin));
+			outBound.setPinDigitalIn(this.Spec.Pin, this.Spec.Mode);
             if (ChangeNotify.HasValue && ChangeNotify.Value)
             {
-                outBound.setChangeNotify(this.Spec.pin, ChangeNotify.Value);
+                outBound.setChangeNotify(this.Spec.Pin, ChangeNotify.Value);
             }
             return true;
 

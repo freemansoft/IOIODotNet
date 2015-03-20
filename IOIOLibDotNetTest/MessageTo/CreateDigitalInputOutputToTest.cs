@@ -29,6 +29,7 @@
 
 using IOIOLib.Component.Types;
 using IOIOLib.Connection;
+using IOIOLib.Device;
 using IOIOLib.Device.Impl;
 using IOIOLib.Device.Types;
 using IOIOLib.MessageTo;
@@ -58,11 +59,12 @@ namespace IOIOLibDotNetTest.MessageTo
             System.Threading.Thread.Sleep(100); // wait for us to get the hardware ids
 
             IDigitalOutputConfigureCommand commandSetup = new DigitalOutputConfigureCommand(
-                new DigitalOutputSpec(SpecialPin.LED_PIN, DigitalOutputSpecMode.NORMAL), false);
-            IDigitalOutputValueSetCommand commandOn = new DigitalOutputSetValueCommand(SpecialPin.LED_PIN, true);
-            IDigitalOutputValueSetCommand commandOff = new DigitalOutputSetValueCommand(SpecialPin.LED_PIN, false);
+                new DigitalOutputSpec(Spec.LED_PIN, DigitalOutputSpecMode.NORMAL), false);
+            IDigitalOutputValueSetCommand commandOn = new DigitalOutputSetValueCommand(Spec.LED_PIN, true);
+            IDigitalOutputValueSetCommand commandOff = new DigitalOutputSetValueCommand(Spec.LED_PIN, false);
 
-			IOIOLib.Device.Impl.ResourceManager rManager = null;
+			//// TODO should use the hardware from the captured connection
+			IResourceManager rManager = new ResourceManager(Hardware.IOIO0003);
 
             commandSetup.ExecuteMessage(fooOut, rManager);
             for (int i = 0; i < 8; i++)

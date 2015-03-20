@@ -90,13 +90,13 @@ namespace IOIOLibDotNetTest.Device.Impl
             IOIOProtocolOutgoing fooOut = new IOIOProtocolOutgoing(ourConn.GetOutputStream());
             System.Threading.Thread.Sleep(100); // wait for us to get the hardware ids
 
-            fooOut.setPinDigitalOut(SpecialPin.LED_PIN, false, DigitalOutputSpecMode.NORMAL);
+            fooOut.setPinDigitalOut(Spec.LED_PIN, false, DigitalOutputSpecMode.NORMAL);
             for (int i = 0; i < 8; i++)
             {
                 System.Threading.Thread.Sleep(200);
-                fooOut.setDigitalOutLevel(SpecialPin.LED_PIN, true);
+                fooOut.setDigitalOutLevel(Spec.LED_PIN, true);
                 System.Threading.Thread.Sleep(200);
-                fooOut.setDigitalOutLevel(SpecialPin.LED_PIN, false);
+                fooOut.setDigitalOutLevel(Spec.LED_PIN, false);
             }
             Assert.IsTrue(true, "there is no status to check");
         }

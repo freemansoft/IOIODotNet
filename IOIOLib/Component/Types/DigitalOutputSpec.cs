@@ -40,9 +40,9 @@ namespace IOIOLib.Component.Types
         /** Output Pin mode. */
 
         /** The Pin number, as labeled on the board. */
-        public int pin { get; set; }
+        public int Pin { get; private set; }
         /** The Pin mode. */
-        public DigitalOutputSpecMode mode { get; set; }
+        public DigitalOutputSpecMode Mode { get; private set; }
 
         /**
          * Constructor.
@@ -54,8 +54,8 @@ namespace IOIOLib.Component.Types
          */
         public DigitalOutputSpec(int pin, DigitalOutputSpecMode mode)
         {
-            this.pin = pin;
-            this.mode = mode;
+            this.Pin = pin;
+            this.Mode = mode;
         }
 
         /**

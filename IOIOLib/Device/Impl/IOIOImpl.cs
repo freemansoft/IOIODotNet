@@ -66,7 +66,7 @@ namespace IOIOLib.Device.Impl
         private IOIOIncomingHandler InboundHandler_;
         private IOIOHandlerCaptureConnectionState CapturedConnectionInformation_;
         private IOIOHandlerCaptureLog CapturedLogs_;
-		private ResourceManager BoardResourceManager_;
+		private IResourceManager BoardResourceManager_;
 
         /// <summary>
         /// Used to stop this protocol thread

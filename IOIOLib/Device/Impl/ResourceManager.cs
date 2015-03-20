@@ -39,8 +39,8 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.Device.Impl
 {
-    public class ResourceManager
-    {
+    public class ResourceManager : IResourceManager
+	{
 
         private IResourceAllocator[] Allocators_ = new IResourceAllocator[
             Enum.GetNames(typeof(ResourceType)).Length];

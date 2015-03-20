@@ -26,8 +26,9 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied.
  */
- 
+
 using IOIOLib.Component.Types;
+using IOIOLib.Device.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,9 +55,10 @@ namespace IOIOLib.MessageTo.Impl
             this.StartValue = false;
         }
 
-        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound, Device.Impl.ResourceManager rManager)
+        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound, Device.IResourceManager rManager)
         {
-            outBound.setPinDigitalOut(this.Spec.pin, this.StartValue, this.Spec.mode);
+			rManager.Alloc(new Resource(ResourceType.PIN, Spec.Pin));
+            outBound.setPinDigitalOut(this.Spec.Pin, this.StartValue, this.Spec.Mode);
             return true;
         }
     }

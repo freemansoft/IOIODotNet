@@ -26,7 +26,8 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied.
  */
- 
+
+using IOIOLib.Component.Types;
 using IOIOLib.Device.Types;
 using System;
 using System.Collections.Generic;
@@ -38,18 +39,16 @@ namespace IOIOLib.MessageTo
 {
     public interface IPwmOutputConfigureCommand : ICommandToIOIO, IPostMessageCommand
     {
-
-        bool ShouldSetDutyCycle { get; }
-
-        int Pin { get; }
+		PwmOutputSpec PwmSpec { get; }
 
         bool Enable { get; }
 
-        int PwmNumber { get; }
-
         float DutyCycle { get; }
 
-        int Period { get; }
-        PwmScale Scale { get; }
+		/// <summary>
+		/// defaults to 1Khz
+		/// </summary>
+		int RequestedFrequency { get; }
+
     }
 }

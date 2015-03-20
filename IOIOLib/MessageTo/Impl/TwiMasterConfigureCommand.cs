@@ -51,7 +51,7 @@ namespace IOIOLib.MessageTo.Impl
         }
 
 
-        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound, Device.Impl.ResourceManager rManager)
+        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound, Device.IResourceManager rManager)
         {
             throw new NotImplementedException();
         }

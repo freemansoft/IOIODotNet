@@ -26,7 +26,8 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied.
  */
- 
+
+using IOIOLib.Component.Types;
 using IOIOLib.Device.Impl;
 using IOIOLib.Device.Types;
 using System;
@@ -39,104 +40,66 @@ namespace IOIOLib.MessageTo.Impl
 {
     public class PwmOutputConfigureCommand : IPwmOutputConfigureCommand
     {
-        public bool ShouldSetDutyCycle { get; private set; }
 
-        public  int Pin { get; private set; }
+        public PwmOutputSpec PwmSpec { get; private set; }
 
         public bool Enable { get; private set; }
 
-        public int PwmNumber { get; private set; }
 
         public float DutyCycle { get; private set; }
 
-        public int Period { get; private set; }
-        public PwmScale Scale { get; private set; }
+		public int RequestedFrequency { get; private set; }
 
-        public PwmOutputConfigureCommand(int pin, bool enable)
+        public PwmOutputConfigureCommand(DigitalOutputSpec spec, bool enable)
         {
-            this.Pin = pin;
+
+			this.PwmSpec = new PwmOutputSpec(spec) ;
             this.Enable = enable;
-            this.DutyCycle = 0.0f;
-            this.ShouldSetDutyCycle = false;
-            CalculatePeriodAndScale(1000);//// default in IOIO is 1Khz for sampling so maybe here too
-            this.PwmNumber = 0; // should use a resource manager
+            this.DutyCycle = float.NaN;
+			this.RequestedFrequency = 1000;			// default in IOIO is 1Khz for sampling so maybe here too
         }
 
-        public PwmOutputConfigureCommand(int pin, int freqHz)
+        public PwmOutputConfigureCommand(DigitalOutputSpec spec, int freqHz)
         {
-            this.Pin = pin;
-            this.Enable = true;
-            this.DutyCycle = 0.0f;
-            this.ShouldSetDutyCycle = false;
-            CalculatePeriodAndScale(freqHz);
-            this.PwmNumber = 0; // should use a resource manager
+			this.PwmSpec = new PwmOutputSpec(spec);
+			this.Enable = true;
+            this.DutyCycle = float.NaN;
+			this.RequestedFrequency = freqHz;
         }
 
-        public PwmOutputConfigureCommand(int pin, int freqHz, float dutyCycle)
+        public PwmOutputConfigureCommand(DigitalOutputSpec spec, int freqHz, float dutyCycle)
         {
-            this.Pin = pin;
-            this.Enable = true;
+			this.PwmSpec = new PwmOutputSpec(spec);
+			this.Enable = true;
             this.DutyCycle = dutyCycle;
-            this.ShouldSetDutyCycle = true;
-            CalculatePeriodAndScale(1000); //// default in IOIO is 1Khz for sampling so maybe here too
-            this.PwmNumber = 0; // should use a resource manager
+			this.RequestedFrequency = freqHz;
         }
 
-        private void CalculatePeriodAndScale(int freqHz)
+        public bool ExecuteMessage(IOIOProtocolOutgoing outBound, Device.IResourceManager rManager)
         {
-            Scale = null;
-            float baseUs;
-            foreach (PwmScale OneScale in PwmScale.AllScales)
-            {
-                int clk = 16000000 / OneScale.scale;
-                Period = clk / freqHz;
-                if (Period <= 65536)
-                {
-                    baseUs = 1000000.0f / clk;
-                    Scale = OneScale;
-                    break;
-                }
-            }
-            if (Scale == null)
-            {
-                throw new ArgumentException("Frequency too low: " + freqHz);
-            }
-        }
+			Resource outPin = new Resource(ResourceType.PIN, this.PwmSpec.PinSpec.Pin);
+			Resource pwm = new Resource(ResourceType.OUTCOMPARE);
+            rManager.Alloc(outPin);
+			rManager.Alloc(pwm);		// acquires the pwm number
+			this.PwmSpec = new PwmOutputSpec(this.PwmSpec.PinSpec, pwm.Id_);
 
-        public bool ExecuteMessage(IOIOProtocolOutgoing outBound, Device.Impl.ResourceManager rManager)
-        {
-            outBound.setPinPwm(this.Pin, this.PwmNumber, this.Enable);
-            outBound.setPwmPeriod(this.PwmNumber, this.Period, this.Scale);
-            if (this.ShouldSetDutyCycle)
-            {
-                setPulseWidthInClocks(outBound, this.Period, this.DutyCycle);
-            }
+			outBound.setPinDigitalOut(this.PwmSpec.PinSpec.Pin, false, this.PwmSpec.PinSpec.Mode);
+            outBound.setPinPwm(this.PwmSpec.PinSpec.Pin, this.PwmSpec.PwmNumber, this.Enable);
+
+			IPwmOutputUpdateCommand updateCommand;
+			if (this.DutyCycle != float.NaN)
+			{
+				updateCommand = new PwmOutputUpdateCommand(this.PwmSpec, this.RequestedFrequency, this.DutyCycle);
+			}
+			else
+			{
+				updateCommand = new PwmOutputUpdateCommand(this.PwmSpec, this.RequestedFrequency);
+			}
+			updateCommand.ExecuteMessage(outBound, rManager);
+			this.PwmSpec = updateCommand.PwmSpec; // pick up any frequency change
+
             return true;
         }
 
-        private void setPulseWidthInClocks(IOIOProtocolOutgoing outBound, int period, float dutyCycle)
-        {
-            float pulseWidthInClocks = period * dutyCycle;
-            if (pulseWidthInClocks > this.Period)
-            {
-                pulseWidthInClocks = this.Period;
-            }
-            int pulseWidth;
-            int fraction;
-            pulseWidthInClocks -= 1; // period parameter is one less than the actual period length
-            // yes, there is 0 and then 2 (no 1) - this is not a bug, that
-            // is how the hardware PWM module works.
-            if (pulseWidthInClocks < 1)
-            {
-                pulseWidth = 0;
-                fraction = 0;
-            }
-            else
-            {
-                pulseWidth = (int)pulseWidthInClocks;
-                fraction = ((int)pulseWidthInClocks * 4) & 0x03;
-            }
-            outBound.setPwmDutyCycle(this.PwmNumber, pulseWidth, fraction);
-        }
     }
 }

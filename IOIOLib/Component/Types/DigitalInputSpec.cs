@@ -41,9 +41,9 @@ namespace IOIOLib.Component.Types
     public class DigitalInputSpec
     {
         /** The Pin number, as labeled on the board. */
-        public int pin;
+        public int Pin { get; private set; }
         /** The Pin mode. */
-        public DigitalInputSpecMode mode;
+        public DigitalInputSpecMode Mode { get; private set; }
 
         /**
          * Constructor.
@@ -55,8 +55,8 @@ namespace IOIOLib.Component.Types
          */
         public DigitalInputSpec(int pin, DigitalInputSpecMode mode)
         {
-            this.pin = pin;
-            this.mode = mode;
+            this.Pin = pin;
+            this.Mode = mode;
         }
 
         /** Shorthand for Spec(Pin, Mode.FLOATING). */

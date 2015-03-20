@@ -29,9 +29,11 @@
 
 using IOIOLib.Component.Types;
 using IOIOLib.Connection;
+using IOIOLib.Device;
 using IOIOLib.Device.Impl;
 using IOIOLib.Device.Types;
 using IOIOLib.MessageFrom;
+using IOIOLib.MessageTo;
 using IOIOLib.MessageTo.Impl;
 using IOIOLib.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -46,12 +48,13 @@ namespace IOIOLibDotNetTest.MessageTo
     [TestClass]
     public class CreateAnalogInputOutputTest : BaseTest
     {
-        private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(CreateDigitalInputOutputToTest));
+        private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(CreateAnalogInputOutputTest));
 
         [TestMethod]
         public void CreateAnalogInputOutputTo_AnalogLoopbackOut31In32()
         {
-			IOIOLib.Device.Impl.ResourceManager rManager = null;
+			//// TODO should use the hardware from the captured connection
+			IResourceManager rManager = new ResourceManager(Hardware.IOIO0003);
 			IOIOConnection ourConn = this.CreateGoodSerialConnection();
             this.CreateCaptureLogHandlerSet();
             IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(ourConn.GetInputStream(), HandlerContainer_);
@@ -60,20 +63,28 @@ namespace IOIOLibDotNetTest.MessageTo
             AnalogInputConfigureCommand commandCreateIn = new AnalogInputConfigureCommand(31, true);
             commandCreateIn.ExecuteMessage(fooOut,rManager);
             System.Threading.Thread.Sleep(10);
+			DigitalOutputSpec pwmPinSpec = new DigitalOutputSpec(32, DigitalOutputSpecMode.NORMAL);
 
             // set analog "voltage"
-            PwmOutputConfigureCommand commandCreatePWM = new PwmOutputConfigureCommand(32, 1000, 0.3f);
+            PwmOutputConfigureCommand commandCreatePWM = new PwmOutputConfigureCommand(pwmPinSpec, 1000, 0.3f);
             commandCreatePWM.ExecuteMessage(fooOut, rManager);
             System.Threading.Thread.Sleep(100);
-            // change it after settling
-            PwmOutputConfigureCommand commandChangePWM = new PwmOutputConfigureCommand(32, 1000, 0.7f);
+			// change it after settling
+			PwmOutputUpdateCommand commandChangePWM = new PwmOutputUpdateCommand(commandCreatePWM.PwmSpec,  0.7f);
             commandChangePWM.ExecuteMessage(fooOut, rManager);
             System.Threading.Thread.Sleep(100);
+			PwmOutputCloseCommand commandReleasePwm = new PwmOutputCloseCommand(commandCreatePWM.PwmSpec);
+			commandReleasePwm.ExecuteMessage(fooOut, rManager);
+			System.Threading.Thread.Sleep(50);
 
-            IEnumerable<IReportAnalogPinValuesFrom> readValues = this.HandlerSingleQueueAllType_.CapturedMessages_
+			IEnumerable<IReportAnalogPinValuesFrom> readValues = this.HandlerSingleQueueAllType_.CapturedMessages_
 				.OfType<IReportAnalogPinValuesFrom>();
-            Assert.IsTrue(readValues.Count() >= 1, "Unexpected count for IReportAnalogPinValuesFrom: "+readValues.Count());
-        }
+            Assert.IsTrue(readValues.Count() >= 1, "Didn't find the number of expected IReportAnalogPinValuesFrom: "+readValues.Count());
+			// logging the messages with any other string doesn't show the messages themselves !?
+			LOG.Debug("Captured " + +this.HandlerSingleQueueAllType_.CapturedMessages_.Count);
+			LOG.Debug(this.HandlerSingleQueueAllType_.CapturedMessages_);
+			// should verify close command
+		}
 
-    }
+	}
 }

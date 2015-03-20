@@ -44,7 +44,7 @@ namespace IOIOLib.MessageTo.Impl
             this.InterfaceId = interfaceId;
         }
 
-        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound, Device.Impl.ResourceManager rManager)
+        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound, Device.IResourceManager rManager)
         {
             outBound.checkInterfaceVersion();
             return true;

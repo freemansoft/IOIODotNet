@@ -37,7 +37,7 @@ namespace IOIOLib.MessageTo.Impl
 {
     public class IcspMasterConfigureCommand : IIcspMasterConfigureCommand
     {
-        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound, Device.Impl.ResourceManager rManager)
+        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound, Device.IResourceManager rManager)
         {
             throw new NotImplementedException();
         }

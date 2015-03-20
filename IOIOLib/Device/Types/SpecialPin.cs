@@ -35,7 +35,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.Device.Types
 {
-    public class SpecialPin
+    public class Spec
     {
         /** An invalid Pin number. */
         public static int INVALID_PIN = -1;

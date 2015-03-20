@@ -67,7 +67,7 @@ namespace IOIOLib.MessageTo.Impl
             throw new NotImplementedException("Post(IOpenSpiMasterTo) not tied together in outgoing protocol");
         }
 
-        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound, Device.Impl.ResourceManager rManager)
+        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound, Device.IResourceManager rManager)
         {
             throw new NotImplementedException();
         }

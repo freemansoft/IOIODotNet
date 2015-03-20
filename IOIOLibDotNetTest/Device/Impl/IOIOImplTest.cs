@@ -65,9 +65,9 @@ namespace IOIOLibDotNetTest.Device.Impl
 
             // SHOULD USE THE FACTORY instead of this lame ...
             IDigitalOutputConfigureCommand confDigitalOut = new DigitalOutputConfigureCommand(
-                new IOIOLib.Component.Types.DigitalOutputSpec(SpecialPin.LED_PIN));
-            IDigitalOutputValueSetCommand turnItOn = new DigitalOutputSetValueCommand(SpecialPin.LED_PIN, true);
-            IDigitalOutputValueSetCommand turnItOff =new DigitalOutputSetValueCommand(SpecialPin.LED_PIN, false);
+                new IOIOLib.Component.Types.DigitalOutputSpec(Spec.LED_PIN));
+            IDigitalOutputValueSetCommand turnItOn = new DigitalOutputSetValueCommand(Spec.LED_PIN, true);
+            IDigitalOutputValueSetCommand turnItOff =new DigitalOutputSetValueCommand(Spec.LED_PIN, false);
 
             ourImpl.PostMessage(confDigitalOut);
             for (int i = 0; i < 8; i++)

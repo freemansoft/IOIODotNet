@@ -4,6 +4,7 @@ using IOIOLib.Device.Impl;
 using IOIOLib.Device.Types;
 using IOIOLib.IOIOException;
 using System.Collections.Generic;
+using IOIOLib.Device;
 
 namespace IOIOLibDotNetTest.Device.Impl
 {
@@ -13,13 +14,13 @@ namespace IOIOLibDotNetTest.Device.Impl
 		[TestMethod]
 		public void ResourceManagerTest_BindHardware()
 		{
-			ResourceManager underTest = new ResourceManager(Hardware.IOIO0004);
+			IResourceManager underTest = new ResourceManager(Hardware.IOIO0004);
 		}
 
 		[TestMethod]
 		public void ResourceManagerTest_ICSPSingle()
 		{
-			ResourceManager underTest = new ResourceManager(Hardware.IOIO0004);
+			IResourceManager underTest = new ResourceManager(Hardware.IOIO0004);
 			underTest.Alloc(new Resource(ResourceType.ICSP));
 		}
 
@@ -31,7 +32,7 @@ namespace IOIOLibDotNetTest.Device.Impl
 		public void ResourceManagerTest_ICSPTooMany()
 		{
 			// use ICSP because it is hard coded as only one
-			ResourceManager underTest = new ResourceManager(Hardware.IOIO0004);
+			IResourceManager underTest = new ResourceManager(Hardware.IOIO0004);
 			underTest.Alloc(new Resource(ResourceType.ICSP));
 			underTest.Alloc(new Resource(ResourceType.ICSP));
 		}
@@ -39,7 +40,7 @@ namespace IOIOLibDotNetTest.Device.Impl
 		[TestMethod]
 		public void ResourceManagerTest_SinglePins()
 		{
-			ResourceManager underTest = new ResourceManager(Hardware.IOIO0004);
+			IResourceManager underTest = new ResourceManager(Hardware.IOIO0004);
 			underTest.Alloc(new Resource(ResourceType.PIN, 1));
 			underTest.Alloc(new Resource(ResourceType.PIN, 2));
 			underTest.Alloc(new Resource(ResourceType.PIN, 3));

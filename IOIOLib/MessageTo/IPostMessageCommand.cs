@@ -26,7 +26,8 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied.
  */
- 
+
+using IOIOLib.Device;
 using IOIOLib.Device.Impl;
 using System;
 using System.Collections.Generic;
@@ -42,7 +43,7 @@ namespace IOIOLib.MessageTo
         /// </summary>
         /// <param name="outBound">the protocol bond to the device</param>
         /// <returns>return true if processing successful</returns>
-        bool ExecuteMessage(IOIOProtocolOutgoing outBound, ResourceManager r);
+        bool ExecuteMessage(IOIOProtocolOutgoing outBound, IResourceManager r);
 
     }
 }

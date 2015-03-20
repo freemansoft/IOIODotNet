@@ -26,7 +26,9 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied.
  */
- 
+
+using IOIOLib.Component.Types;
+using IOIOLib.Device.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,36 +37,24 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageTo.Impl
 {
-    public class PulseInputConfigureCommand : IPulseInputConfigureCommand
+    public class PwmOutputCloseCommand: IPwmOutputCloseCommand
     {
-        //
-        // from java IOIOImpl  we just need to  set the Values and let the outgoing protocol make the calls
-        /*
-        checkState();
-        hardware_.CheckSupportsPeripheralInput(spec.Pin);
-        Resource Pin = new Resource(ResourceType.PIN, spec.Pin);
-        Resource incap = new Resource(
-                doublePrecision ? ResourceType.INCAP_DOUBLE
-                        : ResourceType.INCAP_SINGLE);
-        resourceManager_.Alloc(Pin, incap);
 
-        IncapImpl result = new IncapImpl(this, mode, incap, Pin, rate.hertz,
-                mode.scaling, doublePrecision);
-        addDisconnectListener(result);
-        incomingState_.addIncapListener(incap.id, result);
-        try {
-            protocol_.setPinDigitalIn(spec.Pin, spec.mode);
-            protocol_.setPinIncap(spec.Pin, incap.id, true);
-            protocol_.incapConfigure(incap.id, doublePrecision,
-                    mode.ordinal() + 1, rate.ordinal());
-        } catch (IOException e) {
-            result.close();
-            throw new ConnectionLostException(e);
+		public PwmOutputSpec PwmSpec { get; private set; }
+
+
+		public PwmOutputCloseCommand(PwmOutputSpec spec)
+        {
+            this.PwmSpec = spec;
         }
-         */
+
         public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound, Device.IResourceManager rManager)
         {
-            throw new NotImplementedException();
+			outBound.setPinDigitalIn(this.PwmSpec.PinSpec.Pin, DigitalInputSpecMode.FLOATING);
+			outBound.setPwmPeriod(this.PwmSpec.PwmNumber, 0, PwmScale.Scale1X);
+			rManager.Free(new Resource(ResourceType.PIN, PwmSpec.PinSpec.Pin));
+			rManager.Free(new Resource(ResourceType.OUTCOMPARE, this.PwmSpec.PwmNumber));
+            return true;
         }
     }
 }
