@@ -133,25 +133,30 @@ namespace IOIOLib.Device.Impl
             CancelTokenSource_ = new CancellationTokenSource();
             OutProt_ = new IOIOProtocolOutgoing(this.Conn_.GetOutputStream());
             InProt_ = new IOIOProtocolIncoming(this.Conn_.GetInputStream(), this.InboundHandler_, CancelTokenSource_);
-            //Joe's COM4 @ 115200 spits out HW,BootLoader,InterfaceVersion: IOIOSPRK0016IOIO0311IOIO0500
-            initBoardVersion();
-            //checkInterfaceVersion();
             // start the message pump
             OutgoingTask_ = new Task(run, CancelTokenSource_.Token, TaskCreationOptions.LongRunning);
             OutgoingTask_.Start();
-        }
+			// message sink has to be started before we can verify board version because the board staus is picked up by the sync
+			//Joe's COM4 @ 115200 spits out HW,BootLoader,InterfaceVersion: IOIOSPRK0016IOIO0311IOIO0500
+			initBoardVersion();
+			//checkInterfaceVersion();
+		}
 
-        /// <summary>
-        /// Verify we are connected and set our state accordingly
-        /// </summary>
-        private void initBoardVersion()
+		/// <summary>
+		/// Verify we are connected and set our state accordingly
+		/// </summary>
+		private void initBoardVersion()
         {
-            // hack until we figure out where state should be and how we accesses
-            // Should this build the hardware object and retain it instead of doing it in the handler?
-            // the inbound handler actually has already processed the board version.  
-            if (CapturedConnectionInformation_.EstablishConnectionFrom_ == null)
+			// inbound sink must be running before we get here.
+			// the inbound handler actually has already processed the board version.  
+			for (int i = 0; i < 10 && CapturedConnectionInformation_.EstablishConnectionFrom_ == null; i++)
+			{
+					System.Threading.Thread.Sleep(10);
+            }
+			if (CapturedConnectionInformation_.EstablishConnectionFrom_ == null)
             {
                 State_ = IOIOState.DEAD;
+				LOG.Error("Failed to identify the board version");
             }
             else
             {
@@ -217,6 +222,11 @@ namespace IOIOLib.Device.Impl
 
         public void PostMessage(IPostMessageCommand message)
         {
+			if (this.BoardResourceManager_ == null)
+			{
+				LOG.Error("Can't post messages without a resource manager");
+				throw new IllegalStateException("Can't post messages without a resource manager");
+            }
             WorkQueue.Add(message);
         }
 
@@ -229,49 +239,53 @@ namespace IOIOLib.Device.Impl
 
         public void run()
         {
-            try
-            {
-                // pick something fast for humans but long for a computer
-                TimeSpan timeout = new TimeSpan(0, 0, 0, 0, 100);
-                while (true)
-                {
-                    this.CancelTokenSource_.Token.ThrowIfCancellationRequested();
-                    IPostMessageCommand result;
-                    // use timeout so we can get cancellation token
-                    // use blocking queue so that we aren't spinning
-                    bool didTake = WorkQueue.TryTake(out result, timeout);
-                    if (didTake && result != null)
-                    {
-                        result.ExecuteMessage(this.OutProt_, this.BoardResourceManager_);
-                    }
-                }
-            }
-            catch (System.Threading.ThreadAbortException e)
-            {
-                LOG.Error(OutgoingTask_.Id + " Probably aborted thread (TAE): " + e.Message);
-            }
-            catch (ObjectDisposedException e)
-            {
-                //// see this when steram is closed
-                LOG.Error(OutgoingTask_.Id + " Probably closed outgoing Stream_: (ODE)" + e.Message);
-            }
-            catch (Exception e)
-            {
-                LOG.Error(OutgoingTask_.Id + " Probably stopping outgoing: (E)" + e.Message);
-            }
-            finally
-            {
-                // we don't play swith Stream_ since we didn't create it
-                LOG.Debug(OutgoingTask_.Id + " Throwing thread cancel to mae sure outgoing thread stopped");
-                // this is redundant if we got here because of thread stop
-                this.CancelTokenSource_.Cancel();
-                // debugger will always stop here in unit tests if test dynamically determines what Port_ ot use
-                // just hit continue in the debugger
-                this.CancelTokenSource_.Token.ThrowIfCancellationRequested();
-                // should tell OutProt_ to shut down
-                this.OutProt_ = null;
-                this.OutgoingTask_ = null;
-            }
+			try
+			{
+				// pick something fast for humans but long for a computer
+				TimeSpan timeout = new TimeSpan(0, 0, 0, 0, 100);
+				while (true)
+				{
+					this.CancelTokenSource_.Token.ThrowIfCancellationRequested();
+					IPostMessageCommand result;
+					// use timeout so we can get cancellation token
+					// use blocking queue so that we aren't spinning
+					bool didTake = WorkQueue.TryTake(out result, timeout);
+					if (didTake && result != null)
+					{
+						result.ExecuteMessage(this.OutProt_, this.BoardResourceManager_);
+					}
+				}
+			}
+			catch (System.Threading.ThreadAbortException e)
+			{
+				LOG.Error(OutgoingTask_.Id + " Probably aborted thread (TAE): " + e.Message);
+			}
+			catch (ObjectDisposedException e)
+			{
+				//// see this when steram is closed
+				LOG.Error(OutgoingTask_.Id + " Probably closed outgoing Stream_: (ODE)" + e.Message);
+			}
+			catch (NullReferenceException e)
+			{
+				LOG.Error(OutgoingTask_+" Caught Null Reference when sending message");
+			}
+			catch (Exception e)
+			{
+				LOG.Error(OutgoingTask_.Id + " Probably stopping outgoing: (E)" + e.Message);
+			}
+			finally
+			{
+				// we don't play swith Stream_ since we didn't create it
+				LOG.Debug(OutgoingTask_.Id + " Throwing thread cancel to make sure outgoing thread stopped");
+				// this is redundant if we got here because of thread stop
+				this.CancelTokenSource_.Cancel();
+				// debugger will always stop here in unit tests if test dynamically determines what Port_ ot use
+				// just hit continue in the debugger
+				this.CancelTokenSource_.Token.ThrowIfCancellationRequested();
+				// should tell OutProt_ to shut down
+				this.OutProt_ = null;
+				this.OutgoingTask_ = null;
+			}
 
         }
 
