@@ -65,14 +65,17 @@ namespace IOIOLibDotNetTest.MessageTo
 
 			//// TODO should use the hardware from the captured connection
 			IResourceManager rManager = new ResourceManager(Hardware.IOIO0003);
+			commandSetup.Alloc(rManager);
+			commandOn.Alloc(rManager);
+			commandOff.Alloc(rManager);
 
-            commandSetup.ExecuteMessage(fooOut, rManager);
+            commandSetup.ExecuteMessage(fooOut);
             for (int i = 0; i < 8; i++)
             {
                 System.Threading.Thread.Sleep(200);
-                commandOn.ExecuteMessage(fooOut, rManager);
+                commandOn.ExecuteMessage(fooOut);
                 System.Threading.Thread.Sleep(200);
-                commandOff.ExecuteMessage(fooOut, rManager);
+                commandOff.ExecuteMessage(fooOut);
             }
             Assert.IsTrue(true, "there is no status to check");
         }

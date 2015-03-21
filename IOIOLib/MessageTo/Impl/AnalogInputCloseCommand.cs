@@ -34,6 +34,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IOIOLib.Device;
+using IOIOLib.Device.Impl;
 
 namespace IOIOLib.MessageTo.Impl
 {
@@ -51,9 +53,19 @@ namespace IOIOLib.MessageTo.Impl
 
         public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound, Device.IResourceManager rManager)
         {
-			rManager.Free(new Resource(ResourceType.PIN, Pin));
 			outBound.setPinDigitalIn(Pin, DigitalInputSpecMode.FLOATING);
 			return true;
         }
-    }
+
+		public bool Alloc(IResourceManager rManager)
+		{
+			rManager.Free(new Resource(ResourceType.PIN, Pin));
+			return true;
+		}
+
+		public bool ExecuteMessage(IOIOProtocolOutgoing outBound)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

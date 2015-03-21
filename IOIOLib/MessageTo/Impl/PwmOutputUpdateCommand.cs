@@ -99,7 +99,7 @@ namespace IOIOLib.MessageTo.Impl
 			this.RequestedFrequency = freqHz;
         }
 
-        public bool ExecuteMessage(IOIOProtocolOutgoing outBound, Device.IResourceManager rManager)
+        public bool ExecuteMessage(IOIOProtocolOutgoing outBound)
         {
 			// calculate the period and scale even if not setting frequency because needed by duty cycle
 			CalculatePeriodAndScale(this.RequestedFrequency);
@@ -115,6 +115,10 @@ namespace IOIOLib.MessageTo.Impl
             }
             return true;
         }
+
+		public bool Alloc(Device.IResourceManager rManager) {
+			return true;
+		}
 
 
 		private void CalculatePeriodAndScale(int freqHz)

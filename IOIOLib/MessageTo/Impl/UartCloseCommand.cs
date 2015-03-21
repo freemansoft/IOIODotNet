@@ -33,6 +33,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IOIOLib.Device;
 
 namespace IOIOLib.MessageTo.Impl
 {
@@ -45,9 +46,14 @@ namespace IOIOLib.MessageTo.Impl
             this.UartNum = uartNum;
         }
 
-        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound, Device.IResourceManager rManager)
+        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound)
         {
             throw new NotImplementedException();
         }
-    }
+
+		public bool Alloc(IResourceManager rManager)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

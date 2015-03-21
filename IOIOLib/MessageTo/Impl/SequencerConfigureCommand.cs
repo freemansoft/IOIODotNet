@@ -26,13 +26,15 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied.
  */
- 
+
 using IOIOLib.Component.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IOIOLib.Device;
+using IOIOLib.Device.Impl;
 
 namespace IOIOLib.MessageTo.Impl
 {
@@ -49,5 +51,15 @@ namespace IOIOLib.MessageTo.Impl
         {
             throw new NotImplementedException();
         }
-    }
+
+		public bool Alloc(IResourceManager rManager)
+		{
+			throw new NotImplementedException();
+		}
+
+		public bool ExecuteMessage(IOIOProtocolOutgoing outBound)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

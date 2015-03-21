@@ -37,21 +37,26 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageTo.Impl
 {
-    public class DigitalOutputCloseCommand: IDigitalOutputCloseCommand
-    {
+	public class DigitalOutputCloseCommand : IDigitalOutputCloseCommand
+	{
 
-        public DigitalOutputSpec Spec { get; private set; }
+		public DigitalOutputSpec Spec { get; private set; }
 
 		public DigitalOutputCloseCommand(Component.Types.DigitalOutputSpec spec)
-        {
-            this.Spec = spec;
-        }
+		{
+			this.Spec = spec;
+		}
 
-        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound, Device.IResourceManager rManager)
-        {
+		public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound)
+		{
+			outBound.setPinDigitalIn(this.Spec.Pin, DigitalInputSpecMode.FLOATING);
+			return true;
+		}
+
+		public bool Alloc(Device.IResourceManager rManager)
+		{
 			rManager.Free(new Resource(ResourceType.PIN, Spec.Pin));
-            outBound.setPinDigitalIn(this.Spec.Pin, DigitalInputSpecMode.FLOATING);
-            return true;
-        }
-    }
+			return true;
+		}
+	}
 }

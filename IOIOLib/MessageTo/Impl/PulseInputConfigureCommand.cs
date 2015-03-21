@@ -62,9 +62,14 @@ namespace IOIOLib.MessageTo.Impl
             throw new ConnectionLostException(e);
         }
          */
-        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound, Device.IResourceManager rManager)
+        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound)
         {
             throw new NotImplementedException();
         }
-    }
+
+		public bool Alloc(Device.IResourceManager rManager)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

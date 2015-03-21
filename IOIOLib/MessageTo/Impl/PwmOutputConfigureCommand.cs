@@ -75,14 +75,8 @@ namespace IOIOLib.MessageTo.Impl
 			this.RequestedFrequency = freqHz;
         }
 
-        public bool ExecuteMessage(IOIOProtocolOutgoing outBound, Device.IResourceManager rManager)
+        public bool ExecuteMessage(IOIOProtocolOutgoing outBound)
         {
-			Resource outPin = new Resource(ResourceType.PIN, this.PwmSpec.PinSpec.Pin);
-			Resource pwm = new Resource(ResourceType.OUTCOMPARE);
-            rManager.Alloc(outPin);
-			rManager.Alloc(pwm);		// acquires the pwm number
-			this.PwmSpec = new PwmOutputSpec(this.PwmSpec.PinSpec, pwm.Id_);
-
 			outBound.setPinDigitalOut(this.PwmSpec.PinSpec.Pin, false, this.PwmSpec.PinSpec.Mode);
             outBound.setPinPwm(this.PwmSpec.PinSpec.Pin, this.PwmSpec.PwmNumber, this.Enable);
 
@@ -95,11 +89,23 @@ namespace IOIOLib.MessageTo.Impl
 			{
 				updateCommand = new PwmOutputUpdateCommand(this.PwmSpec, this.RequestedFrequency);
 			}
-			updateCommand.ExecuteMessage(outBound, rManager);
-			this.PwmSpec = updateCommand.PwmSpec; // pick up any frequency change
+			updateCommand.ExecuteMessage(outBound);
+			// retain any frequency change done by the update command
+			this.PwmSpec = updateCommand.PwmSpec; 
 
             return true;
         }
 
-    }
+		public bool Alloc(Device.IResourceManager rManager)
+		{
+			Resource outPin = new Resource(ResourceType.PIN, this.PwmSpec.PinSpec.Pin);
+			Resource pwm = new Resource(ResourceType.OUTCOMPARE);
+			rManager.Alloc(outPin);
+			rManager.Alloc(pwm);		// acquires the pwm number
+			// retain the PWM number
+			this.PwmSpec = new PwmOutputSpec(this.PwmSpec.PinSpec, pwm.Id_);
+
+			return true;
+		}
+	}
 }

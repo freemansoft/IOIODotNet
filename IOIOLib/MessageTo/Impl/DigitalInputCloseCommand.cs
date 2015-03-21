@@ -34,6 +34,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IOIOLib.Device;
 
 namespace IOIOLib.MessageTo.Impl
 {
@@ -47,11 +48,16 @@ namespace IOIOLib.MessageTo.Impl
             this.Spec = spec;
         }
 
-        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound, Device.IResourceManager rManager)
+        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound)
         {
-			rManager.Free(new Resource(ResourceType.PIN, Spec.Pin));
             outBound.setPinDigitalIn(this.Spec.Pin, DigitalInputSpecMode.FLOATING);
             return true;
         }
-    }
+
+		public bool Alloc(IResourceManager rManager)
+		{
+			rManager.Free(new Resource(ResourceType.PIN, Spec.Pin));
+			return true;
+		}
+	}
 }

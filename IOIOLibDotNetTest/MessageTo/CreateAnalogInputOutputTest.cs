@@ -61,20 +61,24 @@ namespace IOIOLibDotNetTest.MessageTo
             IOIOProtocolOutgoing fooOut = new IOIOProtocolOutgoing(ourConn.GetOutputStream());
             System.Threading.Thread.Sleep(100); // wait for us to get the hardware ids
             AnalogInputConfigureCommand commandCreateIn = new AnalogInputConfigureCommand(31, true);
-            commandCreateIn.ExecuteMessage(fooOut,rManager);
+			commandCreateIn.Alloc(rManager);
+            commandCreateIn.ExecuteMessage(fooOut);
             System.Threading.Thread.Sleep(10);
 			DigitalOutputSpec pwmPinSpec = new DigitalOutputSpec(32, DigitalOutputSpecMode.NORMAL);
 
             // set analog "voltage"
             PwmOutputConfigureCommand commandCreatePWM = new PwmOutputConfigureCommand(pwmPinSpec, 1000, 0.3f);
-            commandCreatePWM.ExecuteMessage(fooOut, rManager);
+			commandCreatePWM.Alloc(rManager);
+			commandCreatePWM.ExecuteMessage(fooOut);
             System.Threading.Thread.Sleep(100);
 			// change it after settling
 			PwmOutputUpdateCommand commandChangePWM = new PwmOutputUpdateCommand(commandCreatePWM.PwmSpec,  0.7f);
-            commandChangePWM.ExecuteMessage(fooOut, rManager);
+			commandChangePWM.Alloc(rManager);
+			commandChangePWM.ExecuteMessage(fooOut);
             System.Threading.Thread.Sleep(100);
 			PwmOutputCloseCommand commandReleasePwm = new PwmOutputCloseCommand(commandCreatePWM.PwmSpec);
-			commandReleasePwm.ExecuteMessage(fooOut, rManager);
+			commandReleasePwm.Alloc(rManager);
+			commandReleasePwm.ExecuteMessage(fooOut);
 			System.Threading.Thread.Sleep(50);
 
 			IEnumerable<IReportAnalogPinValuesFrom> readValues = this.HandlerSingleQueueAllType_.CapturedMessages_

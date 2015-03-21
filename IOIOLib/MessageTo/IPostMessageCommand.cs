@@ -38,12 +38,15 @@ using System.Threading.Tasks;
 namespace IOIOLib.MessageTo
 {
     public interface IPostMessageCommand
-    {        /// <summary>
+    {
+		bool Alloc(IResourceManager rManager);
+		     
+		/// <summary>
         /// 
         /// </summary>
         /// <param name="outBound">the protocol bond to the device</param>
         /// <returns>return true if processing successful</returns>
-        bool ExecuteMessage(IOIOProtocolOutgoing outBound, IResourceManager r);
+        bool ExecuteMessage(IOIOProtocolOutgoing outBound);
 
     }
 }

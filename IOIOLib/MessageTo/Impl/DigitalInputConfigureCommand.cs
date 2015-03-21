@@ -34,6 +34,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IOIOLib.Device;
 
 namespace IOIOLib.MessageTo.Impl
 {
@@ -61,9 +62,8 @@ namespace IOIOLib.MessageTo.Impl
             ChangeNotify = notifyOnChange;
         }
 
-        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound, Device.IResourceManager rManager)
+        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound)
         {
-			rManager.Alloc(new Resource(ResourceType.PIN, Spec.Pin));
 			outBound.setPinDigitalIn(this.Spec.Pin, this.Spec.Mode);
             if (ChangeNotify.HasValue && ChangeNotify.Value)
             {
@@ -72,5 +72,11 @@ namespace IOIOLib.MessageTo.Impl
             return true;
 
         }
-    }
+
+		public bool Alloc(IResourceManager rManager)
+		{
+			rManager.Alloc(new Resource(ResourceType.PIN, Spec.Pin));
+			return true;
+		}
+	}
 }

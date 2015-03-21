@@ -226,7 +226,11 @@ namespace IOIOLib.Device.Impl
 			{
 				LOG.Error("Can't post messages without a resource manager");
 				throw new IllegalStateException("Can't post messages without a resource manager");
-            }
+			}
+			else
+			{
+				message.Alloc(this.BoardResourceManager_);
+			}
             WorkQueue.Add(message);
         }
 
@@ -252,7 +256,7 @@ namespace IOIOLib.Device.Impl
 					bool didTake = WorkQueue.TryTake(out result, timeout);
 					if (didTake && result != null)
 					{
-						result.ExecuteMessage(this.OutProt_, this.BoardResourceManager_);
+						result.ExecuteMessage(this.OutProt_);
 					}
 				}
 			}

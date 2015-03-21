@@ -26,12 +26,14 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied.
  */
- 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IOIOLib.Device;
+using IOIOLib.Device.Impl;
 
 namespace IOIOLib.MessageTo.Impl
 {
@@ -46,9 +48,15 @@ namespace IOIOLib.MessageTo.Impl
             this.FilterCoefficent = filterCoefficent;
         }
 
-        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound, Device.IResourceManager rManager)
+        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound)
 		{
             throw new NotImplementedException();
         }
-    }
+
+		public bool Alloc(IResourceManager rManager)
+		{
+			throw new NotImplementedException();
+		}
+
+	}
 }

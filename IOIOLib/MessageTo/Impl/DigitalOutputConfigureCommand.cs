@@ -55,11 +55,15 @@ namespace IOIOLib.MessageTo.Impl
             this.StartValue = false;
         }
 
-        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound, Device.IResourceManager rManager)
+        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound)
         {
-			rManager.Alloc(new Resource(ResourceType.PIN, Spec.Pin));
             outBound.setPinDigitalOut(this.Spec.Pin, this.StartValue, this.Spec.Mode);
             return true;
         }
-    }
+		public bool Alloc(Device.IResourceManager rManager)
+		{
+			rManager.Alloc(new Resource(ResourceType.PIN, Spec.Pin));
+			return true;
+		}
+	}
 }
