@@ -28,9 +28,9 @@ namespace IOIOLib.MessageTo
 			return new UartSendCommand(uart, data, byteCount);
 
 		}
-		public IUartCloseCommand CreateCloseUart(UartSpec UartSpec)
+		public IUartCloseCommand CreateCloseUart(UartSpec uartSpec)
 		{
-			return new UartCloseCommand(UartSpec);
+			return new UartCloseCommand(uartSpec);
 		}
 
 	}
