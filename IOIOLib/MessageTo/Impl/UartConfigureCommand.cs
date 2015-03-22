@@ -51,6 +51,15 @@ namespace IOIOLib.MessageTo.Impl
 
 
 
+		/// <summary>
+		/// Pins 3-7, 10-14, 27-32, 34-40 and 45-48 can be used with UART
+		/// https://github.com/ytai/ioio/wiki/UART 
+		/// </summary>
+		/// <param name="digitalInputSpec"></param>
+		/// <param name="digitalOutputSpec"></param>
+		/// <param name="baud"></param>
+		/// <param name="parity"></param>
+		/// <param name="stopbits"></param>
 		internal UartConfigureCommand(Component.Types.DigitalInputSpec digitalInputSpec, Component.Types.DigitalOutputSpec digitalOutputSpec, int baud, Component.Types.UartParity parity, Component.Types.UartStopBits stopbits)
 		{
 			this.Baud = baud;

@@ -23,6 +23,11 @@ namespace IOIOLib.MessageTo
 			return new UartConfigureCommand(new DigitalInputSpec(rx), new DigitalOutputSpec(tx), baud, parity, stopbits);
 		}
 
+		public IUartSendCommand CreateSendUart(UartSpec uart, byte[] data, int byteCount )
+		{
+			return new UartSendCommand(uart, data, byteCount);
+
+		}
 		public IUartCloseCommand CreateCloseUart(UartSpec UartSpec)
 		{
 			return new UartCloseCommand(UartSpec);

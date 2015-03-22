@@ -55,9 +55,14 @@ namespace IOIOLib.MessageTo.Impl
             return true;
         }
 
+		/// <summary>
+		/// TODO really needs to be a Free() method in this interface
+		/// this is actually in the wrong order -- should be done AFTER the command
+		/// </summary>
+		/// <param name="rManager"></param>
+		/// <returns></returns>
 		public bool Alloc(Device.IResourceManager rManager)
 		{
-			/// this is actually in the wrong order -- should be done AFTER the command
 			rManager.Free(new Resource(ResourceType.PIN, PwmDef.PinSpec.Pin));
 			rManager.Free(new Resource(ResourceType.OUTCOMPARE, this.PwmDef.PwmNumber));
 			return true;

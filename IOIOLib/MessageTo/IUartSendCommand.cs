@@ -27,77 +27,18 @@
  * or implied.
  */
 
+using IOIOLib.Component.Types;
 using IOIOLib.Device.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using IOIOLib.Device;
-using IOIOLib.Component.Types;
-using IOIOLib.Util;
 
-namespace IOIOLib.MessageTo.Impl
+namespace IOIOLib.MessageTo
 {
-    public class UartCloseCommand : IUartCloseCommand
+    public interface IUartSendCommand : ICommandToIOIO, IPostMessageCommand
     {
-		private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(UartCloseCommand));
-
-		public UartSpec UartDef { get; private set; }
-
-        internal UartCloseCommand(UartSpec uart)
-        {
-            this.UartDef = uart;
-        }
-
-        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound)
-        {
-			try
-			{
-				outBound.uartClose(this.UartDef.UartNumber);
-			}
-			catch (Exception e)
-			{
-				LOG.Debug("Caught exception while closing UART ", e);
-			}
-			if (this.UartDef.RxSpec != null)
-			{
-				outBound.setPinDigitalIn(this.UartDef.RxSpec.Pin, DigitalInputSpecMode.FLOATING);
-			}
-			if (this.UartDef.TxSpec != null)
-			{
-				outBound.setPinDigitalIn(this.UartDef.TxSpec.Pin, DigitalInputSpecMode.FLOATING);
-			}
-			return true;
-		}
-
-
-
-		/// <summary>
-		/// TODO really needs to be a Free() method in this interface
-		/// this is actually in the wrong order -- should be done AFTER the command
-		/// </summary>
-		/// <param name="rManager"></param>
-		/// <returns></returns>
-		public bool Alloc(IResourceManager rManager)
-		{
-			try
-			{
-				rManager.Free(new Resource(ResourceType.UART, this.UartDef.UartNumber));
-			}
-			catch (Exception e)
-			{
-				LOG.Debug("Caught exception while releasing UART ", e);
-			}
-			if (this.UartDef.RxSpec != null)
-			{
-				rManager.Free(new Resource(ResourceType.PIN, this.UartDef.RxSpec.Pin));
-			}
-			if (this.UartDef.TxSpec != null)
-			{
-				rManager.Free(new Resource(ResourceType.PIN, this.UartDef.TxSpec.Pin));
-			}
-			return true;
-		}
-	}
+		UartSpec UartDef { get; }
+    }
 }

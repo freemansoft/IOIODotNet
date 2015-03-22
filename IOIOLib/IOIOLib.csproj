@@ -201,6 +201,7 @@
     <Compile Include="MessageTo\ICommandToIOIO.cs" />
     <Compile Include="MessageTo\IDigitalInputCloseCommand.cs" />
     <Compile Include="MessageTo\Impl\PwmOutputUpdateCommand.cs" />
+    <Compile Include="MessageTo\Impl\UartSendCommand.cs" />
     <Compile Include="MessageTo\IPwmOutputCloseCommand.cs" />
     <Compile Include="MessageTo\IDigitalOutputCloseCommand.cs" />
     <Compile Include="MessageTo\Impl\AnalogInputCloseCommand.cs" />
@@ -220,6 +221,7 @@
     <Compile Include="MessageTo\Impl\TwiMasterConfigureCommand.cs" />
     <Compile Include="MessageTo\Impl\UartConfigureCommand.cs" />
     <Compile Include="MessageTo\IPwmOutputUpdateCommand.cs" />
+    <Compile Include="MessageTo\IUartSendCommand.cs" />
     <Compile Include="MessageTo\IUartCloseCommand.cs" />
     <Compile Include="MessageTo\Impl\SequencerConfigureCommand.cs" />
     <Compile Include="MessageTo\Impl\DigitalOutputSetValueCommand.cs" />

@@ -39,64 +39,33 @@ using IOIOLib.Util;
 
 namespace IOIOLib.MessageTo.Impl
 {
-    public class UartCloseCommand : IUartCloseCommand
+    public class UartSendCommand : IUartSendCommand
     {
 		private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(UartCloseCommand));
 
 		public UartSpec UartDef { get; private set; }
 
-        internal UartCloseCommand(UartSpec uart)
+		public byte[] Data { get; private set; }
+		public int Size { get; private set; }
+
+
+        internal UartSendCommand(UartSpec uart, byte[] data, int size)
         {
             this.UartDef = uart;
+			this.Data = data;
+			this.Size = size;
         }
 
         public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound)
         {
-			try
-			{
-				outBound.uartClose(this.UartDef.UartNumber);
-			}
-			catch (Exception e)
-			{
-				LOG.Debug("Caught exception while closing UART ", e);
-			}
-			if (this.UartDef.RxSpec != null)
-			{
-				outBound.setPinDigitalIn(this.UartDef.RxSpec.Pin, DigitalInputSpecMode.FLOATING);
-			}
-			if (this.UartDef.TxSpec != null)
-			{
-				outBound.setPinDigitalIn(this.UartDef.TxSpec.Pin, DigitalInputSpecMode.FLOATING);
-			}
+			outBound.uartData(UartDef.UartNumber, Size, Data);
 			return true;
 		}
 
 
 
-		/// <summary>
-		/// TODO really needs to be a Free() method in this interface
-		/// this is actually in the wrong order -- should be done AFTER the command
-		/// </summary>
-		/// <param name="rManager"></param>
-		/// <returns></returns>
 		public bool Alloc(IResourceManager rManager)
 		{
-			try
-			{
-				rManager.Free(new Resource(ResourceType.UART, this.UartDef.UartNumber));
-			}
-			catch (Exception e)
-			{
-				LOG.Debug("Caught exception while releasing UART ", e);
-			}
-			if (this.UartDef.RxSpec != null)
-			{
-				rManager.Free(new Resource(ResourceType.PIN, this.UartDef.RxSpec.Pin));
-			}
-			if (this.UartDef.TxSpec != null)
-			{
-				rManager.Free(new Resource(ResourceType.PIN, this.UartDef.TxSpec.Pin));
-			}
 			return true;
 		}
 	}

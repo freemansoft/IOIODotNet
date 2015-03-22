@@ -271,7 +271,7 @@ namespace IOIOLib.Device.Impl
 			}
 			catch (NullReferenceException e)
 			{
-				LOG.Error(OutgoingTask_+" Caught Null Reference when sending message");
+				LOG.Error(OutgoingTask_+" Caught Null Reference when sending message",e);
 			}
 			catch (Exception e)
 			{

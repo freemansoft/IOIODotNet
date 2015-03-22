@@ -32,6 +32,7 @@ using IOIOLib.Connection;
 using IOIOLib.Device;
 using IOIOLib.Device.Impl;
 using IOIOLib.Device.Types;
+using IOIOLib.MessageFrom;
 using IOIOLib.MessageTo;
 using IOIOLib.MessageTo.Impl;
 using IOIOLib.Util;
@@ -45,41 +46,56 @@ using System.Threading.Tasks;
 namespace IOIOLibDotNetTest.MessageTo
 {
     [TestClass]
-    public class CreateDigitalInputOutputToTest : BaseTest
+    public class CreateUartTest : BaseTest
     {
-        private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(CreateDigitalInputOutputToTest));
+        private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(CreateUartTest));
 
         [TestMethod]
-        public void CreateDigitalOutputTo_ToggleLED()
+        public void CreateUartTest_LoopbackOut31In32()
         {
-            IOIOConnection ourConn = this.CreateGoodSerialConnection();
+			//// TODO should use the hardware from the captured connection
+			IResourceManager rManager = new ResourceManager(Hardware.IOIO0003);
+			IOIOConnection ourConn = this.CreateGoodSerialConnection();
             this.CreateCaptureLogHandlerSet();
             IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(ourConn.GetInputStream(), HandlerContainer_);
             IOIOProtocolOutgoing fooOut = new IOIOProtocolOutgoing(ourConn.GetOutputStream());
             System.Threading.Thread.Sleep(100);	// wait for us to get the hardware ids
 
-			DigitalOutputSpec ledSpec = new DigitalOutputSpec(Spec.LED_PIN);
-			IDigitalOutputConfigureCommand commandSetup = new DigitalOutputConfigureCommand(
-				ledSpec, false);
-            IDigitalOutputValueSetCommand commandOn = new DigitalOutputSetValueCommand(ledSpec, true);
-            IDigitalOutputValueSetCommand commandOff = new DigitalOutputSetValueCommand(ledSpec, false);
 
-			//// TODO should use the hardware from the captured connection
-			IResourceManager rManager = new ResourceManager(Hardware.IOIO0003);
-			commandSetup.Alloc(rManager);
-			commandOn.Alloc(rManager);
-			commandOff.Alloc(rManager);
+			UartConfigureCommand commandCreate = new UartConfigureCommand(
+				new DigitalInputSpec(32), new DigitalOutputSpec(31), 9600, UartParity.NONE, UartStopBits.ONE);
+			commandCreate.Alloc(rManager);
+			commandCreate.ExecuteMessage(fooOut);
+            System.Threading.Thread.Sleep(10);
 
-            commandSetup.ExecuteMessage(fooOut);
-            for (int i = 0; i < 8; i++)
-            {
-                System.Threading.Thread.Sleep(200);
-                commandOn.ExecuteMessage(fooOut);
-                System.Threading.Thread.Sleep(200);
-                commandOff.ExecuteMessage(fooOut);
-            }
-            Assert.IsTrue(true, "there is no status to check");
-        }
+			string helloWorld = "Hello World";
+			byte[] helloWorldBytes = System.Text.Encoding.ASCII.GetBytes(helloWorld);
 
-    }
+			UartSendCommand commandSend = new UartSendCommand(commandCreate.UartDef, helloWorldBytes, helloWorldBytes.Length);
+			commandSend.Alloc(rManager);
+			commandSend.ExecuteMessage(fooOut);
+			System.Threading.Thread.Sleep(50);
+
+			UartCloseCommand commandClose = new UartCloseCommand(commandCreate.UartDef);
+			commandClose.Alloc(rManager);
+			commandClose.ExecuteMessage(fooOut);
+			System.Threading.Thread.Sleep(50);
+
+			// IUartFrom is the parent interface for all messages coming from the UARt
+			Assert.AreEqual(1+1+helloWorldBytes.Count()+1, this.HandlerSingleQueueAllType_.CapturedMessages_.OfType<IUartFrom>().Count());
+
+			Assert.AreEqual(1, this.HandlerSingleQueueAllType_.CapturedMessages_.OfType<IUartOpenFrom>().Count());
+			Assert.AreEqual(1, this.HandlerSingleQueueAllType_.CapturedMessages_.OfType<IHandleUartReportTxStatusFrom>().Count());
+
+			IEnumerable<IUartDataFrom> readValues = this.HandlerSingleQueueAllType_.CapturedMessages_.OfType<IUartDataFrom>();
+            Assert.AreEqual(helloWorldBytes.Count(), readValues.Count(), "Didn't find the number of expected IUartFrom: "+readValues.Count());
+			// logging the messages with any other string doesn't show the messages themselves !?
+			LOG.Debug("Captured " + +this.HandlerSingleQueueAllType_.CapturedMessages_.Count);
+			LOG.Debug(this.HandlerSingleQueueAllType_.CapturedMessages_);
+
+			Assert.AreEqual (1, this.HandlerSingleQueueAllType_.CapturedMessages_.OfType<IUartCloseFrom>().Count());
+			// should verify close command in the resource
+		}
+
+	}
 }

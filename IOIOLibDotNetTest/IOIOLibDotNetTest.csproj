@@ -67,8 +67,9 @@
     <Compile Include="Device\Impl\ResourceManagerTest.cs" />
     <Compile Include="Device\Impl\ResourceAllocatorGenericTest.cs" />
     <Compile Include="Device\Impl\ResourceAllocatorSpecificTest.cs" />
+    <Compile Include="MessageTo\CreateUartTest.cs" />
     <Compile Include="MessageTo\CreateAnalogInputOutputTest.cs" />
-    <Compile Include="MessageTo\CreateDigitalInputOutputToTest.cs" />
+    <Compile Include="MessageTo\CreateDigitalInputOutputTest.cs" />
     <Compile Include="TestHarnessSetup.cs" />
     <Compile Include="Connection\Impl\SerialConnectionFactoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
