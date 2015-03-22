@@ -23,9 +23,9 @@ namespace IOIOLib.MessageTo
 			return new UartConfigureCommand(new DigitalInputSpec(rx), new DigitalOutputSpec(tx), baud, parity, stopbits);
 		}
 
-		public IUartCloseCommand CreateCloseUart(int uartNum)
+		public IUartCloseCommand CreateCloseUart(UartSpec UartSpec)
 		{
-			return new UartCloseCommand(uartNum);
+			return new UartCloseCommand(UartSpec);
 		}
 
 	}

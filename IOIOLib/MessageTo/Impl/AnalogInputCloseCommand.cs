@@ -41,25 +41,25 @@ namespace IOIOLib.MessageTo.Impl
 {
     class AnalogInputCloseCommand : IAnalogInputCloseCommand
     {
-        public  int Pin { get; private set; }
+        public  int BoundPin { get; private set; }
 
 
 
         internal AnalogInputCloseCommand(int pin)
         {
-            this.Pin = pin;
+            this.BoundPin = pin;
         }
 
 
         public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound, Device.IResourceManager rManager)
         {
-			outBound.setPinDigitalIn(Pin, DigitalInputSpecMode.FLOATING);
+			outBound.setPinDigitalIn(BoundPin, DigitalInputSpecMode.FLOATING);
 			return true;
         }
 
 		public bool Alloc(IResourceManager rManager)
 		{
-			rManager.Free(new Resource(ResourceType.PIN, Pin));
+			rManager.Free(new Resource(ResourceType.PIN, BoundPin));
 			return true;
 		}
 

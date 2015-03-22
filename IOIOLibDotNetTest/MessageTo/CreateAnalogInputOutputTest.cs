@@ -72,11 +72,11 @@ namespace IOIOLibDotNetTest.MessageTo
 			commandCreatePWM.ExecuteMessage(fooOut);
             System.Threading.Thread.Sleep(100);
 			// change it after settling
-			PwmOutputUpdateCommand commandChangePWM = new PwmOutputUpdateCommand(commandCreatePWM.PwmSpec,  0.7f);
+			PwmOutputUpdateCommand commandChangePWM = new PwmOutputUpdateCommand(commandCreatePWM.PwmDef,  0.7f);
 			commandChangePWM.Alloc(rManager);
 			commandChangePWM.ExecuteMessage(fooOut);
             System.Threading.Thread.Sleep(100);
-			PwmOutputCloseCommand commandReleasePwm = new PwmOutputCloseCommand(commandCreatePWM.PwmSpec);
+			PwmOutputCloseCommand commandReleasePwm = new PwmOutputCloseCommand(commandCreatePWM.PwmDef);
 			commandReleasePwm.Alloc(rManager);
 			commandReleasePwm.ExecuteMessage(fooOut);
 			System.Threading.Thread.Sleep(50);

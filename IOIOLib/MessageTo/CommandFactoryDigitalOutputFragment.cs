@@ -40,7 +40,7 @@ namespace IOIOLib.MessageTo
 		/// <returns></returns>
 		public IDigitalOutputValueSetCommand CreateSetDigitalOutputCommand(int pin, bool level)
 		{
-			return new DigitalOutputSetValueCommand(pin, level);
+			return new DigitalOutputSetValueCommand(new DigitalOutputSpec(pin), level);
 		}
 
 		public IDigitalOutputCloseCommand CreateCloseDigitalOutputCommand(int pin)

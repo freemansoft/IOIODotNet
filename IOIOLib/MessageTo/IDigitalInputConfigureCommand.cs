@@ -38,7 +38,7 @@ namespace IOIOLib.MessageTo
 {
     public interface IDigitalInputConfigureCommand : ICommandToIOIO, IPostMessageCommand
     {
-        DigitalInputSpec Spec { get; }
+        DigitalInputSpec PinDef { get; }
 
         Boolean? ChangeNotify { get; }
     }

@@ -26,44 +26,46 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied.
  */
-
-using IOIOLib.Component.Types;
-using IOIOLib.Device.Types;
+ 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IOIOLib.MessageTo.Impl
+namespace IOIOLib.Component.Types
 {
-    public class DigitalOutputConfigureCommand : IDigitalOutputConfigureCommand
+    public class UartSpec
     {
+        
+		/// <summary>
+		/// Should this be a Resource?
+		/// </summary>
+        public DigitalOutputSpec TxSpec { get; private set; }
+		/// <summary>
+		/// Should this be a resource
+		/// </summary>
+		public  DigitalInputSpec RxSpec { get; private set; }
+		/// <summary>
+		/// -1 if not bound to a UART
+		/// </summary>
+		public int UartNumber { get; private set; }
 
-        public DigitalOutputSpec PinDef { get; private set; }
-        public bool StartValue { get; private set; }
 
-        internal DigitalOutputConfigureCommand(Component.Types.DigitalOutputSpec spec, bool startValue)
+		/**
+         * Constructor.
+         * 
+         * @param Pin
+         *            Pin number, as labeled on the board.
+         * @param mode
+         *            Pin mode.
+         */
+		public UartSpec(DigitalInputSpec rx, DigitalOutputSpec tx, int uartNumber = -1)
         {
-            this.PinDef = spec;
-            this.StartValue = startValue;
+            this.RxSpec = rx;
+            this.TxSpec = tx;
+			this.UartNumber = UartNumber;
         }
 
-        public DigitalOutputConfigureCommand(Component.Types.DigitalOutputSpec spec)
-        {
-            this.PinDef = spec;
-            this.StartValue = false;
-        }
-
-        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound)
-        {
-            outBound.setPinDigitalOut(this.PinDef.Pin, this.StartValue, this.PinDef.Mode);
-            return true;
-        }
-		public bool Alloc(Device.IResourceManager rManager)
-		{
-			rManager.Alloc(new Resource(ResourceType.PIN, PinDef.Pin));
-			return true;
-		}
-	}
+    }
 }

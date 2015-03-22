@@ -56,12 +56,13 @@ namespace IOIOLibDotNetTest.MessageTo
             this.CreateCaptureLogHandlerSet();
             IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(ourConn.GetInputStream(), HandlerContainer_);
             IOIOProtocolOutgoing fooOut = new IOIOProtocolOutgoing(ourConn.GetOutputStream());
-            System.Threading.Thread.Sleep(100); // wait for us to get the hardware ids
+            System.Threading.Thread.Sleep(100);	// wait for us to get the hardware ids
 
-            IDigitalOutputConfigureCommand commandSetup = new DigitalOutputConfigureCommand(
-                new DigitalOutputSpec(Spec.LED_PIN, DigitalOutputSpecMode.NORMAL), false);
-            IDigitalOutputValueSetCommand commandOn = new DigitalOutputSetValueCommand(Spec.LED_PIN, true);
-            IDigitalOutputValueSetCommand commandOff = new DigitalOutputSetValueCommand(Spec.LED_PIN, false);
+			DigitalOutputSpec ledSpec = new DigitalOutputSpec(Spec.LED_PIN);
+			IDigitalOutputConfigureCommand commandSetup = new DigitalOutputConfigureCommand(
+				ledSpec, false);
+            IDigitalOutputValueSetCommand commandOn = new DigitalOutputSetValueCommand(ledSpec, true);
+            IDigitalOutputValueSetCommand commandOff = new DigitalOutputSetValueCommand(ledSpec, false);
 
 			//// TODO should use the hardware from the captured connection
 			IResourceManager rManager = new ResourceManager(Hardware.IOIO0003);

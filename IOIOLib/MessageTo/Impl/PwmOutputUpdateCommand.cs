@@ -41,7 +41,7 @@ namespace IOIOLib.MessageTo.Impl
     public class PwmOutputUpdateCommand : IPwmOutputUpdateCommand
     {
 
-        public PwmOutputSpec PwmSpec { get; private set; }
+        public PwmOutputSpec PwmDef { get; private set; }
 
         public float DutyCycle { get; private set; }
 
@@ -65,7 +65,7 @@ namespace IOIOLib.MessageTo.Impl
 		/// <param name="freqHz"></param>
         public PwmOutputUpdateCommand(PwmOutputSpec spec, int freqHz)
         {
-			this.PwmSpec = spec;
+			this.PwmDef = spec;
             this.DutyCycle = float.NaN;
 			this.RequestedFrequency = freqHz;
         }
@@ -81,7 +81,7 @@ namespace IOIOLib.MessageTo.Impl
 			{
 				throw new ArgumentException("Spec Frequency must be > 0 when frequency not specified" + spec.Frequency);
 			}
-			this.PwmSpec = spec;
+			this.PwmDef = spec;
 			this.DutyCycle = dutyCycle;
 			this.RequestedFrequency = spec.Frequency;
 		}
@@ -94,7 +94,7 @@ namespace IOIOLib.MessageTo.Impl
 		/// <param name="dutyCycle"></param>
 			public PwmOutputUpdateCommand(PwmOutputSpec spec, int freqHz, float dutyCycle)
         {
-			this.PwmSpec = spec;
+			this.PwmDef = spec;
             this.DutyCycle = dutyCycle;
 			this.RequestedFrequency = freqHz;
         }
@@ -103,11 +103,11 @@ namespace IOIOLib.MessageTo.Impl
         {
 			// calculate the period and scale even if not setting frequency because needed by duty cycle
 			CalculatePeriodAndScale(this.RequestedFrequency);
-			if (this.RequestedFrequency != PwmSpec.Frequency)
+			if (this.RequestedFrequency != PwmDef.Frequency)
 			{
-				outBound.setPwmPeriod(this.PwmSpec.PwmNumber, this.CalculatedPeriod_, this.CalculatedScale_);
+				outBound.setPwmPeriod(this.PwmDef.PwmNumber, this.CalculatedPeriod_, this.CalculatedScale_);
 				// update the Pwm spec to show the current settings
-				this.PwmSpec = new PwmOutputSpec(this.PwmSpec.PinSpec, this.PwmSpec.PwmNumber, this.RequestedFrequency);
+				this.PwmDef = new PwmOutputSpec(this.PwmDef.PinSpec, this.PwmDef.PwmNumber, this.RequestedFrequency);
 			}
             if (this.DutyCycle != float.NaN)
             {
@@ -164,7 +164,7 @@ namespace IOIOLib.MessageTo.Impl
                 pulseWidth = (int)pulseWidthInClocks;
                 fraction = ((int)pulseWidthInClocks * 4) & 0x03;
             }
-            outBound.setPwmDutyCycle(this.PwmSpec.PwmNumber, pulseWidth, fraction);
+            outBound.setPwmDutyCycle(this.PwmDef.PwmNumber, pulseWidth, fraction);
         }
     }
 }

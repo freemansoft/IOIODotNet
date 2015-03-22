@@ -40,26 +40,26 @@ namespace IOIOLib.MessageTo.Impl
     public class PwmOutputCloseCommand: IPwmOutputCloseCommand
     {
 
-		public PwmOutputSpec PwmSpec { get; private set; }
+		public PwmOutputSpec PwmDef { get; private set; }
 
 
 		public PwmOutputCloseCommand(PwmOutputSpec spec)
         {
-            this.PwmSpec = spec;
+            this.PwmDef = spec;
         }
 
         public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound)
         {
-			outBound.setPinDigitalIn(this.PwmSpec.PinSpec.Pin, DigitalInputSpecMode.FLOATING);
-			outBound.setPwmPeriod(this.PwmSpec.PwmNumber, 0, PwmScale.Scale1X);
+			outBound.setPinDigitalIn(this.PwmDef.PinSpec.Pin, DigitalInputSpecMode.FLOATING);
+			outBound.setPwmPeriod(this.PwmDef.PwmNumber, 0, PwmScale.Scale1X);
             return true;
         }
 
 		public bool Alloc(Device.IResourceManager rManager)
 		{
 			/// this is actually in the wrong order -- should be done AFTER the command
-			rManager.Free(new Resource(ResourceType.PIN, PwmSpec.PinSpec.Pin));
-			rManager.Free(new Resource(ResourceType.OUTCOMPARE, this.PwmSpec.PwmNumber));
+			rManager.Free(new Resource(ResourceType.PIN, PwmDef.PinSpec.Pin));
+			rManager.Free(new Resource(ResourceType.OUTCOMPARE, this.PwmDef.PwmNumber));
 			return true;
 		}
 	}

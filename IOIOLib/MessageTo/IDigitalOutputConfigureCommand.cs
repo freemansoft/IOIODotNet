@@ -38,7 +38,7 @@ namespace IOIOLib.MessageTo
 {
     public interface IDigitalOutputConfigureCommand : ICommandToIOIO, IPostMessageCommand
     {
-        DigitalOutputSpec Spec { get;  }
+        DigitalOutputSpec PinDef { get;  }
         bool StartValue { get;  }
     }
 }

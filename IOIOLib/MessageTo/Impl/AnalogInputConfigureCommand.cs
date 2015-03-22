@@ -39,14 +39,14 @@ namespace IOIOLib.MessageTo.Impl
 {
     class AnalogInputConfigureCommand : IAnalogInputConfigureCommand
     {
-        public  int Pin { get; private set; }
+        public  int BoundPin { get; private set; }
 
         public Boolean? ChangeNotify { get; private set; }
 
 
         internal AnalogInputConfigureCommand(int pin)
         {
-            this.Pin = pin;
+            this.BoundPin = pin;
             this.ChangeNotify = null;
         }
 
@@ -57,17 +57,17 @@ namespace IOIOLib.MessageTo.Impl
         /// <param name="notifyOnChange">at a 1khz rate</param>
         public AnalogInputConfigureCommand(int pin, bool notifyOnChange)
         {
-            this.Pin = pin;
+            this.BoundPin = pin;
             ChangeNotify = notifyOnChange;
         }
 
 
         public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound)
         {
-            outBound.setPinAnalogIn(this.Pin);
+            outBound.setPinAnalogIn(this.BoundPin);
             if (ChangeNotify.HasValue && ChangeNotify.Value)
             {
-                outBound.setAnalogInSampling(this.Pin, ChangeNotify.Value);
+                outBound.setAnalogInSampling(this.BoundPin, ChangeNotify.Value);
             }
             return true;
         }

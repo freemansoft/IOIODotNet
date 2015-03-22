@@ -41,7 +41,7 @@ namespace IOIOLib.MessageTo.Impl
     public class PwmOutputConfigureCommand : IPwmOutputConfigureCommand
     {
 
-        public PwmOutputSpec PwmSpec { get; private set; }
+        public PwmOutputSpec PwmDef { get; private set; }
 
         public bool Enable { get; private set; }
 
@@ -53,7 +53,7 @@ namespace IOIOLib.MessageTo.Impl
         public PwmOutputConfigureCommand(DigitalOutputSpec spec, bool enable)
         {
 
-			this.PwmSpec = new PwmOutputSpec(spec) ;
+			this.PwmDef = new PwmOutputSpec(spec) ;
             this.Enable = enable;
             this.DutyCycle = float.NaN;
 			this.RequestedFrequency = 1000;			// default in IOIO is 1Khz for sampling so maybe here too
@@ -61,7 +61,7 @@ namespace IOIOLib.MessageTo.Impl
 
         public PwmOutputConfigureCommand(DigitalOutputSpec spec, int freqHz)
         {
-			this.PwmSpec = new PwmOutputSpec(spec);
+			this.PwmDef = new PwmOutputSpec(spec);
 			this.Enable = true;
             this.DutyCycle = float.NaN;
 			this.RequestedFrequency = freqHz;
@@ -69,7 +69,7 @@ namespace IOIOLib.MessageTo.Impl
 
         public PwmOutputConfigureCommand(DigitalOutputSpec spec, int freqHz, float dutyCycle)
         {
-			this.PwmSpec = new PwmOutputSpec(spec);
+			this.PwmDef = new PwmOutputSpec(spec);
 			this.Enable = true;
             this.DutyCycle = dutyCycle;
 			this.RequestedFrequency = freqHz;
@@ -77,33 +77,33 @@ namespace IOIOLib.MessageTo.Impl
 
         public bool ExecuteMessage(IOIOProtocolOutgoing outBound)
         {
-			outBound.setPinDigitalOut(this.PwmSpec.PinSpec.Pin, false, this.PwmSpec.PinSpec.Mode);
-            outBound.setPinPwm(this.PwmSpec.PinSpec.Pin, this.PwmSpec.PwmNumber, this.Enable);
+			outBound.setPinDigitalOut(this.PwmDef.PinSpec.Pin, false, this.PwmDef.PinSpec.Mode);
+            outBound.setPinPwm(this.PwmDef.PinSpec.Pin, this.PwmDef.PwmNumber, this.Enable);
 
 			IPwmOutputUpdateCommand updateCommand;
 			if (this.DutyCycle != float.NaN)
 			{
-				updateCommand = new PwmOutputUpdateCommand(this.PwmSpec, this.RequestedFrequency, this.DutyCycle);
+				updateCommand = new PwmOutputUpdateCommand(this.PwmDef, this.RequestedFrequency, this.DutyCycle);
 			}
 			else
 			{
-				updateCommand = new PwmOutputUpdateCommand(this.PwmSpec, this.RequestedFrequency);
+				updateCommand = new PwmOutputUpdateCommand(this.PwmDef, this.RequestedFrequency);
 			}
 			updateCommand.ExecuteMessage(outBound);
 			// retain any frequency change done by the update command
-			this.PwmSpec = updateCommand.PwmSpec; 
+			this.PwmDef = updateCommand.PwmDef; 
 
             return true;
         }
 
 		public bool Alloc(Device.IResourceManager rManager)
 		{
-			Resource outPin = new Resource(ResourceType.PIN, this.PwmSpec.PinSpec.Pin);
+			Resource outPin = new Resource(ResourceType.PIN, this.PwmDef.PinSpec.Pin);
 			Resource pwm = new Resource(ResourceType.OUTCOMPARE);
 			rManager.Alloc(outPin);
 			rManager.Alloc(pwm);		// acquires the pwm number
 			// retain the PWM number
-			this.PwmSpec = new PwmOutputSpec(this.PwmSpec.PinSpec, pwm.Id_);
+			this.PwmDef = new PwmOutputSpec(this.PwmDef.PinSpec, pwm.Id_);
 
 			return true;
 		}

@@ -61,13 +61,14 @@ namespace IOIOLibDotNetTest.Device.Impl
 
             // we'll add the handler state on top of the default handlers so we don't have to peek into impl
             IOIO ourImpl = CreateIOIOImplAndConnect(ourConn, this.HandlerSingleQueueAllType_);
-            System.Threading.Thread.Sleep(100); // wait for us to get the hardware ids
+            System.Threading.Thread.Sleep(100);	// wait for us to get the hardware ids
 
-            // SHOULD USE THE FACTORY instead of this lame ...
-            IDigitalOutputConfigureCommand confDigitalOut = new DigitalOutputConfigureCommand(
-                new IOIOLib.Component.Types.DigitalOutputSpec(Spec.LED_PIN));
-            IDigitalOutputValueSetCommand turnItOn = new DigitalOutputSetValueCommand(Spec.LED_PIN, true);
-            IDigitalOutputValueSetCommand turnItOff =new DigitalOutputSetValueCommand(Spec.LED_PIN, false);
+			DigitalOutputSpec ledSpec = new DigitalOutputSpec(Spec.LED_PIN);
+			// SHOULD USE THE FACTORY instead of this lame ...
+			IDigitalOutputConfigureCommand confDigitalOut = new DigitalOutputConfigureCommand(
+				ledSpec);
+            IDigitalOutputValueSetCommand turnItOn = new DigitalOutputSetValueCommand(ledSpec, true);
+            IDigitalOutputValueSetCommand turnItOff =new DigitalOutputSetValueCommand(ledSpec, false);
 
             ourImpl.PostMessage(confDigitalOut);
             for (int i = 0; i < 8; i++)
@@ -97,8 +98,8 @@ namespace IOIOLibDotNetTest.Device.Impl
             IDigitalInputConfigureCommand configDigitalIn =
                 new DigitalInputConfigureCommand(new DigitalInputSpec(32, DigitalInputSpecMode.PULL_UP), true);
 
-            IDigitalOutputValueSetCommand turnItOn =new DigitalOutputSetValueCommand(31, true);
-            IDigitalOutputValueSetCommand turnItOff =new DigitalOutputSetValueCommand(31, false);
+            IDigitalOutputValueSetCommand turnItOn =new DigitalOutputSetValueCommand(new DigitalOutputSpec(31), true);
+            IDigitalOutputValueSetCommand turnItOff =new DigitalOutputSetValueCommand(new DigitalOutputSpec(31), false);
 
             ourImpl.PostMessage(confDigitalOut);
             ourImpl.PostMessage(configDigitalIn);

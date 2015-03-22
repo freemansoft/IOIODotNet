@@ -34,72 +34,84 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IOIOLib.Device;
+using IOIOLib.Device.Impl;
 
 namespace IOIOLib.MessageTo.Impl
 {
-    public class UartConfigureCommand : IUartConfigureCommand
-    {
-        public UartParity Parity { get; private set; }
-        public int UartNum { get; private set; }
-        public UartStopBits StopBits { get; private set; }
-        public int Rate { get; private set; }
-        public bool Speed4x { get; private set; }
-        /// <summary>
-        /// Retained for debugging
-        /// </summary>
-        public DigitalInputSpec RXSpec { get; private set; }
-        /// <summary>
-        /// Retained for debugging
-        /// </summary>
-        public DigitalOutputSpec TXSpec { get; private set; }
+	public class UartConfigureCommand : IUartConfigureCommand
+	{
+		public UartParity Parity { get; private set; }
+		public UartSpec UartDef { get; private set; }
+		public UartStopBits StopBits { get; private set; }
+		public int Baud { get; private set; }
+
+		public int RateCalculated { get; private set; }
+		public bool Speed4xCalculated { get; private set; }
 
 
 
-        internal UartConfigureCommand(Component.Types.DigitalInputSpec digitalInputSpec, Component.Types.DigitalOutputSpec digitalOutputSpec, int baud, Component.Types.UartParity parity, Component.Types.UartStopBits stopbits)
-        {
-            // TODO: Complete resource allocation
-            this.RXSpec = digitalInputSpec;
-            this.TXSpec = digitalOutputSpec;
-            this.CalculateRateAndSpeed4X(baud);
-            this.Parity = parity;
-            this.StopBits = stopbits;
-            this.UartNum = 0;
-            /*
-                checkState();
-                if (rx != null) {
-                    hardware_.CheckSupportsPeripheralInput(rx.Pin);
-                }
-                if (isTx != null) {
-                    hardware_.CheckSupportsPeripheralOutput(isTx.Pin);
-                }
-                Resource rxPin = rx != null ? new Resource(ResourceType.PIN, rx.Pin)
-                        : null;
-                Resource txPin = isTx != null ? new Resource(ResourceType.PIN, isTx.Pin)
-                        : null;
-                Resource uart = new Resource(ResourceType.UART);
-                resourceManager_.Alloc(rxPin, txPin, uart);
+		internal UartConfigureCommand(Component.Types.DigitalInputSpec digitalInputSpec, Component.Types.DigitalOutputSpec digitalOutputSpec, int baud, Component.Types.UartParity parity, Component.Types.UartStopBits stopbits)
+		{
+			this.Baud = baud;
+			this.Parity = parity;
+			this.StopBits = stopbits;
+			this.UartDef = new UartSpec(digitalInputSpec, digitalOutputSpec);
+		}
 
-                UartImpl result = new UartImpl(this, txPin, rxPin, uart);
-                addDisconnectListener(result);
-                incomingState_.addUartListener(uart.id, result);
-             * ***************************
-        */
-        }
+		private void CalculateRateAndSpeed4X(int baud)
+		{
+			Speed4xCalculated = true;
+			RateCalculated = (int)(Math.Round(4000000.0f / baud) - 1);
+			if (RateCalculated > 65535)
+			{
+				Speed4xCalculated = false;
+				RateCalculated = (int)(Math.Round(1000000.0f / baud) - 1);
+			}
+		}
 
-        private void CalculateRateAndSpeed4X(int baud)
-        {
-            Speed4x = true;
-            Rate = (int)(Math.Round(4000000.0f / baud) - 1);
-            if (Rate > 65535)
-            {
-                Speed4x = false;
-                Rate = (int)(Math.Round(1000000.0f / baud) - 1);
-            }
-        }
+		public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound)
+		{
+			if (UartDef.RxSpec != null)
+			{
+				outBound.setPinDigitalIn(UartDef.RxSpec.Pin, UartDef.RxSpec.Mode);
+				outBound.setPinUart(UartDef.RxSpec.Pin, UartDef.UartNumber, false, true);
+			}
+			if (UartDef.TxSpec != null)
+			{
+				outBound.setPinDigitalOut(UartDef.TxSpec.Pin, true, UartDef.TxSpec.Mode);
+				outBound.setPinUart(UartDef.TxSpec.Pin, UartDef.UartNumber, true, true);
+			}
+			CalculateRateAndSpeed4X(this.Baud);
+			outBound.uartConfigure(UartDef.UartNumber, RateCalculated, Speed4xCalculated, StopBits, Parity);
+			return true;
+		}
 
-        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound)
-        {
-            throw new NotImplementedException();
-        }
-    }
+		public bool Alloc(IResourceManager rManager)
+		{
+			if (UartDef.TxSpec != null)
+			{
+				rManager.BoundHardware.CheckSupportsPeripheralInput(UartDef.RxSpec.Pin);
+			}
+			if (UartDef.TxSpec != null)
+			{
+				rManager.BoundHardware.CheckSupportsPeripheralOutput(UartDef.TxSpec.Pin);
+			}
+			Resource rxPin = null;
+			if (UartDef.TxSpec != null)
+			{
+				rxPin = new Resource(ResourceType.PIN, UartDef.RxSpec.Pin);
+			}
+			Resource txPin = null;
+			if (UartDef.TxSpec != null)
+			{
+				txPin = new Resource(ResourceType.PIN, UartDef.TxSpec.Pin);
+			}
+			Resource uart = new Resource(ResourceType.UART);
+			rManager.Alloc(rxPin, txPin, uart);
+			// update the spec with the allocated id
+			this.UartDef = new UartSpec(this.UartDef.RxSpec, this.UartDef.TxSpec, uart.Id_);
+			return true;
+		}
+	}
 }

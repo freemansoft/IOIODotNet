@@ -39,7 +39,7 @@ namespace IOIOLib.MessageTo
 {
     public interface IPwmOutputConfigureCommand : ICommandToIOIO, IPostMessageCommand
     {
-		PwmOutputSpec PwmSpec { get; }
+		PwmOutputSpec PwmDef { get; }
 
         bool Enable { get; }
 

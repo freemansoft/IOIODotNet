@@ -37,20 +37,19 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageTo
 {
-    public interface IUartConfigureCommand : ICommandToIOIO
+    public interface IUartConfigureCommand : ICommandToIOIO, IPostMessageCommand
     {
-
-        DigitalInputSpec RXSpec { get; }
-        DigitalOutputSpec TXSpec { get; }
 
         UartParity Parity { get; }
 
-        int UartNum { get; }
+		UartSpec UartDef { get; }
 
         UartStopBits StopBits { get; }
 
-        int Rate { get; }
+		int Baud { get; }
 
-        bool Speed4x { get; }
+        int RateCalculated { get; }
+
+        bool Speed4xCalculated { get; }
     }
 }

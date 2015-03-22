@@ -38,6 +38,6 @@ namespace IOIOLib.MessageTo
 {
     public interface IDigitalOutputCloseCommand : ICommandToIOIO, IPostMessageCommand
     {
-        DigitalOutputSpec Spec { get;  }
+        DigitalOutputSpec PinDef { get;  }
     }
 }

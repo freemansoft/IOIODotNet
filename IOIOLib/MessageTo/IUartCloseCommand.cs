@@ -27,6 +27,7 @@
  * or implied.
  */
 
+using IOIOLib.Component.Types;
 using IOIOLib.Device.Types;
 using System;
 using System.Collections.Generic;
@@ -38,6 +39,6 @@ namespace IOIOLib.MessageTo
 {
     public interface IUartCloseCommand : ICommandToIOIO, IPostMessageCommand
     {
-        int UartNum { get; }
+		UartSpec UartDef { get; }
     }
 }

@@ -38,7 +38,7 @@ namespace IOIOLib.MessageTo
 {
     public interface IPwmOutputCloseCommand : ICommandToIOIO, IPostMessageCommand
     {
-		PwmOutputSpec PwmSpec { get;  }
+		PwmOutputSpec PwmDef { get;  }
 
     }
 }

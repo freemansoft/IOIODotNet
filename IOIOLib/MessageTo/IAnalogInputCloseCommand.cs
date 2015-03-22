@@ -37,7 +37,7 @@ namespace IOIOLib.MessageTo
 {
     public interface IAnalogInputCloseCommand : ICommandToIOIO, IPostMessageCommand
     {
-        int Pin { get; }
+        int BoundPin { get; }
 
     }
 }

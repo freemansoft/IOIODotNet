@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Component\Types\DigitalInputSpec.cs" />
     <Compile Include="Component\Types\DigitalInputSpecMode.cs" />
+    <Compile Include="Component\Types\UartSpec.cs" />
     <Compile Include="Component\Types\DigitalOutputSpec.cs" />
     <Compile Include="Component\Types\DigitalOutputSpecMode.cs" />
     <Compile Include="Component\Types\PulseInputClockRate.cs" />

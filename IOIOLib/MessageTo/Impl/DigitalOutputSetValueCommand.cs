@@ -26,7 +26,8 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied.
  */
- 
+
+using IOIOLib.Component.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,21 +38,21 @@ namespace IOIOLib.MessageTo.Impl
 {
     public class DigitalOutputSetValueCommand : IDigitalOutputValueSetCommand
     {
-        public int Pin { get; private set; }
-        public bool Level { get; private set; }
+		public DigitalOutputSpec PinDef { get; private set; }
+		public bool Level { get; private set; }
 
 
-        internal DigitalOutputSetValueCommand(int pin, bool level)
+        internal DigitalOutputSetValueCommand(DigitalOutputSpec pinDef, bool level)
         {
             // TODO: Complete member initialization
-            this.Pin = pin;
+            this.PinDef = pinDef;
             this.Level = level;
         }
 
         public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound)
         {
 			// TODO verify this pin is an output pin
-            outBound.setDigitalOutLevel(Pin, Level);
+            outBound.setDigitalOutLevel(PinDef.Pin, Level);
             return true;
         }
 

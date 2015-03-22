@@ -26,7 +26,8 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied.
  */
- 
+
+using IOIOLib.Component.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +38,7 @@ namespace IOIOLib.MessageTo
 {
     public interface IDigitalOutputValueSetCommand : ICommandToIOIO, IPostMessageCommand
     {
-        int Pin { get; }
+		DigitalOutputSpec PinDef { get; }
          bool Level { get;}
 
     }

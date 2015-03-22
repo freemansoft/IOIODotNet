@@ -40,7 +40,7 @@ namespace IOIOLib.MessageTo
     public interface IPwmOutputUpdateCommand : ICommandToIOIO, IPostMessageCommand
     {
 
-		PwmOutputSpec PwmSpec{ get; }
+		PwmOutputSpec PwmDef{ get; }
 
         float DutyCycle { get; }
 

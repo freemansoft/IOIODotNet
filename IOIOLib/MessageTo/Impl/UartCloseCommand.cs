@@ -34,26 +34,64 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IOIOLib.Device;
+using IOIOLib.Component.Types;
 
 namespace IOIOLib.MessageTo.Impl
 {
     public class UartCloseCommand : IUartCloseCommand
     {
-        public int UartNum { get; private set; }
+        public UartSpec UartDef { get; private set; }
 
-        internal UartCloseCommand(int uartNum)
+        internal UartCloseCommand(UartSpec uart)
         {
-            this.UartNum = uartNum;
+            this.UartDef = uart;
         }
 
         public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound)
         {
-            throw new NotImplementedException();
-        }
+			try
+			{
+				outBound.uartClose(this.UartDef.UartNumber);
+			}
+			catch (Exception e)
+			{
+			}
+			if (this.UartDef.RxSpec != null)
+			{
+				outBound.setPinDigitalIn(this.UartDef.RxSpec.Pin, DigitalInputSpecMode.FLOATING);
+			}
+			if (this.UartDef.TxSpec != null)
+			{
+				outBound.setPinDigitalIn(this.UartDef.TxSpec.Pin, DigitalInputSpecMode.FLOATING);
+			}
+			return true;
+		}
 
+
+
+		/// <summary>
+		/// Really need a free() method
+		/// </summary>
+		/// <param name="rManager"></param>
+		/// <returns></returns>
 		public bool Alloc(IResourceManager rManager)
 		{
-			throw new NotImplementedException();
+			try
+			{
+				rManager.Free(new Resource(ResourceType.UART, this.UartDef.UartNumber));
+			}
+			catch (Exception e)
+			{
+			}
+			if (this.UartDef.RxSpec != null)
+			{
+				rManager.Free(new Resource(ResourceType.PIN, this.UartDef.RxSpec.Pin));
+			}
+			if (this.UartDef.TxSpec != null)
+			{
+				rManager.Free(new Resource(ResourceType.PIN, this.UartDef.TxSpec.Pin));
+			}
+			return true;
 		}
 	}
 }

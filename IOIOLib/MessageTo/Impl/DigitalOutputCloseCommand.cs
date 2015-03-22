@@ -40,22 +40,22 @@ namespace IOIOLib.MessageTo.Impl
 	public class DigitalOutputCloseCommand : IDigitalOutputCloseCommand
 	{
 
-		public DigitalOutputSpec Spec { get; private set; }
+		public DigitalOutputSpec PinDef { get; private set; }
 
-		public DigitalOutputCloseCommand(Component.Types.DigitalOutputSpec spec)
+		public DigitalOutputCloseCommand(DigitalOutputSpec spec)
 		{
-			this.Spec = spec;
+			this.PinDef = spec;
 		}
 
 		public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound)
 		{
-			outBound.setPinDigitalIn(this.Spec.Pin, DigitalInputSpecMode.FLOATING);
+			outBound.setPinDigitalIn(this.PinDef.Pin, DigitalInputSpecMode.FLOATING);
 			return true;
 		}
 
 		public bool Alloc(Device.IResourceManager rManager)
 		{
-			rManager.Free(new Resource(ResourceType.PIN, Spec.Pin));
+			rManager.Free(new Resource(ResourceType.PIN, PinDef.Pin));
 			return true;
 		}
 	}

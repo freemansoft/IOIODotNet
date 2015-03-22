@@ -37,7 +37,7 @@ namespace IOIOLib.MessageTo
 {
     public interface IAnalogInputConfigureCommand : ICommandToIOIO, IPostMessageCommand
     {
-        int Pin { get; }
+        int BoundPin { get; }
 
         Boolean? ChangeNotify { get; }
     }

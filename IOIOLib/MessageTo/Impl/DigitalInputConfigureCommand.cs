@@ -40,14 +40,14 @@ namespace IOIOLib.MessageTo.Impl
 {
     public class DigitalInputConfigureCommand : IDigitalInputConfigureCommand
     {
-        public DigitalInputSpec Spec { get; private set; }
+        public DigitalInputSpec PinDef { get; private set; }
 
         public Boolean? ChangeNotify { get; private set; }
 
 
         internal DigitalInputConfigureCommand(DigitalInputSpec digitalInputSpec)
         {
-            this.Spec = digitalInputSpec;
+            this.PinDef = digitalInputSpec;
             ChangeNotify = null;
         }
 
@@ -58,16 +58,16 @@ namespace IOIOLib.MessageTo.Impl
         /// <param name="notifyOnChange"></param>
         public DigitalInputConfigureCommand(DigitalInputSpec digitalInputSpec, bool notifyOnChange)
         {
-            this.Spec = digitalInputSpec;
+            this.PinDef = digitalInputSpec;
             ChangeNotify = notifyOnChange;
         }
 
         public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound)
         {
-			outBound.setPinDigitalIn(this.Spec.Pin, this.Spec.Mode);
+			outBound.setPinDigitalIn(this.PinDef.Pin, this.PinDef.Mode);
             if (ChangeNotify.HasValue && ChangeNotify.Value)
             {
-                outBound.setChangeNotify(this.Spec.Pin, ChangeNotify.Value);
+                outBound.setChangeNotify(this.PinDef.Pin, ChangeNotify.Value);
             }
             return true;
 
@@ -75,7 +75,7 @@ namespace IOIOLib.MessageTo.Impl
 
 		public bool Alloc(IResourceManager rManager)
 		{
-			rManager.Alloc(new Resource(ResourceType.PIN, Spec.Pin));
+			rManager.Alloc(new Resource(ResourceType.PIN, PinDef.Pin));
 			return true;
 		}
 	}

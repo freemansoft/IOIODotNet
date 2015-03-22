@@ -14,5 +14,8 @@ namespace IOIOLib.Device
 		void Free(Resource r);
 		void Free(params object[] args);
 		void Free(ICollection<Resource> resources);
+
+		Hardware BoundHardware { get; }
+
 	}
 }

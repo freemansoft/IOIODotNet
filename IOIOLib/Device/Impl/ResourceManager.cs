@@ -42,11 +42,14 @@ namespace IOIOLib.Device.Impl
     public class ResourceManager : IResourceManager
 	{
 
+		public Hardware BoundHardware { get; private set; }
+
         private IResourceAllocator[] Allocators_ = new IResourceAllocator[
             Enum.GetNames(typeof(ResourceType)).Length];
 
         public ResourceManager(Hardware hardware)
         {
+			this.BoundHardware = hardware;
             Allocators_[(int)ResourceType.PIN] = new ResourceAllocatorSpecific(0, hardware.NumPins());
             Allocators_[(int)ResourceType.TWI] = new ResourceAllocatorSpecific(0, hardware.NumTwiModules());
             Allocators_[(int)ResourceType.ICSP] = new ResourceAllocatorGeneric(0, 1);
