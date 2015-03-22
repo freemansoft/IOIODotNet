@@ -1,40 +1,48 @@
 #IOIODotNet#
 
-Version 0.1 2014 Mar 07 [Joe Freeman](http://joe.blog.freemansoft.com) You can find a high level diagram 
+Version 0.2 2015 Mar 22 [Joe Freeman](http://joe.blog.freemansoft.com) You can find a high level diagram 
 [in this blog article](http://joe.blog.freemansoft.com/2015/03/extremely-rough-cut-at-c-based-ioio.html).
 
-A crazy rough cut of a [C# .Net library for the IOIO device](https://github.com/ytai/ioio/wiki) on GitHub. 
-It involves code copied from the Java application though the operational model is different.  This is on purpose 
-to simplifiy tracking 
-future Java application and IOIO protocol changes. There is a lot of C# style work to be done.
-IOIODotNet was built with VisualStudio 2013. 
-Get the new Community edition if you don't have an MSDN license. There are only integration tests at this time.
+A crazy rough cut of a [C# .Net library for the IOIO device](https://github.com/ytai/ioio/wiki) on GitHub. It involves code copied from the Java application though the operational model is different.  This is on purpose to simplifiy tracking future Java application and IOIO protocol changes. There is a lot of C# style work to be done.
+
+IOIODotNet was built with VisualStudio 2015 CTP6. 
 
 ![alt text](http://1.bp.blogspot.com/-l3lVEHkgJkg/VPudkk-pXSI/AAAAAAAABw0/dnOpQ0RdS1A/s1600/IOIO%2BDot%2BNet.png "Logo Title Text 1")
 
 
 ##What Works##
-Basic Analog and Digital functions work. The integration tests flash the LED and set and receive digital pin values.
-**See the integration tests** in the _IOIOLibDotNetTest_ project to see the current state and capabilities of the API.
+Basic Analog, Digital and Uart functions work. The integration tests flash the LED, set and receive digital pin values, read analog values and send and receive serial data via uart. **See the integration tests** in the _IOIOLibDotNetTest_ project to see the current state and capabilities of the API.
 
-1. This has been tested on a windows 8 pc with using an IOIO V1 over bluetooth. IOIO V2 OTG boards should also work
- * The library does support more than one device.
+This has been tested on a windows 8 pc with using an IOIO V1 over bluetooth. IOIO V2 OTG boards _should_ also work
+ * The library should support more than one device.
  * The serial factory can find devices or you can specify one explicitly. **See the integration tests**
 
-###Outgoing##
-Outgoing state is mostly implemented using the IOIOOutgoingProtocol class. 
+###Resource Management###
+Basic resource management has been implemented. IOIOImpl works with a ResourceManager to reserve and release.  Unit tests that bypass IOIOImpl and/or mock ResourceManagement work because they operate on a _clean_ board where each test can grab whatever it wants.
+
+###Outgoing###
+
+The IOIO is programmed via _messages_ of type _ICommandToIOIO_.  Programs create messages and feed them to the IOIO thorugh _IOIOImpl_. which relies on _IOIOOutgoingProtocol_ to do the actual communicaton.  
+
  * IOIOImpl manages IOIOOutgoingProtocol in its own thread. Callers post _IxxxTo_ messages to the IOIO which then communicate via message queue.
- * Integration tests demonstrate direct protocol communication and message based via IOIOImpl
- * Only Digital and Analog out have been tested.
- * Other features _may work_ since the IOIOProtocol has been _mostly_ implemented.
+ * _IOIOMessageCommandFactory_ provides the public interface for creating outgoing messages.
+  + This represents the public API for creating messages
+ * Other features _may work_ at the raw command level since the IOIOProtocol has been _mostly_ implemented.
+ * Tests
+  + Integration tests demonstrate direct protocol communication  IOIOImpl
+  + There are two types of tests, those that call the outgoing protocol API directly and those that post messages to IOIOImpl. The message API will be the future API
+   + The tests mostly build the messages directly. That is because they all involve individual pins
  * Outgoing Messages
-     + There are two types of tests, those that call the outgoing protocol API directly and those that post messages to IOIOImpl. The message API will be the future API
-     + The tests mostly build the messages directly. That is because they all involve individual pins 
-     + Outbound messages will eventually be built through the factory.  That is where all the 
-    constrained resource management will eventually be managed
+  + Outbound messages will eventually be built through the _IOIOMessageCommandFactory_.  That will eventually be the only public creation interface
+  + Outbound messages implement the _IPostMessageCommand_ interface that binds to the _ResourceManager_ to allocate and free IOIO board pins, timers and other resources
+
+Some messages create a peripheral identifier that must be used to identify that peripheral when sending data or closing that peripheral.  The peripheral is set on the first command and must be extracted to add to subsequent commands.
+
+####Feature Status ####
+Digital, Analog Out and Uart have been lightly tested.
 
 ###Incoming###
- * State is received using  **IOIOProtocolIncoming** which runs in its own thread
+ * State is received using  **IOIOProtocolIncoming** which is created by **IOIOImpl** runs in its own thread
    + Incoming messages are distributed via handlers.  
    + Inbound data is packaged inot _IxxxFrom_ messages
    + Incoming state is captured in its own thread similar to the way the Java library works.
@@ -44,39 +52,39 @@ Outgoing state is mostly implemented using the IOIOOutgoingProtocol class.
    + **IOIOHandlerDistributor** Distributes incoming messages to other IOIOIncomingHandler objects. This is used in all the tests and in IOIOImpl
    + **IOIOHandlerCaptureConnectionState** Captures just the connection information. Used by IOIOImpl.
    + **IOIOHandlerCaptureLog** Logs a message and captures the message every time a message is received from the IOIO. Can set buffer size
-   + **IOIOHandlerCaptureSeparateQueue** Captures inbound messages classified by the inbound message interface type. See the integration test. This class is used in most of the tests to check return data.
    + **IOIOHandlerCaptureSingleQueue** Captures inbound messages in a single inbount ConcurrentQueue
    + **IOIOHandlerNotifier** does nothing yet.  It will eventually post events to listeners interested in state change
+
+####Feature Status####
  * Digital In _on state change_ has been tested.
+ * Uart data has been received
  * The existance of Analog return values is tested but not their values.
 
 ##Build Environemnt##
-Visual Studio 2013 with .Net 4 on Windows 8.
+Visual Studio 2015 with .Net 4 on Windows 8. Get the new Community edition if you don't have an MSDN license. There are only integration tests at this time.
 
 ###integration testing###
 
 * Pair your IOIO with your PC.  
-* The Digital Input / Digital Output test expects that pin 31 and 32 are connected
+* The Digital Input / Digital Output tests expect that pin 31 and 32 are connected
+* The Uart tests expect that pin 31 and 32 are connected
 * The LED test should flash the LED twice on your device.
 * Either let the integration tests find your device or set a device name by in _IOIOLibDotNetTest.TestHarnessSetup.cs_
 
-Connection and resource setup and teardown occur in the testing base class. 
-The teardown code closes connections.  Failure to do this correctly may force you to remove and re-pair the IOIO.
-The teardown code requests thread cancellation for all IOIOImpl based tests. Failure to do this results in thread abandonment messages in the Visual Studio log window.
+Connection and resource setup and teardown occur in the testing base class. The teardown code closes connections.  Failure to do this correctly may force you to remove and re-pair the IOIO. The teardown code requests thread cancellation for all _IOIOImpl_ based tests. Failure to do this results in thread abandonment messages in the Visual Studio log window.
 
 It is important to clean up after every test.  
 
 ##What Doesn't Work##
 
-1. Resource management is not yet implemented.  This will probably be done in _IOIOMessageToFactory_
-2. Robust setup and teardown is not yet implemented. 
+1. Robust setup and teardown is not yet implemented. 
   * Board verification is not yet automatic
   * Higher level APIs are not yet implemented
   * IOIOImpl methods are missing code
-3. None of the complex abstractions or buses have been implemented.
+2. None of the complex abstractions or buses have been implemented.
 
 ###Outbound Messages###
-There are missing Outbound message types _xxxTo_ .  The _IOIOMessageToFactory_ may not have factory methods for all message types.
+Outbound message types_xxxTo_ have not been fully built for peripherals that have not yet been implemented.  The _IOIOMessageToFactory_ may not have factory methods for all message types.
 
 ###Inbound Change Notification###
 Programs must poll for changes.  Change notification for information coming from the IOIO is not yet implemented.
