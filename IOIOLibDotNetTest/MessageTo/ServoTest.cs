@@ -45,45 +45,50 @@ using System.Threading.Tasks;
 
 namespace IOIOLibDotNetTest.MessageTo
 {
-    [TestClass]
-    public class CreateAnalogInputOutputTest : BaseTest
-    {
-        private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(CreateAnalogInputOutputTest));
+	[TestClass]
+	public class ServoTest : BaseTest
+	{
+		private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(ServoTest));
 
-        [TestMethod]
-        public void CreateAnalogInputOutputTo_AnalogLoopbackOut31In32()
-        {
+		[TestMethod]
+		public void ServoTest_SimpleServoTest()
+		{
 			//// TODO should use the hardware from the captured connection
 			IResourceManager rManager = new ResourceManager(Hardware.IOIO0003);
 			IOIOConnection ourConn = this.CreateGoodSerialConnection();
-            this.CreateCaptureLogHandlerSet();
-            IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(ourConn.GetInputStream(), HandlerContainer_);
-            IOIOProtocolOutgoing fooOut = new IOIOProtocolOutgoing(ourConn.GetOutputStream());
-            System.Threading.Thread.Sleep(100); // wait for us to get the hardware ids
-            AnalogInputConfigureCommand commandCreateIn = new AnalogInputConfigureCommand(31, true);
-			commandCreateIn.Alloc(rManager);
-            commandCreateIn.ExecuteMessage(fooOut);
-            System.Threading.Thread.Sleep(10);
-			DigitalOutputSpec pwmPinSpec = new DigitalOutputSpec(32, DigitalOutputSpecMode.NORMAL);
+			this.CreateCaptureLogHandlerSet();
+			IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(ourConn.GetInputStream(), HandlerContainer_);
+			IOIOProtocolOutgoing fooOut = new IOIOProtocolOutgoing(ourConn.GetOutputStream());
+			System.Threading.Thread.Sleep(20);	// wait for us to get the hardware ids
+			int pwmFrequency = 100;
+			DigitalOutputSpec pwmPinSpec = new DigitalOutputSpec(3, DigitalOutputSpecMode.NORMAL);
 
-            // set analog "voltage"
-            PwmOutputConfigureCommand commandCreatePWM = new PwmOutputConfigureCommand(pwmPinSpec, 1000, 0.3f);
+			// configure for servo
+			PwmOutputConfigureCommand commandCreatePWM = new PwmOutputConfigureCommand(pwmPinSpec, pwmFrequency);
 			commandCreatePWM.Alloc(rManager);
 			commandCreatePWM.ExecuteMessage(fooOut);
-            System.Threading.Thread.Sleep(100);
-			// change it after settling
-			PwmOutputUpdateCommand commandChangePWM = new PwmOutputUpdateDutyCycleCommand(commandCreatePWM.PwmDef,  0.7f);
-			commandChangePWM.Alloc(rManager);
-			commandChangePWM.ExecuteMessage(fooOut);
-            System.Threading.Thread.Sleep(100);
+			System.Threading.Thread.Sleep(100);
+
+			for (int i = 0; i < 4; i++)
+			{
+				// change it after settling
+				PwmOutputUpdateCommand lowValue = new PwmOutputUpdatePulseWidthCommand(commandCreatePWM.PwmDef, 600);
+				lowValue.Alloc(rManager);
+				lowValue.ExecuteMessage(fooOut);
+				System.Threading.Thread.Sleep(500);
+				// change it after settling
+				PwmOutputUpdateCommand highValue = new PwmOutputUpdatePulseWidthCommand(commandCreatePWM.PwmDef, 2000);
+				highValue.Alloc(rManager);
+				highValue.ExecuteMessage(fooOut);
+				System.Threading.Thread.Sleep(500);
+			}
 			PwmOutputCloseCommand commandReleasePwm = new PwmOutputCloseCommand(commandCreatePWM.PwmDef);
 			commandReleasePwm.Alloc(rManager);
 			commandReleasePwm.ExecuteMessage(fooOut);
-			System.Threading.Thread.Sleep(50);
-
-			IEnumerable<IReportAnalogPinValuesFrom> readValues = this.HandlerSingleQueueAllType_.CapturedMessages_
-				.OfType<IReportAnalogPinValuesFrom>();
-            Assert.IsTrue(readValues.Count() >= 1, "Didn't find the number of expected IReportAnalogPinValuesFrom: "+readValues.Count());
+			System.Threading.Thread.Sleep(500);
+			//IEnumerable<IReportAnalogPinValuesFrom> readValues = this.HandlerSingleQueueAllType_.CapturedMessages_
+			//	.OfType<IReportAnalogPinValuesFrom>();
+			//Assert.IsTrue(readValues.Count() >= 1, "Didn't find the number of expected IReportAnalogPinValuesFrom: " + readValues.Count());
 			// logging the messages with any other string doesn't show the messages themselves !?
 			LOG.Debug("Captured " + +this.HandlerSingleQueueAllType_.CapturedMessages_.Count);
 			LOG.Debug(this.HandlerSingleQueueAllType_.CapturedMessages_);

@@ -67,6 +67,12 @@ namespace IOIOLib.MessageTo.Impl
 			this.RequestedFrequency = freqHz;
         }
 
+		/// <summary>
+		/// TODO add PeriodUSec to this constructor
+		/// </summary>
+		/// <param name="spec"></param>
+		/// <param name="freqHz"></param>
+		/// <param name="dutyCycle"></param>
         public PwmOutputConfigureCommand(DigitalOutputSpec spec, int freqHz, float dutyCycle)
         {
 			this.PwmDef = new PwmOutputSpec(spec);
@@ -81,9 +87,10 @@ namespace IOIOLib.MessageTo.Impl
             outBound.setPinPwm(this.PwmDef.PinSpec.Pin, this.PwmDef.PwmNumber, this.Enable);
 
 			IPwmOutputUpdateCommand updateCommand;
-			if (this.DutyCycle != float.NaN)
+			// this should accepted periodUSec also
+			if (!float.IsNaN(this.DutyCycle))
 			{
-				updateCommand = new PwmOutputUpdateCommand(this.PwmDef, this.RequestedFrequency, this.DutyCycle);
+				updateCommand = new PwmOutputUpdateDutyCycleCommand(this.PwmDef, this.RequestedFrequency, this.DutyCycle);
 			}
 			else
 			{

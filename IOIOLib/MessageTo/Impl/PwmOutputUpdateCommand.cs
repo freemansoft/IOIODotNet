@@ -40,22 +40,46 @@ namespace IOIOLib.MessageTo.Impl
 {
     public class PwmOutputUpdateCommand : IPwmOutputUpdateCommand
     {
+		/// <summary>
+		/// pased in via constructor
+		/// </summary>
+        public PwmOutputSpec PwmDef { get; internal set; }
 
-        public PwmOutputSpec PwmDef { get; private set; }
+		/// <summary>
+		/// passed in via constructor
+		/// </summary>
+        public float DutyCycle { get; internal set; }
 
-        public float DutyCycle { get; private set; }
+		/// <summary>
+		/// passed in via constructor
+		/// </summary>
+		public float PulseWidthUSec { get; internal set; }
 
-		public int RequestedFrequency { get; private set; }
+		/// <summary>
+		/// Passed in via constructor
+		/// </summary>
+		public int RequestedFrequency { get; internal set; }
 
 		/// <summary>
 		/// calculated
 		/// </summary>
-		internal int CalculatedPeriod_ { get; private set; }
+		internal int CalculatedPeriod_ { get;  set; }
 		/// <summary>
 		/// calculated
 		/// </summary>
-        internal PwmScale CalculatedScale_ { get; private set; }
+        internal PwmScale CalculatedScale_ { get;  set; }
 
+		/// <summary>
+		/// calculated
+		/// </summary>
+		internal float BaseUSec_ { get;  set; }
+
+
+		internal PwmOutputUpdateCommand()
+		{
+			this.DutyCycle = float.NaN;
+			this.PulseWidthUSec = float.NaN;
+		}
 
 		/// <summary>
 		/// changes the frequency but not the duty cycle
@@ -63,43 +87,16 @@ namespace IOIOLib.MessageTo.Impl
 		/// </summary>
 		/// <param name="spec"></param>
 		/// <param name="freqHz"></param>
-        public PwmOutputUpdateCommand(PwmOutputSpec spec, int freqHz)
+		public PwmOutputUpdateCommand(PwmOutputSpec spec, int freqHz)
         {
 			this.PwmDef = spec;
             this.DutyCycle = float.NaN;
+			this.PulseWidthUSec = float.NaN;
 			this.RequestedFrequency = freqHz;
         }
 
-		/// <summary>
-		/// changes the duty cycle but not the frequency
-		/// </summary>
-		/// <param name="spec"></param>
-		/// <param name="dutyCycle"></param>
-		public PwmOutputUpdateCommand(PwmOutputSpec spec, float dutyCycle)
-		{
-			if (spec.Frequency <= 0)
-			{
-				throw new ArgumentException("Spec Frequency must be > 0 when frequency not specified" + spec.Frequency);
-			}
-			this.PwmDef = spec;
-			this.DutyCycle = dutyCycle;
-			this.RequestedFrequency = spec.Frequency;
-		}
 
-		/// <summary>
-		/// change frequency ans duty cycle
-		/// </summary>
-		/// <param name="spec"></param>
-		/// <param name="freqHz"></param>
-		/// <param name="dutyCycle"></param>
-			public PwmOutputUpdateCommand(PwmOutputSpec spec, int freqHz, float dutyCycle)
-        {
-			this.PwmDef = spec;
-            this.DutyCycle = dutyCycle;
-			this.RequestedFrequency = freqHz;
-        }
-
-        public bool ExecuteMessage(IOIOProtocolOutgoing outBound)
+		public virtual bool ExecuteMessage(IOIOProtocolOutgoing outBound)
         {
 			// calculate the period and scale even if not setting frequency because needed by duty cycle
 			CalculatePeriodAndScale(this.RequestedFrequency);
@@ -109,14 +106,18 @@ namespace IOIOLib.MessageTo.Impl
 				// update the Pwm spec to show the current settings
 				this.PwmDef = new PwmOutputSpec(this.PwmDef.PinSpec, this.PwmDef.PwmNumber, this.RequestedFrequency);
 			}
-            if (this.DutyCycle != float.NaN)
+            if (!float.IsNaN(this.DutyCycle))
             {
-                setPulseWidthInClocks(outBound, this.CalculatedPeriod_, this.DutyCycle);
+                setPulseWidthInClocks(outBound, this.CalculatedPeriod_ * this.DutyCycle);
             }
-            return true;
+			if (!float.IsNaN(this.PulseWidthUSec)) 
+			{
+				setPulseWidthInClocks(outBound, PulseWidthUSec / BaseUSec_ );
+			}
+			return true;
         }
 
-		public bool Alloc(Device.IResourceManager rManager) {
+		public virtual bool Alloc(Device.IResourceManager rManager) {
 			return true;
 		}
 
@@ -124,14 +125,13 @@ namespace IOIOLib.MessageTo.Impl
 		private void CalculatePeriodAndScale(int freqHz)
 		{
 			CalculatedScale_ = null;
-			float baseUs;
 			foreach (PwmScale OneScale in PwmScale.AllScales)
 			{
 				int clk = 16000000 / OneScale.scale;
 				CalculatedPeriod_ = clk / freqHz;
 				if (CalculatedPeriod_ <= 65536)
 				{
-					baseUs = 1000000.0f / clk;
+					BaseUSec_ = 1000000.0f / clk;
 					CalculatedScale_ = OneScale;
 					break;
 				}
@@ -142,16 +142,16 @@ namespace IOIOLib.MessageTo.Impl
 			}
 		}
 
-		private void setPulseWidthInClocks(IOIOProtocolOutgoing outBound, int period, float dutyCycle)
+		private void setPulseWidthInClocks(IOIOProtocolOutgoing outBound, float pulseWidthInClocks)
         {
-            float pulseWidthInClocks = period * dutyCycle;
             if (pulseWidthInClocks > this.CalculatedPeriod_)
             {
                 pulseWidthInClocks = this.CalculatedPeriod_;
             }
             int pulseWidth;
             int fraction;
-            pulseWidthInClocks -= 1; // period parameter is one less than the actual period length
+            pulseWidthInClocks -= 1; 
+			// period parameter is one less than the actual period length
             // yes, there is 0 and then 2 (no 1) - this is not a bug, that
             // is how the hardware PWM module works.
             if (pulseWidthInClocks < 1)

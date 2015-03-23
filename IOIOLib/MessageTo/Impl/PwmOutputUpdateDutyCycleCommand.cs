@@ -28,6 +28,7 @@
  */
 
 using IOIOLib.Component.Types;
+using IOIOLib.Device.Impl;
 using IOIOLib.Device.Types;
 using System;
 using System.Collections.Generic;
@@ -35,24 +36,50 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IOIOLib.MessageTo
+namespace IOIOLib.MessageTo.Impl
 {
-    public interface IPwmOutputUpdateCommand : ICommandToIOIO, IPostMessageCommand
-    {
+	/// <summary>
+	///  exists so that we can have same constructors for DutyCycle and PulseWidth constructors
+	/// </summary>
+    public class PwmOutputUpdateDutyCycleCommand : PwmOutputUpdateCommand
+	{
 
-		PwmOutputSpec PwmDef{ get; }
+
 
 		/// <summary>
-		/// often used in place of PulseWidthUSec
+		/// changes the duty cycle but not the frequency
 		/// </summary>
-        float DutyCycle { get; }
+		/// <param name="spec"></param>
+		/// <param name="dutyCycle"></param>
+		public PwmOutputUpdateDutyCycleCommand(PwmOutputSpec spec, float dutyCycle)
+		{
+			if (spec.Frequency <= 0)
+			{
+				throw new ArgumentException("Spec Frequency must be > 0 when frequency not specified" + spec.Frequency);
+			}
+			this.PwmDef = spec;
+			this.DutyCycle = dutyCycle;
+			this.PulseWidthUSec = float.NaN;
+			this.RequestedFrequency = spec.Frequency; 
+		}
 
-		int RequestedFrequency { get; }
-
-		 /// <summary>
-		 /// often used in place of duty cycle
-		 /// </summary>
-		 float PulseWidthUSec { get; }
+		/// <summary>
+		/// change frequency ans duty cycle
+		/// </summary>
+		/// <param name="spec"></param>
+		/// <param name="freqHz"></param>
+		/// <param name="dutyCycle"></param>
+		public PwmOutputUpdateDutyCycleCommand(PwmOutputSpec spec, int freqHz, float dutyCycle)
+		{
+			if (freqHz <= 0)
+			{
+				throw new ArgumentException("Frequency must be > 0 when frequency specified" + freqHz);
+			}
+			this.PwmDef = spec;
+			this.DutyCycle = dutyCycle;
+			this.RequestedFrequency = freqHz;
+			this.PulseWidthUSec = float.NaN;
+		}
 
 	}
 }
