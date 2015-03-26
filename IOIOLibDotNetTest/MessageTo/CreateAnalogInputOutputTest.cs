@@ -81,12 +81,12 @@ namespace IOIOLibDotNetTest.MessageTo
 			commandReleasePwm.ExecuteMessage(fooOut);
 			System.Threading.Thread.Sleep(50);
 
-			IEnumerable<IReportAnalogPinValuesFrom> readValues = this.HandlerSingleQueueAllType_.CapturedMessages_
+			IEnumerable<IReportAnalogPinValuesFrom> readValues = this.HandlerSingleQueueAllType_
 				.OfType<IReportAnalogPinValuesFrom>();
             Assert.IsTrue(readValues.Count() >= 1, "Didn't find the number of expected IReportAnalogPinValuesFrom: "+readValues.Count());
 			// logging the messages with any other string doesn't show the messages themselves !?
-			LOG.Debug("Captured " + +this.HandlerSingleQueueAllType_.CapturedMessages_.Count);
-			LOG.Debug(this.HandlerSingleQueueAllType_.CapturedMessages_);
+			LOG.Debug("Captured " +this.HandlerSingleQueueAllType_.Count());
+			LOG.Debug(this.HandlerSingleQueueAllType_.GetEnumerator());
 			// should verify close command
 		}
 

@@ -78,6 +78,7 @@
     <Compile Include="Connection\Impl\SerialConnectionFactory.cs" />
     <Compile Include="Connection\IOIOConnection.cs" />
     <Compile Include="Connection\IOIOConnectionFactory.cs" />
+    <Compile Include="Device\Impl\IOIOHandleAbstract.cs" />
     <Compile Include="Device\IResourceManager.cs" />
     <Compile Include="Device\Impl\ResourceAllocatorGeneric.cs" />
     <Compile Include="Device\Impl\IOIOHandlerCaptureConnectionState.cs" />
@@ -249,8 +250,6 @@
   <ItemGroup>
     <Folder Include="Component\Impl\" />
     <Folder Include="Connection\Types\" />
-    <Folder Include="Control\Impl\" />
-    <Folder Include="Control\Types\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

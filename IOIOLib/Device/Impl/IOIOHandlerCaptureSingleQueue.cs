@@ -37,206 +37,49 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections;
 
 namespace IOIOLib.Device.Impl
 {
     /// <summary>
     /// This class leaks if you don't read the messages it captures
     /// </summary>
-    public class IOIOHandlerCaptureSingleQueue : IOIOIncomingHandler
+    public class IOIOHandlerCaptureSingleQueue : IOIOHandleAbstract, IOIOIncomingHandler, IEnumerable<IMessageFromIOIO>
     {
         private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(IOIOHandlerCaptureSingleQueue));
 
         /// <summary>
-        /// Need to come up with an API to get the data!
+        /// Use GetMessage to pull a message or IEnumerable to get matching messages without Dequeuing
         /// </summary>
-        internal ConcurrentQueue<IMessageFromIOIO> CapturedMessages_ =
+        private ConcurrentQueue<IMessageFromIOIO> CapturedMessages_ =
             new ConcurrentQueue<IMessageFromIOIO>();
 
-        public void Enqueue(IMessageFromIOIO message)
+        internal override void HandleMessage(IMessageFromIOIO message)
         {
             CapturedMessages_.Enqueue(message);
         }
 
-        public void HandleEstablishConnection(byte[] hardwareId, byte[] bootloaderId, byte[] firmwareId)
-        {
-            IConnectedDeviceResponse EstablishConnectionFrom_ = new ConnectedDeviceResponse(
-                System.Text.Encoding.ASCII.GetString(hardwareId),
-                System.Text.Encoding.ASCII.GetString(bootloaderId),
-                System.Text.Encoding.ASCII.GetString(firmwareId),
-                Board.AllBoards[System.Text.Encoding.ASCII.GetString(hardwareId)]
-                );
-            this.Enqueue(EstablishConnectionFrom_);
-        }
-
-        public void HandleConnectionLost()
-        {
-        }
-
-        public void HandleSoftReset()
-        {
-        }
-
-        public void HandleCheckInterfaceResponse(bool supported)
-        {
-            this.Enqueue(new SupportedInterfaceFrom(supported));
-        }
-
-        public void HandleSetChangeNotify(int pin, bool changeNotify)
-        {
-            this.Enqueue(new SetChangeNotifyMessageFrom(pin, changeNotify));
-        }
-
-        public void HandleReportDigitalInStatus(int pin, bool level)
-        {
-            this.Enqueue(new ReportDigitalInStatusFrom(pin, level));
-        }
-
-        public void HandleRegisterPeriodicDigitalSampling(int pin, int freqScale)
-        {
-            this.Enqueue(new RegisterPeriodicDigitalSamplingFrom(pin, freqScale));
-        }
-
-        public void HandleReportPeriodicDigitalInStatus(int frameNum, bool[] values)
-        {
-            this.Enqueue(new ReportPeriodicDigitalInStatusFrom(frameNum, values));
-        }
-
-        public void HandleAnalogPinStatus(int pin, bool open)
-        {
-            this.Enqueue(new AnalogPinStatusFrom(pin, open));
-        }
-
-        public void HandleReportAnalogInStatus(List<int> pins, List<int> values)
-        {
-            if (pins.Count != values.Count)
-            {
-                LOG.Warn("HandleReportAnalogInStatus has pins:" + pins.Count + " Values:" + values.Count);
-            }
-            for (int i = 0; i < pins.Count; i++)
-            {
-                this.Enqueue(new ReportAnalogPinValuesFrom(pins[i], values[i]));
-            }
-        }
-
-        /// <summary>
-        ///  empty or close means closed
-        ///  IsOpen means IsOpen
-        /// </summary>
-        public void HandleUartOpen(int uartNum)
-        {
-            this.Enqueue(new UartOpenFrom(uartNum));
-        }
-
-        public void HandleUartClose(int uartNum)
-        {
-            this.Enqueue(new UartCloseFrom(uartNum));
-        }
-
-        public void HandleUartData(int uartNum, int numBytes, byte[] data)
-        {
-            this.Enqueue(new UartDataFrom(uartNum, numBytes, data));
-        }
+		/// <summary>
+		/// Tries to retrieve / dequeue the next message
+		/// </summary>
+		/// <returns>null if no message dequeued</returns>
+		public virtual IMessageFromIOIO GetMessage()
+		{
+			IMessageFromIOIO buffer = null;
+            bool didDeQueue = CapturedMessages_.TryDequeue(out buffer);
+			return buffer;
+		}
 
 
-        public void HandleUartReportTxStatus(int uartNum, int bytesRemaining)
-        {
-            this.Enqueue(new UartReportTxStatusFrom(uartNum, bytesRemaining));
-        }
 
-        public void HandleSpiOpen(int spiNum)
-        {
-            this.Enqueue(new SpiOpenFrom(spiNum));
-        }
+		public virtual IEnumerator<IMessageFromIOIO> GetEnumerator()
+		{
+			return ((IEnumerable<IMessageFromIOIO>)CapturedMessages_).GetEnumerator();
+		}
 
-        public void HandleSpiClose(int spiNum)
-        {
-            this.Enqueue(new SpiCloseFrom(spiNum));
-        }
-
-        public void HandleSpiData(int spiNum, int ssPin, byte[] data, int dataBytes)
-        {
-            this.Enqueue(new SpiDataFrom(spiNum, ssPin, data, dataBytes));
-        }
-
-        public void HandleSpiReportTxStatus(int spiNum, int bytesRemaining)
-        {
-            this.Enqueue(new SpiReportTxStatusFrom(spiNum, bytesRemaining));
-        }
-
-        public void HandleI2cOpen(int i2cNum)
-        {
-            this.Enqueue(new I2cOpenFrom(i2cNum));
-        }
-
-        public void HandleI2cClose(int i2cNum)
-        {
-            this.Enqueue(new I2cCloseFrom(i2cNum));
-        }
-
-        public void HandleI2cResult(int i2cNum, int size, byte[] data)
-        {
-            this.Enqueue(new I2cResultFrom(i2cNum, size, data));
-        }
-
-        public void HandleI2cReportTxStatus(int i2cNum, int bytesRemaining)
-        {
-            this.Enqueue(new I2cReportTxStatusFrom(i2cNum));
-        }
-
-        // default to close
-        public void HandleIcspOpen()
-        {
-            this.Enqueue(new IcspOpenFrom());
-        }
-
-        public void HandleIcspClose()
-        {
-            this.Enqueue(new IcspCloseFrom());
-        }
-
-        public void HandleIcspReportRxStatus(int bytesRemaining)
-        {
-            this.Enqueue(new IcspReportRxStatusFrom(bytesRemaining));
-        }
-
-        public void HandleIcspResult(int size, byte[] data)
-        {
-            this.Enqueue(new IcspResultFrom(size, data));
-        }
-
-        public void HandleIncapReport(int incapNum, int size, byte[] data)
-        {
-            this.Enqueue(new IncapReportFrom(incapNum, size, data));
-        }
-
-        public void HandleIncapClose(int incapNum)
-        {
-            this.Enqueue(new IncapOpenFrom(incapNum));
-        }
-
-        public void HandleIncapOpen(int incapNum)
-        {
-            this.Enqueue(new IncapCloseFrom(incapNum));
-        }
-
-        public void HandleCapSenseReport(int pinNum, int value)
-        {
-            this.Enqueue(new CapSenseReportFrom(pinNum, value));
-        }
-
-        public void HandleSetCapSenseSampling(int pinNum, bool enable)
-        {
-            this.Enqueue(new CapSenseSamplingFrom(pinNum, enable));
-        }
-
-        public void HandleSequencerEvent(Types.SequencerEvent seqEvent, int arg)
-        {
-            this.Enqueue(new SequencerEventFrom(seqEvent, arg));
-        }
-
-        public void HandleSync()
-        {
-        }
-    }
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return ((IEnumerable<IMessageFromIOIO>)CapturedMessages_).GetEnumerator();
+		}
+	}
 }

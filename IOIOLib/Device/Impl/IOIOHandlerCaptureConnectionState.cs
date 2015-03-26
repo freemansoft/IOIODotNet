@@ -153,7 +153,6 @@ namespace IOIOLib.Device.Impl
         {
         }
 
-        internal IDictionary<int, IHandleI2cReportTxStatusFrom> StateHandleI2cReportTxStatus_ = new Dictionary<int, IHandleI2cReportTxStatusFrom>();
         public void HandleI2cReportTxStatus(int spiNum, int bytesRemaining)
         {
         }

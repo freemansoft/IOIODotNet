@@ -82,18 +82,18 @@ namespace IOIOLibDotNetTest.MessageTo
 			System.Threading.Thread.Sleep(50);
 
 			// IUartFrom is the parent interface for all messages coming from the UARt
-			Assert.AreEqual(1+1+helloWorldBytes.Count()+1, this.HandlerSingleQueueAllType_.CapturedMessages_.OfType<IUartFrom>().Count());
+			Assert.AreEqual(1+1+helloWorldBytes.Count()+1, this.HandlerSingleQueueAllType_.OfType<IUartFrom>().Count());
 
-			Assert.AreEqual(1, this.HandlerSingleQueueAllType_.CapturedMessages_.OfType<IUartOpenFrom>().Count());
-			Assert.AreEqual(1, this.HandlerSingleQueueAllType_.CapturedMessages_.OfType<IHandleUartReportTxStatusFrom>().Count());
+			Assert.AreEqual(1, this.HandlerSingleQueueAllType_.OfType<IUartOpenFrom>().Count());
+			Assert.AreEqual(1, this.HandlerSingleQueueAllType_.OfType<IHandleUartReportTxStatusFrom>().Count());
 
-			IEnumerable<IUartDataFrom> readValues = this.HandlerSingleQueueAllType_.CapturedMessages_.OfType<IUartDataFrom>();
+			IEnumerable<IUartDataFrom> readValues = this.HandlerSingleQueueAllType_.OfType<IUartDataFrom>();
             Assert.AreEqual(helloWorldBytes.Count(), readValues.Count(), "Didn't find the number of expected IUartFrom: "+readValues.Count());
 			// logging the messages with any other string doesn't show the messages themselves !?
-			LOG.Debug("Captured " + +this.HandlerSingleQueueAllType_.CapturedMessages_.Count);
-			LOG.Debug(this.HandlerSingleQueueAllType_.CapturedMessages_);
+			LOG.Debug("Captured " + +this.HandlerSingleQueueAllType_.Count());
+			LOG.Debug(this.HandlerSingleQueueAllType_.GetEnumerator());
 
-			Assert.AreEqual (1, this.HandlerSingleQueueAllType_.CapturedMessages_.OfType<IUartCloseFrom>().Count());
+			Assert.AreEqual (1, this.HandlerSingleQueueAllType_.OfType<IUartCloseFrom>().Count());
 			// should verify close command in the resource
 		}
 

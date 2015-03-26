@@ -98,11 +98,11 @@ namespace IOIOLibDotNetTest.Device.Impl
             int matchingLogs = this.HandlerLog_.CapturedLogs_.Count(s => s.StartsWith("HandleReportDigitalInStatus"));
             Assert.AreEqual(3, matchingLogs, "Should have captured input changes, not " + matchingLogs + ".  Are pins 31 and 32 shorted together");
             // verify the system acknowledged our request to be notified of state change
-            Assert.AreEqual(1, this.HandlerSingleQueueAllType_.CapturedMessages_
+            Assert.AreEqual(1, this.HandlerSingleQueueAllType_
 				.OfType<ISetChangeNotifyMessageFrom>().Where(m => m.Pin == 31).Count()
                 , "Unexpected count for IReportDigitalInStatusFrom");
             // verify we got Pin state changes for 31
-            Assert.AreEqual(3, this.HandlerSingleQueueAllType_.CapturedMessages_
+            Assert.AreEqual(3, this.HandlerSingleQueueAllType_
 				.OfType<IReportDigitalInStatusFrom>().Where(m => m.Pin == 31).Count()
                 , "Unexpected count for IReportDigitalInStatusFrom");
         }

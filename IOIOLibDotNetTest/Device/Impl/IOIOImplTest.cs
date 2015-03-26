@@ -112,7 +112,7 @@ namespace IOIOLibDotNetTest.Device.Impl
             }
             System.Threading.Thread.Sleep(100);
 
-			ConcurrentQueue<IMessageFromIOIO> digitalMessagesIn = this.HandlerSingleQueueAllType_.CapturedMessages_;
+			IEnumerable<IMessageFromIOIO> digitalMessagesIn = this.HandlerSingleQueueAllType_;
             int changeCount =
                 digitalMessagesIn.OfType<IReportDigitalInStatusFrom>().Where(m => m.Pin == 32).Count();
 
