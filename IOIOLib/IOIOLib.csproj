@@ -80,6 +80,8 @@
     <Compile Include="Connection\IOIOConnectionFactory.cs" />
     <Compile Include="Convenience\FindDeviceHack.cs" />
     <Compile Include="Device\Impl\IOIOHandleAbstract.cs" />
+    <Compile Include="Device\Impl\IOIOHandlerObservable.cs" />
+    <Compile Include="Device\Impl\IOIOHandlerObservableNoWaitParallel.cs" />
     <Compile Include="Device\IResourceManager.cs" />
     <Compile Include="Device\Impl\ResourceAllocatorGeneric.cs" />
     <Compile Include="Device\Impl\IOIOHandlerCaptureConnectionState.cs" />
@@ -117,7 +119,7 @@
     <Compile Include="MessageTo\ICheckInterfaceVersionCommand.cs" />
     <Compile Include="Device\Impl\IOIOHandlerCaptureLog.cs" />
     <Compile Include="Device\Impl\IOIOHandlerDistributor.cs" />
-    <Compile Include="Device\Impl\IOIOHandlerNotifier.cs" />
+    <Compile Include="Device\Impl\IOIOHandlerObservableNoWait.cs" />
     <Compile Include="Device\Impl\IOIOProtocolIncoming.cs" />
     <Compile Include="Device\Impl\IOIOImpl.cs" />
     <Compile Include="Device\IDevice.cs" />

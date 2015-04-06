@@ -196,12 +196,12 @@ namespace IOIOLib.Device.Impl
 
         public virtual void SoftReset()
         {
-            throw new NotImplementedException();
+            OutProt_.softReset();
         }
 
         public virtual void HardReset()
         {
-            throw new NotImplementedException();
+            OutProt_.hardReset();
         }
 
         public virtual void BeginBatch()
@@ -216,7 +216,7 @@ namespace IOIOLib.Device.Impl
 
         public virtual void Sync()
         {
-            throw new NotImplementedException();
+            OutProt_.sync();
         }
 
 

@@ -35,22 +35,34 @@ using System.Threading.Tasks;
 using IOIOLib.MessageFrom;
 using System.Collections.Concurrent;
 using IOIOLib.IOIOException;
+using IOIOLib.Util;
 
 namespace IOIOLib.Device.Impl
 {
 	/// <summary>
-	/// Notify interested parties when messages are received
+	/// Notify interested parties when messages are received.
+    /// Observers are notified serially in same thread.
 	/// </summary>
-	class IOIOHandlerNotifier : IOIOHandleAbstract
+	class IOIOHandlerObservable : IOIOHandleAbstract
 	{
-		internal override void HandleMessage(IMessageFromIOIO message)
+        private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(IOIOHandlerObservableNoWait));
+
+        /// <summary>
+        /// Notify the observers
+        /// </summary>
+        /// <param name="message"></param>
+		internal override void  HandleMessage(IMessageFromIOIO message)
 		{
             // messages must support notification to do notification...
             IMessageNotificationFromIOIO notifier = message as IMessageNotificationFromIOIO;
-            if (notifier != null) { 
+            if (notifier != null) {
                 foreach (IObserverIOIO observer in Interested_)
                 {
+                    try { 
                     notifier.Notify(observer);
+                    } catch (Exception e) {
+                        LOG.Error("Caught exception ", e);
+                    }
                 }
             }
         }

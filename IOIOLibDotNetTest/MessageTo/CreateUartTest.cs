@@ -63,7 +63,7 @@ namespace IOIOLibDotNetTest.MessageTo
 
 
 			UartConfigureCommand commandCreate = new UartConfigureCommand(
-				new DigitalInputSpec(32), new DigitalOutputSpec(31), 9600, UartParity.NONE, UartStopBits.ONE);
+				new DigitalInputSpec(32), new DigitalOutputSpec(31), 38400, UartParity.NONE, UartStopBits.ONE);
 			commandCreate.Alloc(rManager);
 			commandCreate.ExecuteMessage(fooOut);
             System.Threading.Thread.Sleep(10);
@@ -84,8 +84,8 @@ namespace IOIOLibDotNetTest.MessageTo
 			// IUartFrom is the parent interface for all messages coming from the UARt
 			Assert.AreEqual(1+1+helloWorldBytes.Count()+1, this.HandlerSingleQueueAllType_.OfType<IUartFrom>().Count());
 
-			Assert.AreEqual(1, this.HandlerSingleQueueAllType_.OfType<IUartOpenFrom>().Count());
-			Assert.AreEqual(1, this.HandlerSingleQueueAllType_.OfType<IUartReportTxStatusFrom>().Count());
+			Assert.AreEqual(1, this.HandlerSingleQueueAllType_.OfType<IUartOpenFrom>().Count(), "didn't get IUartOpenFrom");
+			Assert.AreEqual(1, this.HandlerSingleQueueAllType_.OfType<IUartReportTxStatusFrom>().Count(), "didn't get IUartReportTXStatusFrom");
 
 			IEnumerable<IUartDataFrom> readValues = this.HandlerSingleQueueAllType_.OfType<IUartDataFrom>();
             Assert.AreEqual(helloWorldBytes.Count(), readValues.Count(), "Didn't find the number of expected IUartFrom: "+readValues.Count());

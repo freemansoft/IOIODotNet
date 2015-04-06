@@ -73,11 +73,12 @@ namespace IOIOLibDotNetTest.Device.Impl
             ourImpl.PostMessage(confDigitalOut);
             for (int i = 0; i < 8; i++)
             {
-                System.Threading.Thread.Sleep(200);
+                System.Threading.Thread.Sleep(150);
                 ourImpl.PostMessage(turnItOn);
-                System.Threading.Thread.Sleep(200);
+                System.Threading.Thread.Sleep(150);
                 ourImpl.PostMessage(turnItOff);
             }
+            // this test can fail if we can't connect to the device but otherwise no way to read pin 1 values
             Assert.IsTrue(true, "there is no status to check");
         }
 

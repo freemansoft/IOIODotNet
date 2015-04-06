@@ -61,7 +61,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Device\Impl\IOIOHandlerNotifierTest.cs" />
+    <Compile Include="Device\Impl\IOIOHandlerObservableTest.cs" />
     <Compile Include="Device\Impl\IOIOImplTest.cs" />
     <Compile Include="Device\Impl\IOIOProtocolOutgoingTest.cs" />
     <Compile Include="Device\Impl\IOIOProtocolIncomingTest.cs" />

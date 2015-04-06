@@ -83,6 +83,11 @@ namespace IOIOLibDotNetTest
         {
             DevicesOpenedDuringTest.ForEach(x =>
             {
+                //x.Sync();
+                // would like to reset so board is in original state every time we connect
+                x.SoftReset();   // resets state without dropping connection
+                // would we do this and wait instead
+                //x.HardReset(); // like disconnecting the power
                 x.Disconnect();
                 LOG.Info("Disconnected " + x.ToString());
             });
@@ -95,6 +100,12 @@ namespace IOIOLibDotNetTest
                     }
                 });
             GoodConnection_ = null;
+
+            HandlerLog_ = null;
+            HandlerCaptureConnectionState_ = null;
+            HandlerSingleQueueAllType_ = null;
+            HandlerContainer_ = null;
+
             System.Threading.Thread.Sleep(100);
             LOG.Debug("Done MyTestCleanup");
         }
