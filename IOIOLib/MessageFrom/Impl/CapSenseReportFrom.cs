@@ -35,7 +35,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom.Impl
 {
-    class CapSenseReportFrom : ICapSenseReportFrom
+    class CapSenseReportFrom : MessageNotificationFromIOIO<ICapSenseReportFrom>, ICapSenseReportFrom
     {
         public int PinNum { get; private set; }
         public int Value { get; private set; }

@@ -35,7 +35,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom.Impl
 {
-    public class ReportAnalogPinValuesFrom : IReportAnalogPinValuesFrom
+    public class ReportAnalogPinValuesFrom : MessageNotificationFromIOIO<IReportAnalogPinValuesFrom>, IReportAnalogPinValuesFrom
     {
         public int Pin { get; private set; }
         public int Value { get; private set; }

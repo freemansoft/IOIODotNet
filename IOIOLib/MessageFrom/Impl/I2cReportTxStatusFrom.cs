@@ -35,7 +35,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom.Impl
 {
-    public class I2cReportTxStatusFrom : IHandleI2cReportTxStatusFrom
+    public class I2cReportTxStatusFrom : MessageNotificationFromIOIO<II2cReportTxStatusFrom>, II2cReportTxStatusFrom
     {
 
         public int I2cNum { get; private set; }

@@ -35,7 +35,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom.Impl
 {
-    public class ReportDigitalInStatusFrom : IReportDigitalInStatusFrom
+    public class ReportDigitalInStatusFrom : MessageNotificationFromIOIO<IReportDigitalInStatusFrom>, IReportDigitalInStatusFrom
     {
         public int Pin { get; private set; }
         public bool Level { get; private set; }

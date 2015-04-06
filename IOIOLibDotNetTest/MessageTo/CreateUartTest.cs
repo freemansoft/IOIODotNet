@@ -85,7 +85,7 @@ namespace IOIOLibDotNetTest.MessageTo
 			Assert.AreEqual(1+1+helloWorldBytes.Count()+1, this.HandlerSingleQueueAllType_.OfType<IUartFrom>().Count());
 
 			Assert.AreEqual(1, this.HandlerSingleQueueAllType_.OfType<IUartOpenFrom>().Count());
-			Assert.AreEqual(1, this.HandlerSingleQueueAllType_.OfType<IHandleUartReportTxStatusFrom>().Count());
+			Assert.AreEqual(1, this.HandlerSingleQueueAllType_.OfType<IUartReportTxStatusFrom>().Count());
 
 			IEnumerable<IUartDataFrom> readValues = this.HandlerSingleQueueAllType_.OfType<IUartDataFrom>();
             Assert.AreEqual(helloWorldBytes.Count(), readValues.Count(), "Didn't find the number of expected IUartFrom: "+readValues.Count());

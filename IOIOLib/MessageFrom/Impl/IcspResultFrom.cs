@@ -35,7 +35,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom.Impl
 {
-    public class IcspResultFrom : IIcspResultFrom
+    public class IcspResultFrom : MessageNotificationFromIOIO<IIcspResultFrom>, IIcspResultFrom
     {
 
         public int Size { get; private set; }

@@ -35,7 +35,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom.Impl
 {
-    public class IncapReportFrom : IIncapReportFrom
+    public class IncapReportFrom : MessageNotificationFromIOIO<IIncapReportFrom>, IIncapReportFrom
     {
         public int IncapNum { get; private set; }
 

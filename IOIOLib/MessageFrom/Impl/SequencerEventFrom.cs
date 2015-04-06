@@ -36,7 +36,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom.Impl
 {
-    public class SequencerEventFrom : ISequencerEventFrom
+    public class SequencerEventFrom : MessageNotificationFromIOIO<ISequencerEventFrom>,ISequencerEventFrom
     {
 
         public Device.Types.SequencerEvent SeqEvent { get; private set; }

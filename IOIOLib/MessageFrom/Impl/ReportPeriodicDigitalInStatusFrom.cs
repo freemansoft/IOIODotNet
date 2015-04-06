@@ -35,7 +35,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom.Impl
 {
-    public class ReportPeriodicDigitalInStatusFrom : IReportPeriodicDigitalInStatusFrom
+    public class ReportPeriodicDigitalInStatusFrom : MessageNotificationFromIOIO<IReportPeriodicDigitalInStatusFrom>, IReportPeriodicDigitalInStatusFrom
     {
         public int FrameNum { get; private set; }
         public bool[] Values { get; private set; }

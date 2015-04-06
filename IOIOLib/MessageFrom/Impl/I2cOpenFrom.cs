@@ -35,7 +35,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom.Impl
 {
-    public class I2cOpenFrom : II2cOpenFrom
+    public class I2cOpenFrom : MessageNotificationFromIOIO<II2cOpenFrom>, II2cOpenFrom
     {
         public int I2cNum { get; private set; }
 

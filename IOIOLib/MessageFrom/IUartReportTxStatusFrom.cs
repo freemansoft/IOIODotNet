@@ -35,7 +35,9 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom
 {
-    public interface IHandleI2cReportTxStatusFrom : II2cFrom
+    public interface IUartReportTxStatusFrom : IUartFrom
     {
+        int BytesRemaining { get; }
+
     }
 }

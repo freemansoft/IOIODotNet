@@ -36,7 +36,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom.Impl
 {
-    public class UartOpenFrom : IUartOpenFrom
+    public class UartOpenFrom : MessageNotificationFromIOIO<IUartOpenFrom>, IUartOpenFrom
     {
         public int UartNum { get; private set; }
 

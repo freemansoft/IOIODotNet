@@ -36,7 +36,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom.Impl
 {
-    public class UartReportTxStatusFrom : IHandleUartReportTxStatusFrom
+    public class UartReportTxStatusFrom : MessageNotificationFromIOIO<IUartReportTxStatusFrom>, IUartReportTxStatusFrom
     {
         public int UartNum { get; private set; }
         public int BytesRemaining { get; private set; }

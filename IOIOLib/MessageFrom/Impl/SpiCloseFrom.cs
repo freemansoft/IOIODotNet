@@ -35,7 +35,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom.Impl
 {
-    public class SpiCloseFrom : ISpiCloseFrom
+    public class SpiCloseFrom : MessageNotificationFromIOIO<ISpiCloseFrom>, ISpiCloseFrom
     {
         public int SpiNum { get; private set; }
 

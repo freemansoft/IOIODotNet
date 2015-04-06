@@ -35,7 +35,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom.Impl
 {
-    public class IcspReportRxStatusFrom : IIcspReportRxStatusFrom
+    public class IcspReportRxStatusFrom : MessageNotificationFromIOIO<IIcspReportRxStatusFrom>, IIcspReportRxStatusFrom
     {
 
         public int BytesRemaining { get; private set; }

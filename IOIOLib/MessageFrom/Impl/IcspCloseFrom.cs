@@ -35,7 +35,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom.Impl
 {
-    public class IcspCloseFrom : IIcspCloseFrom
+    public class IcspCloseFrom : MessageNotificationFromIOIO<IIcspCloseFrom>, IIcspCloseFrom
     {
     }
 }

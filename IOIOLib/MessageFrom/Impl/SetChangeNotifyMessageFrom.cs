@@ -35,7 +35,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom.Impl
 {
-    public class SetChangeNotifyMessageFrom : ISetChangeNotifyMessageFrom
+    public class SetChangeNotifyMessageFrom : MessageNotificationFromIOIO<ISetChangeNotifyMessageFrom>, ISetChangeNotifyMessageFrom
     {
 
         public int Pin { get; private set; }

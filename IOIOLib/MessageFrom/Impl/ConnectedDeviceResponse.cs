@@ -35,7 +35,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom.Impl
 {
-    public class ConnectedDeviceResponse : IConnectedDeviceResponse
+    public class ConnectedDeviceResponse : MessageNotificationFromIOIO<IConnectedDeviceResponse>, IConnectedDeviceResponse
     {
 
         /// <summary>

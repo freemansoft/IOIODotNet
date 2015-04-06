@@ -33,20 +33,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IOIOLib.MessageFrom.Impl
+namespace IOIOLib.MessageFrom
 {
-    public class CapSenseSamplingFrom : MessageNotificationFromIOIO<ICapSenseSamplingFrom>, ICapSenseSamplingFrom
+    public interface ISpiReportTxStatusFrom : ISpiFrom
     {
+        int BytesRemaining { get; }
 
-
-        public int PinNum { get; private set; }
-        public bool IsEnabled { get; private set; }
-
-
-        internal CapSenseSamplingFrom(int pinNum, bool isEnabled)
-        {
-            this.PinNum = pinNum;
-            this.IsEnabled = isEnabled;
-        }
     }
 }

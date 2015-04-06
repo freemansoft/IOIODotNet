@@ -26,184 +26,48 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied.
  */
- 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IOIOLib.MessageFrom;
+using System.Collections.Concurrent;
+using IOIOLib.IOIOException;
 
 namespace IOIOLib.Device.Impl
 {
-    /// <summary>
-    /// This class does nothing. It is a placeholder for future notification code.
-    /// It partially exists so that the README.md has something to mention.
-    /// </summary>
-    class IOIOHandlerNotifier : IOIOIncomingHandler
-    {
-        public void HandleEstablishConnection(byte[] hardwareId, byte[] bootloaderId, byte[] firmwareId)
-        {
-            throw new NotImplementedException();
+	/// <summary>
+	/// Notify interested parties when messages are received
+	/// </summary>
+	class IOIOHandlerNotifier : IOIOHandleAbstract
+	{
+		internal override void HandleMessage(IMessageFromIOIO message)
+		{
+            // messages must support notification to do notification...
+            IMessageNotificationFromIOIO notifier = message as IMessageNotificationFromIOIO;
+            if (notifier != null) { 
+                foreach (IObserverIOIO observer in Interested_)
+                {
+                    notifier.Notify(observer);
+                }
+            }
         }
 
-        public void HandleConnectionLost()
-        {
-            throw new NotImplementedException();
-        }
+		internal ConcurrentBag<IObserverIOIO> Interested_ =	new ConcurrentBag<IObserverIOIO>();
 
-        public void HandleSoftReset()
-        {
-            throw new NotImplementedException();
-        }
+		/// <summary>
+		/// Does not yet return an actual unsubscriber
+		/// </summary>
+		/// <param name="t">the specific subtype of IMessageFromIOIO you are interested in</param>
+		/// <param name="observer">object that wishes to be notified</param>
+		/// <returns></returns>
+		public IDisposable Subscribe(IObserverIOIO observer)
+		{
+			Interested_.Add(observer);
+			return null;
+		}
 
-        public void HandleCheckInterfaceResponse(bool supported)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void HandleSetChangeNotify(int pin, bool changeNotify)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void HandleReportDigitalInStatus(int pin, bool level)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void HandleRegisterPeriodicDigitalSampling(int pin, int freqScale)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void HandleReportPeriodicDigitalInStatus(int frameNum, bool[] values)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void HandleAnalogPinStatus(int pin, bool open)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void HandleReportAnalogInStatus(List<int> pins, List<int> values)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void HandleUartOpen(int uartNum)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void HandleUartClose(int uartNum)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void HandleUartData(int uartNum, int numBytes, byte[] data)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void HandleUartReportTxStatus(int uartNum, int bytesRemaining)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void HandleSpiOpen(int spiNum)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void HandleSpiClose(int spiNum)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void HandleSpiData(int spiNum, int ssPin, byte[] data, int dataBytes)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void HandleSpiReportTxStatus(int spiNum, int bytesRemaining)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void HandleI2cOpen(int i2cNum)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void HandleI2cClose(int i2cNum)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void HandleI2cResult(int i2cNum, int size, byte[] data)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void HandleI2cReportTxStatus(int spiNum, int bytesRemaining)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void HandleIcspOpen()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void HandleIcspClose()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void HandleIcspReportRxStatus(int bytesRemaining)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void HandleIcspResult(int size, byte[] data)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void HandleIncapReport(int incapNum, int size, byte[] data)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void HandleIncapClose(int incapNum)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void HandleIncapOpen(int incapNum)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void HandleCapSenseReport(int pinNum, int value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void HandleSetCapSenseSampling(int pinNum, bool enable)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void HandleSequencerEvent(Types.SequencerEvent seqEvent, int arg)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void HandleSync()
-        {
-            throw new NotImplementedException();
-        }
-    }
+	}
 }

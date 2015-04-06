@@ -135,7 +135,7 @@ namespace IOIOLib.Device.Impl
         {
         }
 
-        internal IDictionary<int, IHandleSpiReportTxStatusFrom> StatehandleSpiReportTxStatus_ = new Dictionary<int, IHandleSpiReportTxStatusFrom>();
+        internal IDictionary<int, ISpiReportTxStatusFrom> StatehandleSpiReportTxStatus_ = new Dictionary<int, ISpiReportTxStatusFrom>();
         public void HandleSpiReportTxStatus(int spiNum, int bytesRemaining)
         {
         }

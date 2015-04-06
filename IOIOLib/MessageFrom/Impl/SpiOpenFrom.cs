@@ -35,7 +35,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom.Impl
 {
-    public class SpiOpenFrom : ISpiOpenFrom
+    public class SpiOpenFrom : MessageNotificationFromIOIO<ISpiOpenFrom>, ISpiOpenFrom
     {
         public int SpiNum { get; private set; }
 

@@ -35,7 +35,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom.Impl
 {
-    public class RegisterPeriodicDigitalSamplingFrom : IRegisterPeriodicDigitalSamplingFrom
+    public class RegisterPeriodicDigitalSamplingFrom : MessageNotificationFromIOIO<IRegisterPeriodicDigitalSamplingFrom>, IRegisterPeriodicDigitalSamplingFrom
     {
 
         public int Pin { get; private set; }

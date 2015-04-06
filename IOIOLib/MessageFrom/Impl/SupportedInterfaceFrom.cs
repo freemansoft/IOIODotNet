@@ -35,7 +35,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom.Impl
 {
-    public class SupportedInterfaceFrom : ISupportedInterfaceFrom
+    public class SupportedInterfaceFrom : MessageNotificationFromIOIO<ISupportedInterfaceFrom>, ISupportedInterfaceFrom
     {
         public bool IsSupported { get; private set; }
 

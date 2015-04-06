@@ -36,6 +36,6 @@ using System.Threading.Tasks;
 namespace IOIOLib.MessageFrom
 {
     public interface IMessageFromIOIO
-    {
+   {
     }
 }

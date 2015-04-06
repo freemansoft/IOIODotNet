@@ -35,7 +35,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom.Impl
 {
-    public class SpiReportTxStatusFrom : IHandleSpiReportTxStatusFrom
+    public class SpiReportTxStatusFrom : MessageNotificationFromIOIO<ISpiReportTxStatusFrom>, ISpiReportTxStatusFrom
     {
         public int SpiNum { get; private set; }
         public int BytesRemaining { get; private set; }

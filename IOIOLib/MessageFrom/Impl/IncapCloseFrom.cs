@@ -35,7 +35,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom.Impl
 {
-    public class IncapCloseFrom : IIncapCloseFrom
+    public class IncapCloseFrom : MessageNotificationFromIOIO<IIncapCloseFrom>, IIncapCloseFrom
     {
         public int IncapNum { get; private set; }
 

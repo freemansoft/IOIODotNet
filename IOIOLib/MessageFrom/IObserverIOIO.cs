@@ -35,9 +35,10 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom
 {
-    public interface IHandleSpiReportTxStatusFrom : ISpiFrom
+    /// <summary>
+    /// Marker interface for notification.  Code then uses IObserver&lt;T&gt; to do actual notificaiton
+    /// </summary>
+    public interface IObserverIOIO
     {
-        int BytesRemaining { get; }
-
     }
 }

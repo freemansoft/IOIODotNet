@@ -92,6 +92,9 @@
     <Compile Include="MessageFrom\IAnalogInFrom.cs" />
     <Compile Include="MessageFrom\IDigitalInFrom.cs" />
     <Compile Include="MessageFrom\ICapSenseFrom.cs" />
+    <Compile Include="MessageFrom\IMessageNotificationFromIOIO.cs" />
+    <Compile Include="MessageFrom\Impl\MessageNotificationFromIOIO.cs" />
+    <Compile Include="MessageFrom\IObserverIOIO.cs" />
     <Compile Include="MessageFrom\Impl\AnalogPinStatusFrom.cs" />
     <Compile Include="MessageFrom\Impl\SupportedInterfaceFrom.cs" />
     <Compile Include="MessageFrom\Impl\UartDataFrom.cs" />
@@ -171,8 +174,8 @@
     <Compile Include="MessageFrom\Impl\UartOpenFrom.cs" />
     <Compile Include="MessageFrom\ICapSenseReportFrom.cs" />
     <Compile Include="MessageFrom\ICapSenseSamplingFrom.cs" />
-    <Compile Include="MessageFrom\IHandleI2cReportTxStatusFrom.cs" />
-    <Compile Include="MessageFrom\IHandleSpiReportTxStatusFrom.cs" />
+    <Compile Include="MessageFrom\II2cReportTxStatusFrom.cs" />
+    <Compile Include="MessageFrom\ISpiReportTxStatusFrom.cs" />
     <Compile Include="MessageFrom\II2cCloseFrom.cs" />
     <Compile Include="MessageFrom\II2cFrom.cs" />
     <Compile Include="MessageFrom\II2cOpenFrom.cs" />
@@ -191,7 +194,7 @@
     <Compile Include="MessageFrom\ISpiOpenFrom.cs" />
     <Compile Include="MessageFrom\ISpiCloseFrom.cs" />
     <Compile Include="MessageFrom\IAnalogPinStatusFrom.cs" />
-    <Compile Include="MessageFrom\IHandleUartReportTxStatusFrom.cs" />
+    <Compile Include="MessageFrom\IUartReportTxStatusFrom.cs" />
     <Compile Include="MessageFrom\IPeriodicDigitalSamplingFrom.cs" />
     <Compile Include="MessageFrom\IReportDigitalInStatusFrom.cs" />
     <Compile Include="MessageFrom\IReportPeriodicDigitalInStatusFrom.cs" />

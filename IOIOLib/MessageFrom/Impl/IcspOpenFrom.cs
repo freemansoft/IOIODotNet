@@ -35,7 +35,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom.Impl
 {
-    public class IcspOpenFrom : IIcspOpenFrom
+    public class IcspOpenFrom : MessageNotificationFromIOIO<IIcspOpenFrom>, IIcspOpenFrom
     {
     }
 }
