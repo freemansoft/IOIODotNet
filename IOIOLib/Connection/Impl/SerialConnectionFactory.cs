@@ -48,7 +48,7 @@ namespace IOIOLib.Connection.Impl
         /// </summary>
         /// <param name="ConnectionString_"></param>
         /// <returns></returns>
-        public IOIOConnection CreateConnection(string connectionString)
+        public virtual IOIOConnection CreateConnection(string connectionString)
         {
             try
             {
@@ -69,7 +69,7 @@ namespace IOIOLib.Connection.Impl
         }
 
 
-        public ICollection<IOIOConnection> CreateConnections(ICollection<string> connectionStrings)
+        public virtual ICollection<IOIOConnection> CreateConnections(ICollection<string> connectionStrings)
         {
             List<IOIOConnection> createdConnections = new List<IOIOConnection>();
             foreach (string singleConnectionString in connectionStrings)
@@ -91,7 +91,7 @@ namespace IOIOLib.Connection.Impl
         /// auto-find ports we can IsOpen
         /// </summary>
         /// <returns></returns>
-        public ICollection<IOIOConnection> CreateConnections()
+        public virtual  ICollection<IOIOConnection> CreateConnections()
         {
             string[] portNames = SerialPort.GetPortNames();
             ICollection<string> nameCollection = new List<string>();

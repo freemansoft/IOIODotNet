@@ -168,6 +168,9 @@ namespace IOIOLib.Device.Impl
             }
         }
 
+        /// <summary>
+        /// Main run loop for incoming traffic.  Runs in its own thread.
+        /// </summary>
         public void run()
         {
             // should set to highest priority

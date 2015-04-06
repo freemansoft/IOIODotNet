@@ -63,7 +63,7 @@ namespace IOIOLib.Device.Impl
 		/// <param name="t">the specific subtype of IMessageFromIOIO you are interested in</param>
 		/// <param name="observer">object that wishes to be notified</param>
 		/// <returns></returns>
-		public IDisposable Subscribe(IObserverIOIO observer)
+		public virtual IDisposable Subscribe(IObserverIOIO observer)
 		{
 			Interested_.Add(observer);
 			return null;

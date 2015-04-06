@@ -73,7 +73,7 @@ namespace IOIOLib.Device.Impl
         }
 
 
-        public void HandleEstablishConnection(byte[] hardwareId, byte[] bootloaderId, byte[] firmwareId)
+        public virtual void HandleEstablishConnection(byte[] hardwareId, byte[] bootloaderId, byte[] firmwareId)
         {
 
             string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name
@@ -83,55 +83,55 @@ namespace IOIOLib.Device.Impl
             LogAndCapture(LogString);
         }
 
-        public void HandleConnectionLost()
+        public virtual void HandleConnectionLost()
         {
             string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name;
             LogAndCapture(LogString);
         }
 
-        public void HandleSoftReset()
+        public virtual void HandleSoftReset()
         {
             string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name;
             LogAndCapture(LogString);
         }
 
-        public void HandleCheckInterfaceResponse(bool supported)
+        public virtual void HandleCheckInterfaceResponse(bool supported)
         {
             string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " supported: " + supported;
             LogAndCapture(LogString);
         }
 
-        public void HandleSetChangeNotify(int pin, bool changeNotify)
+        public virtual void HandleSetChangeNotify(int pin, bool changeNotify)
         {
             string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " Pin:" + pin + " " + changeNotify;
             LogAndCapture(LogString);
         }
 
-        public void HandleReportDigitalInStatus(int pin, bool level)
+        public virtual void HandleReportDigitalInStatus(int pin, bool level)
         {
             string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " Pin:" + pin + " " + level;
             LogAndCapture(LogString);
         }
 
-        public void HandleRegisterPeriodicDigitalSampling(int pin, int freqScale)
+        public virtual void HandleRegisterPeriodicDigitalSampling(int pin, int freqScale)
         {
             string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " Pin:" + pin;
             LogAndCapture(LogString);
         }
 
-        public void HandleReportPeriodicDigitalInStatus(int frameNum, bool[] values)
+        public virtual void HandleReportPeriodicDigitalInStatus(int frameNum, bool[] values)
         {
             string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " FrameNum:" + frameNum;
             LogAndCapture(LogString);
         }
 
-        public void HandleAnalogPinStatus(int pin, bool open)
+        public virtual void HandleAnalogPinStatus(int pin, bool open)
         {
             string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " Pin:" + pin;
             LogAndCapture(LogString);
         }
 
-        public void HandleReportAnalogInStatus(List<int> pins, List<int> values)
+        public virtual void HandleReportAnalogInStatus(List<int> pins, List<int> values)
         {
             string LogString;
             if (pins != null && values != null)
@@ -145,138 +145,138 @@ namespace IOIOLib.Device.Impl
             LogAndCapture(LogString);
         }
 
-        public void HandleUartOpen(int uartNum)
+        public virtual void HandleUartOpen(int uartNum)
         {
             string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " uartNum:" + uartNum;
             LogAndCapture(LogString);
         }
 
-        public void HandleUartClose(int uartNum)
+        public virtual void HandleUartClose(int uartNum)
         {
             string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " uartNum:" + uartNum;
             LogAndCapture(LogString);
         }
 
-        public void HandleUartData(int uartNum, int numBytes, byte[] data)
+        public virtual void HandleUartData(int uartNum, int numBytes, byte[] data)
         {
             string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " uartNum:" + uartNum;
             LogAndCapture(LogString);
         }
 
-        public void HandleUartReportTxStatus(int uartNum, int bytesRemaining)
+        public virtual void HandleUartReportTxStatus(int uartNum, int bytesRemaining)
         {
             string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " uartNum:" + uartNum;
             LogAndCapture(LogString);
         }
 
-        public void HandleSpiOpen(int spiNum)
+        public virtual void HandleSpiOpen(int spiNum)
         {
             string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " i2cNum:" + spiNum;
             LogAndCapture(LogString);
         }
 
-        public void HandleSpiClose(int spiNum)
+        public virtual void HandleSpiClose(int spiNum)
         {
             string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " i2cNum:" + spiNum;
             LogAndCapture(LogString);
         }
 
-        public void HandleSpiData(int spiNum, int ssPin, byte[] data, int dataBytes)
+        public virtual void HandleSpiData(int spiNum, int ssPin, byte[] data, int dataBytes)
         {
             string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " i2cNum:" + spiNum;
             LogAndCapture(LogString);
         }
 
-        public void HandleSpiReportTxStatus(int spiNum, int bytesRemaining)
+        public virtual void HandleSpiReportTxStatus(int spiNum, int bytesRemaining)
         {
             string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " i2cNum:" + spiNum;
             LogAndCapture(LogString);
         }
 
-        public void HandleI2cOpen(int i2cNum)
+        public virtual void HandleI2cOpen(int i2cNum)
         {
             string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " i2cNum:" + i2cNum;
             LogAndCapture(LogString);
         }
 
-        public void HandleI2cClose(int i2cNum)
+        public virtual void HandleI2cClose(int i2cNum)
         {
             string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " i2cNum:" + i2cNum;
             LogAndCapture(LogString);
         }
 
-        public void HandleI2cResult(int i2cNum, int size, byte[] data)
+        public virtual void HandleI2cResult(int i2cNum, int size, byte[] data)
         {
             string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " i2cNum:" + i2cNum;
             LogAndCapture(LogString);
         }
 
-        public void HandleI2cReportTxStatus(int spiNum, int bytesRemaining)
+        public virtual void HandleI2cReportTxStatus(int spiNum, int bytesRemaining)
         {
             string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " i2cNum:" + spiNum;
             LogAndCapture(LogString);
         }
 
-        public void HandleIcspOpen()
+        public virtual void HandleIcspOpen()
         {
             string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name;
             LogAndCapture(LogString);
         }
 
-        public void HandleIcspClose()
+        public virtual void HandleIcspClose()
         {
             string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name;
             LogAndCapture(LogString);
         }
 
-        public void HandleIcspReportRxStatus(int bytesRemaining)
+        public virtual void HandleIcspReportRxStatus(int bytesRemaining)
         {
             string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " bytesRemaing:" + bytesRemaining;
             LogAndCapture(LogString);
         }
 
-        public void HandleIcspResult(int size, byte[] data)
+        public virtual void HandleIcspResult(int size, byte[] data)
         {
             string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " size:" + size;
             LogAndCapture(LogString);
         }
-        public void HandleIncapReport(int incapNum, int size, byte[] data)
+        public virtual void HandleIncapReport(int incapNum, int size, byte[] data)
         {
             string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " incapNum:" + incapNum;
             LogAndCapture(LogString);
         }
 
-        public void HandleIncapClose(int incapNum)
+        public virtual void HandleIncapClose(int incapNum)
         {
             string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " Pin:" + incapNum;
             LogAndCapture(LogString);
         }
 
-        public void HandleIncapOpen(int incapNum)
+        public virtual void HandleIncapOpen(int incapNum)
         {
             string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " Pin:" + incapNum;
             LogAndCapture(LogString);
         }
 
-        public void HandleCapSenseReport(int pinNum, int value)
+        public virtual void HandleCapSenseReport(int pinNum, int value)
         {
             string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " Pin:" + pinNum;
             LogAndCapture(LogString);
         }
 
-        public void HandleSetCapSenseSampling(int pinNum, bool enable)
+        public virtual void HandleSetCapSenseSampling(int pinNum, bool enable)
         {
             string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " Pin:" + pinNum;
             LogAndCapture(LogString);
         }
 
-        public void HandleSequencerEvent(Types.SequencerEvent seqEvent, int arg)
+        public virtual void HandleSequencerEvent(Types.SequencerEvent seqEvent, int arg)
         {
             string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " Event:" + seqEvent;
             LogAndCapture(LogString);
         }
 
-        public void HandleSync()
+        public virtual void HandleSync()
         {
             string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name;
             LogAndCapture(LogString);

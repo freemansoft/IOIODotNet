@@ -125,7 +125,7 @@ namespace IOIOLib.Device.Impl
         /// <summary>
         /// This method is not yet finished.
         /// </summary>
-        public void WaitForConnect()
+        public virtual void WaitForConnect()
         {
             Conn_.WaitForConnect();
 
@@ -179,12 +179,12 @@ namespace IOIOLib.Device.Impl
             //State_ = IOIOState.INCOMPATIBLE;
         }
 
-        public void Disconnect()
+        public virtual void Disconnect()
         {
             CancelTokenSource_.Cancel();
         }
 
-        public void WaitForDisconnect()
+        public virtual void WaitForDisconnect()
         {
             throw new NotImplementedException();
         }
@@ -194,33 +194,33 @@ namespace IOIOLib.Device.Impl
             return State_;
         }
 
-        public void SoftReset()
+        public virtual void SoftReset()
         {
             throw new NotImplementedException();
         }
 
-        public void HardReset()
+        public virtual void HardReset()
         {
             throw new NotImplementedException();
         }
 
-        public void BeginBatch()
+        public virtual void BeginBatch()
         {
             throw new NotImplementedException();
         }
 
-        public void EndBatch()
+        public virtual void EndBatch()
         {
             throw new NotImplementedException();
         }
 
-        public void Sync()
+        public virtual void Sync()
         {
             throw new NotImplementedException();
         }
 
 
-        public void PostMessage(IPostMessageCommand message)
+        public virtual void PostMessage(IPostMessageCommand message)
         {
 			if (this.BoardResourceManager_ == null)
 			{
@@ -241,7 +241,7 @@ namespace IOIOLib.Device.Impl
         //////////////////////////////////////////////////////////
 
 
-        public void run()
+        public virtual void run()
         {
 			try
 			{

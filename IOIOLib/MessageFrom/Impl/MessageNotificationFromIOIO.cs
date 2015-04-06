@@ -12,7 +12,7 @@ namespace IOIOLib.MessageFrom.Impl
         /// Dispatch method on the message itself that notifies the passed in observer via the most targeted method
         /// </summary>
         /// <param name="observer">non genericized observer</param>
-        public void Notify(IObserverIOIO observer)
+        public virtual void Notify(IObserverIOIO observer)
         {
             MessageType messageAsMessageType = this as MessageType;
             if (messageAsMessageType != null)
@@ -27,7 +27,7 @@ namespace IOIOLib.MessageFrom.Impl
         /// </summary>
         /// <param name="observer">IObserverIOIO that is also IObserver&lt;MessageType&gt</param>
         /// <param name="self">this message as a cast MessageType</param>
-        protected void NotifyDynamic(IObserverIOIO observer, MessageType self)
+        protected virtual void NotifyDynamic(IObserverIOIO observer, MessageType self)
         {
             IObserver<MessageType> genericizedObserver = observer as IObserver<MessageType>;
             if (genericizedObserver != null)

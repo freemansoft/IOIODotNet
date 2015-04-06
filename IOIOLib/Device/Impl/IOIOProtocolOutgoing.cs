@@ -76,12 +76,12 @@ namespace IOIOLib.Device.Impl
             }
         }
 
-        public void beginBatch()
+        public virtual void beginBatch()
         {
             ++BatchCounter_;
         }
 
-        public void endBatch()
+        public virtual void endBatch()
         {
             if (--BatchCounter_ == 0)
             {
@@ -102,14 +102,14 @@ namespace IOIOLib.Device.Impl
             writeByte((i >> 16) & 0xFF);
         }
 
-        public void sync()
+        public virtual void sync()
         {
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.SYNC);
             endBatch();
         }
 
-        public void hardReset()
+        public virtual void hardReset()
         {
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.HARD_RESET);
@@ -120,21 +120,21 @@ namespace IOIOLib.Device.Impl
             endBatch();
         }
 
-        public void softReset()
+        public virtual void softReset()
         {
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.SOFT_RESET);
             endBatch();
         }
 
-        public void softClose()
+        public virtual void softClose()
         {
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.SOFT_CLOSE);
             endBatch();
         }
 
-        public void checkInterfaceVersion(byte[] interfaceId)
+        public virtual void checkInterfaceVersion(byte[] interfaceId)
         {
             if (interfaceId.Length != 8)
             {
@@ -150,12 +150,12 @@ namespace IOIOLib.Device.Impl
             endBatch();
         }
 
-        public void checkInterfaceVersion()
+        public virtual void checkInterfaceVersion()
         {
             this.checkInterfaceVersion(IOIORequiredInterfaceId.REQUIRED_INTERFACE_ID);
         }
 
-        public void setDigitalOutLevel(int pin, bool level)
+        public virtual void setDigitalOutLevel(int pin, bool level)
         {
             LOG.Debug("Sending SET_DIGITAL_OUT_LEVEL");
             beginBatch();
@@ -164,7 +164,7 @@ namespace IOIOLib.Device.Impl
             endBatch();
         }
 
-        public void setPinPwm(int pin, int pwmNum, bool enable)
+        public virtual void setPinPwm(int pin, int pwmNum, bool enable)
         {
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.SET_PIN_PWM);
@@ -173,7 +173,7 @@ namespace IOIOLib.Device.Impl
             endBatch();
         }
 
-        public void setPwmDutyCycle(int pwmNum, int dutyCycle, int fraction)
+        public virtual void setPwmDutyCycle(int pwmNum, int dutyCycle, int fraction)
         {
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.SET_PWM_DUTY_CYCLE);
@@ -182,7 +182,7 @@ namespace IOIOLib.Device.Impl
             endBatch();
         }
 
-        public void setPwmPeriod(int pwmNum, int period, PwmScale scale)
+        public virtual void setPwmPeriod(int pwmNum, int period, PwmScale scale)
         {
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.SET_PWM_PERIOD);
@@ -191,7 +191,7 @@ namespace IOIOLib.Device.Impl
             endBatch();
         }
 
-        public void setPinIncap(int pin, int incapNum, bool enable)
+        public virtual void setPinIncap(int pin, int incapNum, bool enable)
         {
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.SET_PIN_INCAP);
@@ -200,7 +200,7 @@ namespace IOIOLib.Device.Impl
             endBatch();
         }
 
-        public void incapClose(int incapNum, bool double_prec)
+        public virtual void incapClose(int incapNum, bool double_prec)
         {
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.INCAP_CONFIGURE);
@@ -209,7 +209,7 @@ namespace IOIOLib.Device.Impl
             endBatch();
         }
 
-        public void incapConfigure(int incapNum, bool double_prec, int mode, int clock)
+        public virtual void incapConfigure(int incapNum, bool double_prec, int mode, int clock)
         {
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.INCAP_CONFIGURE);
@@ -218,7 +218,7 @@ namespace IOIOLib.Device.Impl
             endBatch();
         }
 
-        public void i2cWriteRead(int i2cNum, bool tenBitAddr, int address,
+        public virtual void i2cWriteRead(int i2cNum, bool tenBitAddr, int address,
                 int writeSize, int readSize, byte[] writeData)
         {
             beginBatch();
@@ -234,7 +234,7 @@ namespace IOIOLib.Device.Impl
             endBatch();
         }
 
-        public void setPinDigitalOut(int pin, bool value, DigitalOutputSpecMode mode)
+        public virtual void setPinDigitalOut(int pin, bool value, DigitalOutputSpecMode mode)
         {
             LOG.Debug("Sending SET_PIN_DIGITAL_OUT");
             beginBatch();
@@ -244,7 +244,7 @@ namespace IOIOLib.Device.Impl
             endBatch();
         }
 
-        public void setPinDigitalIn(int pin, DigitalInputSpecMode mode)
+        public virtual void setPinDigitalIn(int pin, DigitalInputSpecMode mode)
         {
             LOG.Debug("Sending SET_PIN_DIGITAL_IN");
             int pull = 0;
@@ -262,7 +262,7 @@ namespace IOIOLib.Device.Impl
             endBatch();
         }
 
-        public void setChangeNotify(int pin, bool changeNotify)
+        public virtual void setChangeNotify(int pin, bool changeNotify)
         {
             LOG.Debug("Sending SET_CHANGE_NOTIFY");
             beginBatch();
@@ -271,12 +271,12 @@ namespace IOIOLib.Device.Impl
             endBatch();
         }
 
-        public void registerPeriodicDigitalSampling(int pin, int freqScale)
+        public virtual void registerPeriodicDigitalSampling(int pin, int freqScale)
         {
             // TODO: implement
         }
 
-        public void setPinAnalogIn(int pin)
+        public virtual void setPinAnalogIn(int pin)
         {
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.SET_PIN_ANALOG_IN);
@@ -284,7 +284,7 @@ namespace IOIOLib.Device.Impl
             endBatch();
         }
 
-        public void setAnalogInSampling(int pin, bool enable)
+        public virtual void setAnalogInSampling(int pin, bool enable)
         {
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.SET_ANALOG_IN_SAMPLING);
@@ -292,7 +292,7 @@ namespace IOIOLib.Device.Impl
             endBatch();
         }
 
-        public void uartData(int uartNum, int numBytes, byte[] data)
+        public virtual void uartData(int uartNum, int numBytes, byte[] data)
         {
             if (numBytes > 64)
             {
@@ -309,7 +309,7 @@ namespace IOIOLib.Device.Impl
             endBatch();
         }
 
-        public void uartConfigure(int uartNum, int rate, bool speed4x,
+        public virtual void uartConfigure(int uartNum, int rate, bool speed4x,
                 UartStopBits stopbits, UartParity parity)
         {
             int parbits = parity == UartParity.EVEN ? 1 : (parity == UartParity.ODD ? 2 : 0);
@@ -321,7 +321,7 @@ namespace IOIOLib.Device.Impl
             endBatch();
         }
 
-        public void uartClose(int uartNum)
+        public virtual void uartClose(int uartNum)
         {
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.UART_CONFIG);
@@ -330,7 +330,7 @@ namespace IOIOLib.Device.Impl
             endBatch();
         }
 
-        public void setPinUart(int pin, int uartNum, bool tx, bool enable)
+        public virtual void setPinUart(int pin, int uartNum, bool tx, bool enable)
         {
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.SET_PIN_UART);
@@ -339,7 +339,7 @@ namespace IOIOLib.Device.Impl
             endBatch();
         }
 
-        public void spiConfigureMaster(int spiNum, SpiMasterConfig config)
+        public virtual void spiConfigureMaster(int spiNum, SpiMasterConfig config)
         {
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.SPI_CONFIGURE_MASTER);
@@ -348,7 +348,7 @@ namespace IOIOLib.Device.Impl
             endBatch();
         }
 
-        public void spiClose(int spiNum)
+        public virtual void spiClose(int spiNum)
         {
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.SPI_CONFIGURE_MASTER);
@@ -357,7 +357,7 @@ namespace IOIOLib.Device.Impl
             endBatch();
         }
 
-        public void setPinSpi(int pin, int mode, bool enable, int spiNum)
+        public virtual void setPinSpi(int pin, int mode, bool enable, int spiNum)
         {
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.SET_PIN_SPI);
@@ -366,7 +366,7 @@ namespace IOIOLib.Device.Impl
             endBatch();
         }
 
-        public void spiMasterRequest(int spiNum, int ssPin, byte[] data, int dataBytes,
+        public virtual void spiMasterRequest(int spiNum, int ssPin, byte[] data, int dataBytes,
                 int totalBytes, int responseBytes)
         {
             bool dataNeqTotal = (dataBytes != totalBytes);
@@ -390,7 +390,7 @@ namespace IOIOLib.Device.Impl
             endBatch();
         }
 
-        public void i2cConfigureMaster(int i2cNum, TwiMasterRate rate, bool smbusLevels)
+        public virtual void i2cConfigureMaster(int i2cNum, TwiMasterRate rate, bool smbusLevels)
         {
             int rateBits = (rate == TwiMasterRate.RATE_1MHz ? 3 : (rate == TwiMasterRate.RATE_400KHz ? 2 : 1));
             beginBatch();
@@ -399,7 +399,7 @@ namespace IOIOLib.Device.Impl
             endBatch();
         }
 
-        public void i2cClose(int i2cNum)
+        public virtual void i2cClose(int i2cNum)
         {
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.I2C_CONFIGURE_MASTER);
@@ -407,7 +407,7 @@ namespace IOIOLib.Device.Impl
             endBatch();
         }
 
-        public void icspOpen()
+        public virtual void icspOpen()
         {
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.ICSP_CONFIG);
@@ -415,7 +415,7 @@ namespace IOIOLib.Device.Impl
             endBatch();
         }
 
-        public void icspClose()
+        public virtual void icspClose()
         {
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.ICSP_CONFIG);
@@ -423,21 +423,21 @@ namespace IOIOLib.Device.Impl
             endBatch();
         }
 
-        public void icspEnter()
+        public virtual void icspEnter()
         {
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.ICSP_PROG_ENTER);
             endBatch();
         }
 
-        public void icspExit()
+        public virtual void icspExit()
         {
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.ICSP_PROG_EXIT);
             endBatch();
         }
 
-        public void icspSix(int instruction)
+        public virtual void icspSix(int instruction)
         {
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.ICSP_SIX);
@@ -445,14 +445,14 @@ namespace IOIOLib.Device.Impl
             endBatch();
         }
 
-        public void icspRegout()
+        public virtual void icspRegout()
         {
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.ICSP_REGOUT);
             endBatch();
         }
 
-        public void setPinCapSense(int pinNum)
+        public virtual void setPinCapSense(int pinNum)
         {
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.SET_PIN_CAPSENSE);
@@ -460,7 +460,7 @@ namespace IOIOLib.Device.Impl
             endBatch();
         }
 
-        public void setCapSenseSampling(int pinNum, bool enable)
+        public virtual void setCapSenseSampling(int pinNum, bool enable)
         {
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.SET_CAPSENSE_SAMPLING);
@@ -468,7 +468,7 @@ namespace IOIOLib.Device.Impl
             endBatch();
         }
 
-        public void sequencerOpen(byte[] config, int size)
+        public virtual void sequencerOpen(byte[] config, int size)
         {
             System.Diagnostics.Debug.Assert(config != null);
             System.Diagnostics.Debug.Assert(size >= 0 && size <= 68);
@@ -480,7 +480,7 @@ namespace IOIOLib.Device.Impl
             endBatch();
         }
 
-        public void sequencerClose()
+        public virtual void sequencerClose()
         {
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.SEQUENCER_CONFIGURE);
@@ -488,7 +488,7 @@ namespace IOIOLib.Device.Impl
             endBatch();
         }
 
-        public void sequencerPush(int duration, byte[] cue, int size)
+        public virtual void sequencerPush(int duration, byte[] cue, int size)
         {
             System.Diagnostics.Debug.Assert(cue != null);
             System.Diagnostics.Debug.Assert(size >= 0 && size <= 68);
@@ -501,7 +501,7 @@ namespace IOIOLib.Device.Impl
             endBatch();
         }
 
-        public void sequencerStop()
+        public virtual void sequencerStop()
         {
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.SEQUENCER_CONTROL);
@@ -509,7 +509,7 @@ namespace IOIOLib.Device.Impl
             endBatch();
         }
 
-        public void sequencerStart()
+        public virtual void sequencerStart()
         {
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.SEQUENCER_CONTROL);
@@ -517,7 +517,7 @@ namespace IOIOLib.Device.Impl
             endBatch();
         }
 
-        public void sequencerPause()
+        public virtual void sequencerPause()
         {
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.SEQUENCER_CONTROL);
@@ -525,7 +525,7 @@ namespace IOIOLib.Device.Impl
             endBatch();
         }
 
-        public void sequencerManualStart(byte[] cue, int size)
+        public virtual void sequencerManualStart(byte[] cue, int size)
         {
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.SEQUENCER_CONTROL);
@@ -534,7 +534,7 @@ namespace IOIOLib.Device.Impl
             endBatch();
         }
 
-        public void sequencerManualStop()
+        public virtual void sequencerManualStop()
         {
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.SEQUENCER_CONTROL);

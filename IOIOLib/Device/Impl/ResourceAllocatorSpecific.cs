@@ -67,7 +67,7 @@ namespace IOIOLib.Device.Impl
 		/// we try and reserve the specific resource ID passed in
 		/// </summary>
 		/// <param name="r">MODIFIED by action</param>
-		public void Alloc(Resource r)
+		public virtual void Alloc(Resource r)
         {
 			if (r.Id_ == Resource.ID_NOT_SET)
 			{
@@ -88,7 +88,7 @@ namespace IOIOLib.Device.Impl
 		/// Frees the resource and sets the Resource id to ID_NOT_SET
 		/// </summary>
 		/// <param name="r">MODIFIED by action</param>
-		public void Free(Types.Resource r)
+		public virtual void Free(Types.Resource r)
         {
 			if (r.Id_ == Resource.ID_NOT_SET)
 			{

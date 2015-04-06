@@ -53,7 +53,7 @@ namespace IOIOLib.Device.Impl
 
         internal IConnectedDeviceResponse EstablishConnectionFrom_;
 
-        public void HandleEstablishConnection(byte[] hardwareId, byte[] bootloaderId, byte[] firmwareId)
+        public virtual void HandleEstablishConnection(byte[] hardwareId, byte[] bootloaderId, byte[] firmwareId)
         {
             EstablishConnectionFrom_ = new ConnectedDeviceResponse(
                 System.Text.Encoding.ASCII.GetString(hardwareId),
@@ -66,141 +66,141 @@ namespace IOIOLib.Device.Impl
         /// <summary>
         /// TODO implement
         /// </summary>
-        public void HandleConnectionLost()
+        public virtual void HandleConnectionLost()
         {
         }
 
         /// <summary>
         ///  TODO implement
         /// </summary>
-        public void HandleSoftReset()
+        public virtual void HandleSoftReset()
         {
         }
 
-        public void HandleCheckInterfaceResponse(bool supported)
+        public virtual void HandleCheckInterfaceResponse(bool supported)
         {
             this.Supported_ = new SupportedInterfaceFrom(supported);
         }
 
-        public void HandleSetChangeNotify(int pin, bool changeNotify)
+        public virtual void HandleSetChangeNotify(int pin, bool changeNotify)
         {
         }
 
-        public void HandleReportDigitalInStatus(int pin, bool level)
+        public virtual void HandleReportDigitalInStatus(int pin, bool level)
         {
         }
 
-        public void HandleRegisterPeriodicDigitalSampling(int pin, int freqScale)
+        public virtual void HandleRegisterPeriodicDigitalSampling(int pin, int freqScale)
         {
         }
 
-        public void HandleReportPeriodicDigitalInStatus(int frameNum, bool[] values)
+        public virtual void HandleReportPeriodicDigitalInStatus(int frameNum, bool[] values)
         {
         }
 
-        public void HandleAnalogPinStatus(int pin, bool open)
+        public virtual void HandleAnalogPinStatus(int pin, bool open)
         {
         }
 
-        public void HandleReportAnalogInStatus(List<int> pins, List<int> values)
+        public virtual void HandleReportAnalogInStatus(List<int> pins, List<int> values)
         {
         }
 
-        public void HandleUartOpen(int uartNum)
+        public virtual void HandleUartOpen(int uartNum)
         {
         }
 
-        public void HandleUartClose(int uartNum)
+        public virtual void HandleUartClose(int uartNum)
         {
         }
 
-        public void HandleUartData(int uartNum, int numBytes, byte[] data)
+        public virtual void HandleUartData(int uartNum, int numBytes, byte[] data)
         {
         }
 
 
-        public void HandleUartReportTxStatus(int uartNum, int bytesRemaining)
+        public virtual void HandleUartReportTxStatus(int uartNum, int bytesRemaining)
         {
         }
 
-        public void HandleSpiOpen(int spiNum)
+        public virtual void HandleSpiOpen(int spiNum)
         {
         }
 
-        public void HandleSpiClose(int spiNum)
+        public virtual void HandleSpiClose(int spiNum)
         {
         }
 
-        public void HandleSpiData(int spiNum, int ssPin, byte[] data, int dataBytes)
+        public virtual void HandleSpiData(int spiNum, int ssPin, byte[] data, int dataBytes)
         {
         }
 
         internal IDictionary<int, ISpiReportTxStatusFrom> StatehandleSpiReportTxStatus_ = new Dictionary<int, ISpiReportTxStatusFrom>();
-        public void HandleSpiReportTxStatus(int spiNum, int bytesRemaining)
+        public virtual void HandleSpiReportTxStatus(int spiNum, int bytesRemaining)
         {
         }
 
         internal IDictionary<int, II2cFrom> StateI2c_ = new Dictionary<int, II2cFrom>();
-        public void HandleI2cOpen(int i2cNum)
+        public virtual void HandleI2cOpen(int i2cNum)
         {
         }
 
-        public void HandleI2cClose(int i2cNum)
+        public virtual void HandleI2cClose(int i2cNum)
         {
         }
 
-        public void HandleI2cResult(int i2cNum, int size, byte[] data)
+        public virtual void HandleI2cResult(int i2cNum, int size, byte[] data)
         {
         }
 
-        public void HandleI2cReportTxStatus(int spiNum, int bytesRemaining)
+        public virtual void HandleI2cReportTxStatus(int spiNum, int bytesRemaining)
         {
         }
 
-        public void HandleIcspOpen()
+        public virtual void HandleIcspOpen()
         {
         }
 
-        public void HandleIcspClose()
+        public virtual void HandleIcspClose()
         {
         }
 
-        public void HandleIcspReportRxStatus(int bytesRemaining)
+        public virtual void HandleIcspReportRxStatus(int bytesRemaining)
         {
         }
 
-        public void HandleIcspResult(int size, byte[] data)
+        public virtual void HandleIcspResult(int size, byte[] data)
         {
         }
 
-        public void HandleIncapReport(int incapNum, int size, byte[] data)
+        public virtual void HandleIncapReport(int incapNum, int size, byte[] data)
         {
         }
 
-        public void HandleIncapClose(int incapNum)
+        public virtual void HandleIncapClose(int incapNum)
         {
         }
 
-        public void HandleIncapOpen(int incapNum)
+        public virtual void HandleIncapOpen(int incapNum)
         {
         }
 
-        public void HandleCapSenseReport(int pinNum, int value)
+        public virtual void HandleCapSenseReport(int pinNum, int value)
         {
         }
 
-        public void HandleSetCapSenseSampling(int pinNum, bool enable)
+        public virtual void HandleSetCapSenseSampling(int pinNum, bool enable)
         {
         }
 
-        public void HandleSequencerEvent(Types.SequencerEvent seqEvent, int arg)
+        public virtual void HandleSequencerEvent(Types.SequencerEvent seqEvent, int arg)
         {
         }
 
         /// <summary>
         /// TODO Implement... possibly
         /// </summary>
-        public void HandleSync()
+        public virtual void HandleSync()
         {
         }
     }

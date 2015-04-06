@@ -55,7 +55,7 @@ namespace IOIOLib.Connection.Impl
             return ConnectionString_;
         }
 
-        public void WaitForConnect()
+        public virtual void WaitForConnect()
         {
             Port_ = new SerialPort(ConnectionString_);
             Port_.ReceivedBytesThreshold = 1;
@@ -67,7 +67,7 @@ namespace IOIOLib.Connection.Impl
             System.Threading.Thread.Sleep(100);
         }
 
-        public void Disconnect()
+        public virtual void Disconnect()
         {
             if (Port_ != null && Port_.IsOpen)
             {
@@ -84,7 +84,7 @@ namespace IOIOLib.Connection.Impl
         /// throws ConnectionLostException if connection closed or was never opened
         /// </summary>
         /// <returns></returns>
-        public System.IO.Stream GetInputStream()
+        public virtual System.IO.Stream GetInputStream()
         {
             if (Port_ != null)
             {
@@ -100,7 +100,7 @@ namespace IOIOLib.Connection.Impl
         /// throws ConnectionLostException if connection closed or was never opened
         /// </summary>
         /// <returns></returns>
-        public System.IO.Stream GetOutputStream()
+        public virtual System.IO.Stream GetOutputStream()
         {
             if (Port_ != null)
             {
@@ -112,7 +112,7 @@ namespace IOIOLib.Connection.Impl
             }
         }
 
-        public bool CanClose()
+        public virtual bool CanClose()
         {
             // should we check more state here?
             if (Port_ != null)

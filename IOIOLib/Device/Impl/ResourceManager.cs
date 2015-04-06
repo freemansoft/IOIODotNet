@@ -68,7 +68,7 @@ namespace IOIOLib.Device.Impl
         /// </summary>
         /// <param name="args">variable number of args.  can just call with Alloc(a,b,c,d)</param>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public void Alloc(params Object[] args)
+        public virtual void Alloc(params Object[] args)
         {
             int i = 0;
             try
@@ -120,7 +120,7 @@ namespace IOIOLib.Device.Impl
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public void Free(params Object[] args)
+        public virtual void Free(params Object[] args)
         {
             for (int i = 0; i < args.Length; ++i)
             {
@@ -145,7 +145,7 @@ namespace IOIOLib.Device.Impl
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public void Alloc(ICollection<Resource> resources)
+        public virtual void Alloc(ICollection<Resource> resources)
         {
             int i = 0;
             try
@@ -170,7 +170,7 @@ namespace IOIOLib.Device.Impl
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public void Free(ICollection<Resource> resources)
+        public virtual void Free(ICollection<Resource> resources)
         {
             foreach (Resource r in resources)
             {
@@ -179,7 +179,7 @@ namespace IOIOLib.Device.Impl
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public void Alloc(Resource r)
+        public virtual void Alloc(Resource r)
         {
             if (r != null)
             {
@@ -188,7 +188,7 @@ namespace IOIOLib.Device.Impl
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public void Free(Resource r)
+        public virtual void Free(Resource r)
         {
             if (r != null)
             {
