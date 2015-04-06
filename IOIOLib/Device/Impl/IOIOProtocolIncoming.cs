@@ -170,6 +170,9 @@ namespace IOIOLib.Device.Impl
 
         /// <summary>
         /// Main run loop for incoming traffic.  Runs in its own thread.
+        /// <para>
+        /// Marking this thread virtual causes tests to randomly fail :-(
+        /// </para>
         /// </summary>
         public void run()
         {

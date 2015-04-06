@@ -26,7 +26,7 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied.
  */
- 
+
 using IOIOLib.Util;
 using log4net.Config;
 using log4net;
@@ -39,6 +39,7 @@ using System.Collections.Generic;
 using IOIOLib.Device.Impl;
 using IOIOLib.IOIOException;
 using IOIOLib.Device;
+using IOIOLib.Convenience;
 
 namespace IOIOLibDotNetTest
 {
@@ -70,55 +71,9 @@ namespace IOIOLibDotNetTest
 
             if (TestHarnessSetup.GOOD_CONN_NAME == null)
             {
-                TestHarnessSetup.TryAndFindIOIODevice();
+                TestHarnessSetup.GOOD_CONN_NAME  = FindDeviceHack.TryAndFindIOIODevice();
             }
         }
 
-        public static void TryAndFindIOIODevice()
-        {
-            ILog LOG = LogManager.GetLogger(typeof(TestHarnessSetup));
-            LOG.Debug("Starting TryAndFindIOIODevice");
-            IOIOConnectionFactory factory = new SerialConnectionFactory();
-            ICollection<IOIOConnection> connections = factory.CreateConnections();
-            Assert.IsTrue(connections.Count > 0, "None of these tests can run because we can't find a possible IOIO Port_");
-            LOG.Info("Found " + connections.Count + " possible com ports");
-
-            // probably don't need this since we aren't connected.
-            foreach (IOIOConnection oneConn in connections)
-            {
-                // uses custom setup because we are trying to find IOIO not trying to do work with them
-                try
-                {
-                    LOG.Info("Trying " + oneConn.ConnectionString());
-                    oneConn.WaitForConnect();
-                    // logging without real capture
-                    IOIOHandlerCaptureLog handlerLog = new IOIOHandlerCaptureLog(1);
-                    // so we can verifys
-                    IOIOHandlerCaptureConnectionState handlerState = new IOIOHandlerCaptureConnectionState();
-                    IOIOIncomingHandler handler = new IOIOHandlerDistributor(
-                        new List<IOIOIncomingHandler> { handlerLog, handlerState });
-                    IOIOProtocolIncoming foo = new IOIOProtocolIncoming(oneConn.GetInputStream(), handler);
-                    System.Threading.Thread.Sleep(100); // WaitForChangedResult for hw ids
-                    if (handlerState.EstablishConnectionFrom_ != null)
-                    {
-                        TestHarnessSetup.GOOD_CONN_NAME = oneConn.ConnectionString();
-                        LOG.Info("Selecting " + oneConn.ConnectionString());
-                        oneConn.Disconnect();
-                        break;
-                    }
-                    else
-                    {
-                        LOG.Info("Ignoring " + oneConn.ConnectionString());
-                        oneConn.Disconnect();
-                    }
-                }
-                catch (ConnectionLostException e)
-                {
-                    LOG.Debug("Cought Exception Lost " + e.Message);
-                    // just ignore it because will get this when we Disconnect
-                }
-            }
-            LOG.Debug("Starting TryAndFindIOIODevice");
-        }
     }
 }

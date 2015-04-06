@@ -78,6 +78,7 @@
     <Compile Include="Connection\Impl\SerialConnectionFactory.cs" />
     <Compile Include="Connection\IOIOConnection.cs" />
     <Compile Include="Connection\IOIOConnectionFactory.cs" />
+    <Compile Include="Convenience\FindDeviceHack.cs" />
     <Compile Include="Device\Impl\IOIOHandleAbstract.cs" />
     <Compile Include="Device\IResourceManager.cs" />
     <Compile Include="Device\Impl\ResourceAllocatorGeneric.cs" />
@@ -251,7 +252,6 @@
     <Compile Include="Util\IOIOLogManager.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Component\Impl\" />
     <Folder Include="Connection\Types\" />
   </ItemGroup>
   <ItemGroup>
