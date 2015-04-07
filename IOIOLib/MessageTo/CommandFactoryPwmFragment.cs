@@ -30,17 +30,17 @@ namespace IOIOLib.MessageTo
 		{
 			return new PwmOutputUpdateCommand(spec, freqHz);
 		}
-		public IPwmOutputUpdateCommand CreateUpdatePwmOutput(PwmOutputSpec spec, int freqHz, float dutyCycle)
+		public IPwmOutputUpdateDutyCycleCommand CreateUpdatePwmOutput(PwmOutputSpec spec, int freqHz, float dutyCycle)
 		{
 			return new PwmOutputUpdateDutyCycleCommand(spec, freqHz, dutyCycle);
 		}
 
-		public IPwmOutputUpdateCommand CreateUpdatePwmDutyCycleOutput(PwmOutputSpec spec, float dutyCycle)
+		public IPwmOutputUpdateDutyCycleCommand CreateUpdatePwmDutyCycleOutput(PwmOutputSpec spec, float dutyCycle)
 		{
 			return new PwmOutputUpdateDutyCycleCommand(spec, dutyCycle);
 		}
 
-		public IPwmOutputUpdateCommand CreateUpdatePwmPulseWithOutput(PwmOutputSpec spec, float pulseWithUSec)
+		public IPwmOutputUpdatePulseWidthCommand CreateUpdatePwmPulseWithOutput(PwmOutputSpec spec, float pulseWithUSec)
 		{
 			return new PwmOutputUpdatePulseWidthCommand(spec, pulseWithUSec);
 		}

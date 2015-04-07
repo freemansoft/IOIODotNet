@@ -53,6 +53,11 @@ namespace IOIOLib.Device.Impl
 
         internal IConnectedDeviceResponse EstablishConnectionFrom_;
 
+        public virtual IConnectedDeviceResponse ConnectedDeviceDescription()
+        {
+            return EstablishConnectionFrom_;
+        }
+
         public virtual void HandleEstablishConnection(byte[] hardwareId, byte[] bootloaderId, byte[] firmwareId)
         {
             EstablishConnectionFrom_ = new ConnectedDeviceResponse(

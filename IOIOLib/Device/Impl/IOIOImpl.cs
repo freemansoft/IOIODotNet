@@ -49,7 +49,7 @@ namespace IOIOLib.Device.Impl
     /// This class will SOMEDAY act as an object oriented wrapper around the IOIO boards.
     /// This should handle the clean up of the incoming and outgoing protocols
     /// </summary>
-    class IOIOImpl : IOIO
+    public class IOIOImpl : IOIO
     {
         private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(IOIOImpl));
 

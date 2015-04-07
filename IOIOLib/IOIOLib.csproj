@@ -229,6 +229,8 @@
     <Compile Include="MessageTo\Impl\SpiMasterConfigureCommand.cs" />
     <Compile Include="MessageTo\Impl\TwiMasterConfigureCommand.cs" />
     <Compile Include="MessageTo\Impl\UartConfigureCommand.cs" />
+    <Compile Include="MessageTo\IPwmOutputUpdatePulseWidthCommand.cs" />
+    <Compile Include="MessageTo\IPwmOutputUpdateDutyCycleCommand.cs" />
     <Compile Include="MessageTo\IPwmOutputUpdateCommand.cs" />
     <Compile Include="MessageTo\IUartSendCommand.cs" />
     <Compile Include="MessageTo\IUartCloseCommand.cs" />

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.Convenience
 {
-    class FindDeviceHack
+    public class FindDeviceHack
     {
         private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(FindDeviceHack));
 
@@ -31,26 +31,32 @@ namespace IOIOLib.Convenience
                 try
                 {
                     LOG.Info("Trying " + oneConn.ConnectionString());
-                    oneConn.WaitForConnect();
-                    // logging without real capture
-                    IOIOHandlerCaptureLog handlerLog = new IOIOHandlerCaptureLog(1);
-                    // so we can verifys
-                    IOIOHandlerCaptureConnectionState handlerState = new IOIOHandlerCaptureConnectionState();
-                    IOIOIncomingHandler handler = new IOIOHandlerDistributor(
-                        new List<IOIOIncomingHandler> { handlerLog, handlerState });
-                    IOIOProtocolIncoming foo = new IOIOProtocolIncoming(oneConn.GetInputStream(), handler);
-                    System.Threading.Thread.Sleep(100); // WaitForChangedResult for hw ids
-                    if (handlerState.EstablishConnectionFrom_ != null)
-                    {
-                        goodConnectionName = oneConn.ConnectionString();
-                        LOG.Info("Selecting " + oneConn.ConnectionString());
-                        oneConn.Disconnect();
-                        break;
+                    try {
+                        oneConn.WaitForConnect();
+                        // logging without real capture
+                        IOIOHandlerCaptureLog handlerLog = new IOIOHandlerCaptureLog(1);
+                        // so we can verify
+                        IOIOHandlerCaptureConnectionState handlerState = new IOIOHandlerCaptureConnectionState();
+                        IOIOIncomingHandler handler = new IOIOHandlerDistributor(
+                            new List<IOIOIncomingHandler> { handlerLog, handlerState });
+                        IOIOProtocolIncoming foo = new IOIOProtocolIncoming(oneConn.GetInputStream(), handler);
+                        System.Threading.Thread.Sleep(100); // WaitForChangedResult for hw ids
+                        if (handlerState.EstablishConnectionFrom_ != null)
+                        {
+                            goodConnectionName = oneConn.ConnectionString();
+                            LOG.Info("Selecting " + oneConn.ConnectionString());
+                            oneConn.Disconnect();
+                            break;
+                        }
+                        else
+                        {
+                            LOG.Info("Ignoring " + oneConn.ConnectionString());
+                            oneConn.Disconnect();
+                        }
                     }
-                    else
+                    catch (System.UnauthorizedAccessException e)
                     {
-                        LOG.Info("Ignoring " + oneConn.ConnectionString());
-                        oneConn.Disconnect();
+                        LOG.Info("No Permission " + oneConn.ConnectionString());
                     }
                 }
                 catch (ConnectionLostException e)

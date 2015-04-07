@@ -41,8 +41,8 @@ namespace IOIOLib.MessageTo.Impl
 	/// <summary>
 	///  exists so that we can have same constructors for DutyCycle and PulseWidth constructors
 	/// </summary>
-	public class PwmOutputUpdatePulseWidthCommand : PwmOutputUpdateCommand
-	{
+	public class PwmOutputUpdatePulseWidthCommand : PwmOutputUpdateCommand, IPwmOutputUpdatePulseWidthCommand
+    {
 
 		/// <summary>
 		/// changes the duty cycle but not the frequency
