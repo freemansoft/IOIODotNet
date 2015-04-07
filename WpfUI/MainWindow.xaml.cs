@@ -65,6 +65,10 @@ namespace WpfUI
                 IPwmOutputUpdatePulseWidthCommand command =
                     new IOIOMessageCommandFactory().CreateUpdatePwmPulseWithOutput(this.ServoPinDef_, 600.0f);
                 OurImpl_.PostMessage(command);
+            } else
+            {
+                //this.Close();
+                BoardDetails.Text = "Unable to find an IOIO device";
             }
 
         }
