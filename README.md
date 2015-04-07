@@ -53,7 +53,9 @@ Digital, Analog Out and Uart have been lightly tested.
    + **IOIOHandlerCaptureConnectionState** Captures just the connection information. Used by IOIOImpl.
    + **IOIOHandlerCaptureLog** Logs a message and captures the message every time a message is received from the IOIO. Can set buffer size
    + **IOIOHandlerCaptureSingleQueue** Captures inbound messages in a single inbount ConcurrentQueue
-   + **IOIOHandlerNotifier** does nothing yet.  It will eventually post events to listeners interested in state change
+   + **IOIOHandlerObservable**  Observers can register with this handler. They will receive IObserver<> interface messages
+   + **IOIOHandlerObservableNoWait** Similar to IHandlerObservable except that notificatons happen in separate thread from message receiver
+   + **IOIOHandlerObservableNoWaitParallel** Similar to IHandlerObservable except that each notificaton happens in its' on thread
 
 ####Feature Status####
  * Digital In _on state change_ has been tested.
@@ -75,6 +77,10 @@ Connection and resource setup and teardown occur in the testing base class. The 
 
 It is important to clean up after every test.  
 
+###Example Program###
+A simple winforms app project demonstrates servo contro.  It will auto-identify the IOIO COM port. 
+The demo assumes a servo is hooked to pin 3 just like the Integration Tests
+
 ##What Doesn't Work##
 
 1. Robust setup and teardown is not yet implemented. 
@@ -87,7 +93,7 @@ It is important to clean up after every test.
 Outbound message types_xxxTo_ have not been fully built for peripherals that have not yet been implemented.  The _IOIOMessageToFactory_ may not have factory methods for all message types.
 
 ###Inbound Change Notification###
-Programs must poll for changes.  Change notification for information coming from the IOIO is not yet implemented.
+Programs can poll for changes.  Change notification loosely based on Observer/Observable pattern. See unit tests for examples
 
 ###Hardening###
 Board verificaton is not finished. 
