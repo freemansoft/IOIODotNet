@@ -43,7 +43,12 @@ namespace IOIOLib.MessageTo
 			return new DigitalOutputSetValueCommand(new DigitalOutputSpec(pin), level);
 		}
 
-		public IDigitalOutputCloseCommand CreateCloseDigitalOutputCommand(int pin)
+        public IDigitalOutputValueSetCommand CreateSetDigitalOutputCommand(DigitalOutputSpec spec, bool level)
+        {
+            return new DigitalOutputSetValueCommand(spec, level);
+        }
+
+        public IDigitalOutputCloseCommand CreateCloseDigitalOutputCommand(int pin)
 		{
 			return new DigitalOutputCloseCommand(new DigitalOutputSpec(pin));
 		}

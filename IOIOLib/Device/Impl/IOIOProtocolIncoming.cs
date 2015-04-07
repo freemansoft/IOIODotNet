@@ -466,7 +466,7 @@ namespace IOIOLib.Device.Impl
                 LOG.Info(IncomingTask_.Id + " Throwing thread cancel to stop incoming thread");
                 CancelTokenSource_.Cancel();
                 // debugger will always stop here in unit tests if test or app dynamically determines what Port_ ot use
-                // just hit continue in the debugger
+                // just hit continue in the debugger when you get here on startup
                 CancelTokenSource_.Token.ThrowIfCancellationRequested();
                 Stream_ = null;
                 this.IncomingTask_ = null;
