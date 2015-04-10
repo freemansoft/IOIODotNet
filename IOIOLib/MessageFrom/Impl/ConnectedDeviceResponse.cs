@@ -66,5 +66,10 @@ namespace IOIOLib.MessageFrom.Impl
             this.FirmwareId = firmwareId;
             this.Hardware = hardware;
         }
+
+        public override string ToString()
+        {
+            return base.ToString()+ " HardwareId:"+this.HardwareId+ " BootloaderId:"+this.BootloaderId+ " FirmwareId:"+this.FirmwareId;
+        }
     }
 }

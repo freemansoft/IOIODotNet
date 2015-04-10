@@ -39,6 +39,9 @@ namespace IOIOLib.MessageTo
     {
         int BoundPin { get; }
 
+        /// <summary>
+        /// Should the IOIO report analog change values
+        /// </summary>
         Boolean? ChangeNotify { get; }
     }
 }

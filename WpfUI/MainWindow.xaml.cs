@@ -41,11 +41,15 @@ namespace WpfUI
             ComPort_Field.Text = comPort;
             if (comPort != null) { 
                 IOIOConnection connection = new SerialConnectionFactory().CreateConnection(comPort);                
-                IOIOHandlerCaptureConnectionState handler = new IOIOHandlerCaptureConnectionState();
+                IOIOHandlerCaptureConnectionState handlerCaptureState = new IOIOHandlerCaptureConnectionState();
+                IOIOHandlerObservable handlerNotifier = new IOIOHandlerObservable();
+                IOIOHandlerDistributor handler = new IOIOHandlerDistributor ( 
+                    new List<IOIOIncomingHandler> { handlerCaptureState, handlerNotifier });
+                handlerNotifier.Subscribe(new MessageObserver(this.MessageLog));
                 OurImpl_  = new IOIOImpl(connection, handler);
                 OurImpl_.WaitForConnect();
 
-                IConnectedDeviceResponse device = handler.ConnectedDeviceDescription();
+                IConnectedDeviceResponse device = handlerCaptureState.ConnectedDeviceDescription();
                 if (device != null) {
                     BoardDetails.Text = "Bootloader:" + device.BootloaderId
                         + "\n" + "Firmware:" + device.FirmwareId
@@ -53,8 +57,8 @@ namespace WpfUI
                 }
                 IOIOMessageCommandFactory commandFactory = new IOIOMessageCommandFactory();
                 ConfigurePwm(commandFactory);
-
                 ConfigureLed(commandFactory);
+                ConfigureDigitalInput(commandFactory);
             }
             else
             {
@@ -89,6 +93,13 @@ namespace WpfUI
             IDigitalOutputConfigureCommand createLED = commandFactory.CreateConfigureDigitalOutput(LedPinSpec_,
                 LEDValueForState(false));
             OurImpl_.PostMessage(createLED);
+        }
+
+        private void ConfigureDigitalInput(IOIOMessageCommandFactory commandFactory)
+        {
+            DigitalInputSpec InSpec_ = new DigitalInputSpec(2,DigitalInputSpecMode.PULL_UP);
+            IDigitalInputConfigureCommand createDigitalInput = commandFactory.CreateConfigureDigitalInput(InSpec_, true);
+            OurImpl_.PostMessage(createDigitalInput);
         }
 
         private bool LEDValueForState(bool state)

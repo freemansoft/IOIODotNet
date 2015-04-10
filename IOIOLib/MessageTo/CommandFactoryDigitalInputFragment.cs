@@ -15,7 +15,12 @@ namespace IOIOLib.MessageTo
 			return new DigitalInputConfigureCommand(spec);
 		}
 
-		public IDigitalInputConfigureCommand CreateConfigureDigitalInput(int pin)
+        public IDigitalInputConfigureCommand CreateConfigureDigitalInput(DigitalInputSpec spec, bool trackChanges)
+        {
+            return new DigitalInputConfigureCommand(spec, trackChanges);
+        }
+
+        public IDigitalInputConfigureCommand CreateConfigureDigitalInput(int pin)
 		{
 			return new DigitalInputConfigureCommand(new DigitalInputSpec(pin));
 		}

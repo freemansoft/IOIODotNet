@@ -140,12 +140,10 @@ namespace IOIOLib.Device.Impl
         {
         }
 
-        internal IDictionary<int, ISpiReportTxStatusFrom> StatehandleSpiReportTxStatus_ = new Dictionary<int, ISpiReportTxStatusFrom>();
         public virtual void HandleSpiReportTxStatus(int spiNum, int bytesRemaining)
         {
         }
 
-        internal IDictionary<int, II2cFrom> StateI2c_ = new Dictionary<int, II2cFrom>();
         public virtual void HandleI2cOpen(int i2cNum)
         {
         }

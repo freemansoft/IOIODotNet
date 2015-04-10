@@ -47,7 +47,7 @@ namespace IOIOLib.Device.Impl
     /// Observers are notified in PARALLEL. 
     /// It does not wait because we don't know how slow the observers are.
     /// </summary>
-    class IOIOHandlerObservableNoWaitParallel : IOIOHandleAbstract
+    public class IOIOHandlerObservableNoWaitParallel : IOIOHandleAbstract
     {
         private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(IOIOHandlerObservableNoWaitParallel));
 

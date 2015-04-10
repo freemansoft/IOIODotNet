@@ -43,7 +43,7 @@ namespace IOIOLib.Device.Impl
 	/// Notify interested parties when messages are received.
     /// Observers are notified serially in same thread.
 	/// </summary>
-	class IOIOHandlerObservable : IOIOHandleAbstract
+	public class IOIOHandlerObservable : IOIOHandleAbstract
 	{
         private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(IOIOHandlerObservableNoWait));
 

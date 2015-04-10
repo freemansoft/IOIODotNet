@@ -42,6 +42,9 @@ namespace IOIOLib.MessageTo.Impl
     {
         public DigitalInputSpec PinDef { get; private set; }
 
+        /// <summary>
+        /// Should the IOIO notify on state changes
+        /// </summary>
         public Boolean? ChangeNotify { get; private set; }
 
 
