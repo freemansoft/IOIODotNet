@@ -11,7 +11,7 @@ namespace IOIOLib.MessageTo
 	 public partial class IOIOMessageCommandFactory
 	{
 
-		public ISequencerConfigureCommand createOpenSequencer(Component.Types.ISequencerChannelConfig[] config)
+		public ISequencerConfigureCommand CreateSequencerOpen(Component.Types.ISequencerChannelConfig[] config)
 		{
 			return new SequencerConfigureCommand(config);
 		}

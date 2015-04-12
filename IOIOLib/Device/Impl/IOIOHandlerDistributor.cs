@@ -218,11 +218,11 @@ namespace IOIOLib.Device.Impl
             }
         }
 
-        public virtual void HandleI2cReportTxStatus(int spiNum, int bytesRemaining)
+        public virtual void HandleI2cReportTxStatus(int i2cNum, int bytesRemaining)
         {
             foreach (IOIOIncomingHandler Distributee in Distributees_)
             {
-                Distributee.HandleI2cReportTxStatus(spiNum, bytesRemaining);
+                Distributee.HandleI2cReportTxStatus(i2cNum, bytesRemaining);
             }
         }
 

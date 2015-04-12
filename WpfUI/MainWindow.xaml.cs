@@ -71,7 +71,7 @@ namespace WpfUI
         private void ConfigurePwm(IOIOMessageCommandFactory commandFactory)
         {
             DigitalOutputSpec pwmPinSpec = new DigitalOutputSpec(SERVO_PIN, DigitalOutputSpecMode.NORMAL);
-            IPwmOutputConfigureCommand createPwm = commandFactory.CreateConfigurePwmOutput(pwmPinSpec, 100);
+            IPwmOutputConfigureCommand createPwm = commandFactory.CreatePwmOutputConfigure(pwmPinSpec, 100);
             OurImpl_.PostMessage(createPwm);
             // message post fills in pin def so pick that up.  runs in a thread so wait until command completes
             // have to capture the PwmDef to get the frequencey
@@ -83,14 +83,14 @@ namespace WpfUI
 
             // value should match minimum of the slider
             IPwmOutputUpdatePulseWidthCommand command =
-                new IOIOMessageCommandFactory().CreateUpdatePwmPulseWithOutput(this.ServoPinDef_, 600.0f);
+                new IOIOMessageCommandFactory().CreatePwmPulseWithOutputUpdate(this.ServoPinDef_, 600.0f);
             OurImpl_.PostMessage(command);
         }
 
         private void ConfigureLed(IOIOMessageCommandFactory commandFactory)
         {
             LedPinSpec_ = new DigitalOutputSpec(Spec.LED_PIN);
-            IDigitalOutputConfigureCommand createLED = commandFactory.CreateConfigureDigitalOutput(LedPinSpec_,
+            IDigitalOutputConfigureCommand createLED = commandFactory.CreateDigitalOutputConfigure(LedPinSpec_,
                 LEDValueForState(false));
             OurImpl_.PostMessage(createLED);
         }
@@ -98,7 +98,7 @@ namespace WpfUI
         private void ConfigureDigitalInput(IOIOMessageCommandFactory commandFactory)
         {
             DigitalInputSpec InSpec_ = new DigitalInputSpec(2,DigitalInputSpecMode.PULL_UP);
-            IDigitalInputConfigureCommand createDigitalInput = commandFactory.CreateConfigureDigitalInput(InSpec_, true);
+            IDigitalInputConfigureCommand createDigitalInput = commandFactory.CreateDigitalInputConfigure(InSpec_, true);
             OurImpl_.PostMessage(createDigitalInput);
         }
 
@@ -112,7 +112,7 @@ namespace WpfUI
             // only run commands once we have programmed for PWM
             if (this.ServoPinDef_ != null) { 
                 IPwmOutputUpdateCommand command=
-                    new IOIOMessageCommandFactory().CreateUpdatePwmPulseWithOutput(this.ServoPinDef_, (float)e.NewValue);
+                    new IOIOMessageCommandFactory().CreatePwmPulseWithOutputUpdate(this.ServoPinDef_, (float)e.NewValue);
                 OurImpl_.PostMessage(command);
                 //MessageBox.Show(string.Format("Servo Slider: {0}", e.NewValue));
             }
@@ -124,7 +124,7 @@ namespace WpfUI
             if (this.LedPinSpec_ != null)
             {
                 IDigitalOutputValueSetCommand command =
-                    new IOIOMessageCommandFactory().CreateSetDigitalOutputCommand(this.LedPinSpec_, 
+                    new IOIOMessageCommandFactory().CreateDigitalOutputCommandSet(this.LedPinSpec_, 
                     LEDValueForState(this.LEDState.IsChecked.Value));
                 OurImpl_.PostMessage(command);
                 //MessageBox.Show(string.Format("LED Button: {0} LED: Inverted", this.LEDState.IsChecked.Value));

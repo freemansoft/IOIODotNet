@@ -11,22 +11,22 @@ namespace IOIOLib.MessageTo
 	 public partial class IOIOMessageCommandFactory
 	{
 
-		public IDigitalOutputConfigureCommand CreateConfigureDigitalOutput(Component.Types.DigitalOutputSpec spec, bool startValue)
+		public IDigitalOutputConfigureCommand CreateDigitalOutputConfigure(Component.Types.DigitalOutputSpec spec, bool startValue)
 		{
 			return new DigitalOutputConfigureCommand(spec, startValue);
 		}
 
-		public IDigitalOutputConfigureCommand CreateConfigureDigitalOutput(int pin, Component.Types.DigitalOutputSpecMode mode, bool startValue)
+		public IDigitalOutputConfigureCommand CreateDigitalOutputConfigure(int pin, Component.Types.DigitalOutputSpecMode mode, bool startValue)
 		{
 			return new DigitalOutputConfigureCommand(new DigitalOutputSpec(pin, mode), startValue);
 		}
 
-		public IDigitalOutputConfigureCommand CreateConfigureDigitalOutput(int pin, bool startValue)
+		public IDigitalOutputConfigureCommand CreateDigitalOutputConfigure(int pin, bool startValue)
 		{
 			return new DigitalOutputConfigureCommand(new DigitalOutputSpec(pin), startValue);
 		}
 
-		public IDigitalOutputConfigureCommand CreateConfigureDigitalOutput(int pin)
+		public IDigitalOutputConfigureCommand CreateDigitalOutputConfigure(int pin)
 		{
 			return new DigitalOutputConfigureCommand(new DigitalOutputSpec(pin), false);
 		}
@@ -38,22 +38,22 @@ namespace IOIOLib.MessageTo
 		/// <param name="pin"></param>
 		/// <param name="level"></param>
 		/// <returns></returns>
-		public IDigitalOutputValueSetCommand CreateSetDigitalOutputCommand(int pin, bool level)
+		public IDigitalOutputValueSetCommand CreateDigitalOutputCommandSet(int pin, bool level)
 		{
 			return new DigitalOutputSetValueCommand(new DigitalOutputSpec(pin), level);
 		}
 
-        public IDigitalOutputValueSetCommand CreateSetDigitalOutputCommand(DigitalOutputSpec spec, bool level)
+        public IDigitalOutputValueSetCommand CreateDigitalOutputCommandSet(DigitalOutputSpec spec, bool level)
         {
             return new DigitalOutputSetValueCommand(spec, level);
         }
 
-        public IDigitalOutputCloseCommand CreateCloseDigitalOutputCommand(int pin)
+        public IDigitalOutputCloseCommand CreateDigitalOutputCommandClose(int pin)
 		{
 			return new DigitalOutputCloseCommand(new DigitalOutputSpec(pin));
 		}
 
-		public IDigitalOutputCloseCommand CreateCloseDigitalOutputCommand(DigitalOutputSpec spec)
+		public IDigitalOutputCloseCommand CreateDigitalOutputCommandClose(DigitalOutputSpec spec)
 		{
 			return new DigitalOutputCloseCommand(spec);
 		}

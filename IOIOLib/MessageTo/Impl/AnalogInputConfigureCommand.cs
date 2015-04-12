@@ -54,7 +54,8 @@ namespace IOIOLib.MessageTo.Impl
         /// create an inbound analong channel that samples data
         /// </summary>
         /// <param name="Pin"></param>
-        /// <param name="notifyOnChange">at a 1khz rate</param>
+        /// <param name="notifyOnChange">samples at a 1khz rate you 
+        /// must enable notification changes if you want the device to send youvalues</param>
         public AnalogInputConfigureCommand(int pin, bool notifyOnChange)
         {
             this.BoundPin = pin;

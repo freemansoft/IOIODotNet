@@ -12,12 +12,12 @@ namespace IOIOLib.MessageTo
 	 public partial class IOIOMessageCommandFactory
 	{
 
-		public ICapSenseConfigureCommand createOpenCapSense(int pin)
+		public ICapSenseConfigureCommand CreateCapSenseOpen(int pin)
 		{
 			return new CapSenseConfigureCommand(pin, CapSenseCoefficients.DEFAULT_COEF);
 		}
 
-		public ICapSenseConfigureCommand createOpenCapSense(int pin, float filterCoef)
+		public ICapSenseConfigureCommand CreateCapSenseOpen(int pin, float filterCoef)
 		{
 			return new CapSenseConfigureCommand(pin, filterCoef);
 		}

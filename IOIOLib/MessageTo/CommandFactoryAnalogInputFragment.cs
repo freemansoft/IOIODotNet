@@ -10,17 +10,17 @@ namespace IOIOLib.MessageTo
 {
 	public partial class IOIOMessageCommandFactory
 	{
-		public IAnalogInputConfigureCommand CreateConfigureAnalogInput(int pin)
+		public IAnalogInputConfigureCommand CreateAnalogInputConfigure(int pin)
 		{
 			return new AnalogInputConfigureCommand(pin);
 		}
 
-		public IAnalogInputConfigureCommand CreateConfigureAnalogInput(int pin, bool notifyChange)
+		public IAnalogInputConfigureCommand CreateAnalogInputConfigure(int pin, bool notifyChange)
 		{
 			return new AnalogInputConfigureCommand(pin, notifyChange);
 		}
 
-		public IAnalogInputConfigureCommand CreateCloseAnalogInput(int pin)
+		public IAnalogInputConfigureCommand CreateAnalogInputClose(int pin)
 		{
 			return new AnalogInputConfigureCommand(pin);
 

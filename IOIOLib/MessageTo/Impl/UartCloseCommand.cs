@@ -52,8 +52,9 @@ namespace IOIOLib.MessageTo.Impl
 
         public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound)
         {
-			try
-			{
+            // luckily? outbound ignores resource allcoation
+            try
+            {
 				outBound.uartClose(this.UartDef.UartNumber);
 			}
 			catch (Exception e)

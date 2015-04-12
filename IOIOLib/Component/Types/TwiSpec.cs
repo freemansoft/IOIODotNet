@@ -26,58 +26,39 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied.
  */
-
-using IOIOLib.Component.Types;
+ 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using IOIOLib.Device;
-using IOIOLib.Device.Impl;
 
-namespace IOIOLib.MessageTo.Impl
+namespace IOIOLib.Component.Types
 {
-    public class SpiMasterConfigureCommand : ISpiMasterConfigureCommand
+    /// <summary>
+    /// Holds enough state to free or identify the resource
+    /// </summary>
+    public class TwiSpec
     {
-        public DigitalInputSpec Miso { get; private set; }
-        public DigitalOutputSpec Mosi { get; private set; }
-
-        public DigitalOutputSpec Clock { get; private set; }
-
-        public DigitalOutputSpec[] SlaveSelect { get; private set; }
-
-        public SpiMasterConfig Rate { get; private set; }
-
-
-
         /// <summary>
-        /// Do we even need all these parameters?  Isn't there only one SpiMaster on the board
+        /// The Twi pins are fixed based on the Twi number.
         /// </summary>
-        /// <param name="miso"></param>
-        /// <param name="mosi"></param>
-        /// <param name="clock"></param>
-        /// <param name="slaveSelect"></param>
-        /// <param name="rate"></param>
-        internal SpiMasterConfigureCommand(DigitalInputSpec miso, DigitalOutputSpec mosi, DigitalOutputSpec clock, DigitalOutputSpec[] slaveSelect, SpiMasterConfig rate)
+        public int TwiNum { get; private set; }
+        /// <summary>
+        /// passed in
+        /// </summary>
+        public TwiMasterRate Rate { get; private set; }
+        /// <summary>
+        /// passed in
+        /// </summary>
+        internal bool SmBus { get; private set; }
+
+
+        public TwiSpec(int twiNum, TwiMasterRate rate, bool smBus)
         {
-            this.Miso = miso;
-            this.Mosi = mosi;
-            this.Clock = Clock;
-            this.SlaveSelect = slaveSelect;
+            this.TwiNum = twiNum;
             this.Rate = rate;
-            throw new NotImplementedException("Post(IOpenSpiMasterTo) not tied together in outgoing protocol");
+            this.SmBus = smBus;
         }
-
-        
-		public bool Alloc(IResourceManager rManager)
-		{
-			throw new NotImplementedException();
-		}
-
-		public bool ExecuteMessage(IOIOProtocolOutgoing outBound)
-		{
-			throw new NotImplementedException();
-		}
-	}
+    }
 }

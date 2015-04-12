@@ -35,49 +35,47 @@ using System.Text;
 using System.Threading.Tasks;
 using IOIOLib.Device;
 using IOIOLib.Device.Impl;
+using IOIOLib.Device.Types;
 
 namespace IOIOLib.MessageTo.Impl
 {
-    public class SpiMasterConfigureCommand : ISpiMasterConfigureCommand
+    public class TwiMasterCloseCommand : ITwiMasterCloseCommand
     {
-        public DigitalInputSpec Miso { get; private set; }
-        public DigitalOutputSpec Mosi { get; private set; }
 
-        public DigitalOutputSpec Clock { get; private set; }
+        /// <summary>
+        /// populated by constructor.  used by other calls
+        /// </summary>
+        internal TwiSpec TwiDef { get; private set; }
 
-        public DigitalOutputSpec[] SlaveSelect { get; private set; }
-
-        public SpiMasterConfig Rate { get; private set; }
+        internal TwiMasterCloseCommand(TwiSpec twiDef)
+        {
+            // TODO: Complete member initialization
+            this.TwiDef = twiDef;
+        }
 
 
 
         /// <summary>
-        /// Do we even need all these parameters?  Isn't there only one SpiMaster on the board
+        /// TODO really needs to be a Free() method in this interface
+        /// this is actually in the wrong order -- should be done AFTER the command
         /// </summary>
-        /// <param name="miso"></param>
-        /// <param name="mosi"></param>
-        /// <param name="clock"></param>
-        /// <param name="slaveSelect"></param>
-        /// <param name="rate"></param>
-        internal SpiMasterConfigureCommand(DigitalInputSpec miso, DigitalOutputSpec mosi, DigitalOutputSpec clock, DigitalOutputSpec[] slaveSelect, SpiMasterConfig rate)
-        {
-            this.Miso = miso;
-            this.Mosi = mosi;
-            this.Clock = Clock;
-            this.SlaveSelect = slaveSelect;
-            this.Rate = rate;
-            throw new NotImplementedException("Post(IOpenSpiMasterTo) not tied together in outgoing protocol");
-        }
-
-        
-		public bool Alloc(IResourceManager rManager)
+        /// <param name="rManager"></param>
+        /// <returns></returns>
+        public bool Alloc(IResourceManager rManager)
 		{
-			throw new NotImplementedException();
+            Resource twi = new Resource(ResourceType.TWI, this.TwiDef.TwiNum);
+            Resource pin0 = new Resource(ResourceType.PIN, rManager.BoundHardware.TwiPins[this.TwiDef.TwiNum, 0]);
+            Resource pin1 = new Resource(ResourceType.PIN, rManager.BoundHardware.TwiPins[this.TwiDef.TwiNum, 1]);
+            List<Resource> resources = new List<Resource>() { twi, pin0, pin1 };
+            rManager.Free(resources);
+            return true;
 		}
 
 		public bool ExecuteMessage(IOIOProtocolOutgoing outBound)
 		{
-			throw new NotImplementedException();
+            // luckily? outbound ignores resource allcoation
+            outBound.i2cClose(TwiDef.TwiNum);
+            return true;
 		}
 	}
 }

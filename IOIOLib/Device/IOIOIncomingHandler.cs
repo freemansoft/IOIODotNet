@@ -94,7 +94,7 @@ namespace IOIOLib.Device
 
         void HandleI2cResult(int i2cNum, int size, byte[] data);
 
-        void HandleI2cReportTxStatus(int spiNum, int bytesRemaining);
+        void HandleI2cReportTxStatus(int i2cNum, int bytesRemaining);
 
         void HandleIcspOpen();
 

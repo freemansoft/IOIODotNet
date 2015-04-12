@@ -169,6 +169,26 @@ namespace IOIOLib.Device.Impl
             LogAndCapture(LogString);
         }
 
+        /// <summary>
+        // not the fastest but sort of fast and simple
+        // http://stackoverflow.com/questions/311165/how-do-you-convert-byte-array-to-hexadecimal-string-and-vice-versa
+        /// </summary>
+        /// <param name="ba"></param>
+        /// <returns></returns>
+        private string ByteArrayToString(byte[] ba, int size)
+        {
+            if (ba == null)
+            {
+                return "";
+            }
+            else
+            {
+                string hex = BitConverter.ToString(ba,0,size);
+                return hex.Replace("-", " ");
+            }
+        }
+
+
         public virtual void HandleSpiOpen(int spiNum)
         {
             string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " i2cNum:" + spiNum;
@@ -181,15 +201,18 @@ namespace IOIOLib.Device.Impl
             LogAndCapture(LogString);
         }
 
-        public virtual void HandleSpiData(int spiNum, int ssPin, byte[] data, int dataBytes)
+        public virtual void HandleSpiData(int spiNum, int ssPin, byte[] data, int numberOfBytes)
         {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " i2cNum:" + spiNum;
+            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " spiNum:" + spiNum
+                + " NumBytes:" + numberOfBytes
+                + " Data:" + (numberOfBytes != 0xff ? ByteArrayToString(data, numberOfBytes) : "none");
             LogAndCapture(LogString);
         }
 
         public virtual void HandleSpiReportTxStatus(int spiNum, int bytesRemaining)
         {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " i2cNum:" + spiNum;
+            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " i2cNum:" + spiNum 
+                + " bytesRemaining:"+bytesRemaining;
             LogAndCapture(LogString);
         }
 
@@ -205,15 +228,18 @@ namespace IOIOLib.Device.Impl
             LogAndCapture(LogString);
         }
 
-        public virtual void HandleI2cResult(int i2cNum, int size, byte[] data)
+        public virtual void HandleI2cResult(int i2cNum, int numberOfBytes, byte[] data)
         {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " i2cNum:" + i2cNum;
+            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " i2cNum:" + i2cNum
+                + " NumBytes:" + numberOfBytes 
+                + " Data:" + (numberOfBytes != 0xff ? ByteArrayToString(data, numberOfBytes) : "none");
             LogAndCapture(LogString);
         }
 
-        public virtual void HandleI2cReportTxStatus(int spiNum, int bytesRemaining)
+        public virtual void HandleI2cReportTxStatus(int i2cNum, int bytesRemaining)
         {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " i2cNum:" + spiNum;
+            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " i2cNum:" + i2cNum
+                + " bytesRemaining:" + bytesRemaining;
             LogAndCapture(LogString);
         }
 

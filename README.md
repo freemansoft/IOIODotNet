@@ -1,7 +1,11 @@
 #IOIODotNet#
 
-Version 0.2 2015 Mar 22 [Joe Freeman](http://joe.blog.freemansoft.com) You can find a high level diagram 
+[Joe Freeman](http://joe.blog.freemansoft.com) 
+You can find a high level diagram 
 [in this blog article](http://joe.blog.freemansoft.com/2015/03/extremely-rough-cut-at-c-based-ioio.html).
+
+* Version 0.2 2015 Mar 22 Added Observer Notification
+* Version 0.3 2015 Apr 12 Added I2C
 
 A crazy rough cut of a [C# .Net library for the IOIO device](https://github.com/ytai/ioio/wiki) on GitHub. It involves code copied from the Java application though the operational model is different.  This is on purpose to simplifiy tracking future Java application and IOIO protocol changes. There is a lot of C# style work to be done.
 
@@ -31,7 +35,7 @@ The IOIO is programmed via _messages_ of type _ICommandToIOIO_.  Programs create
  * Tests
   + Integration tests demonstrate direct protocol communication  IOIOImpl
   + There are two types of tests, those that call the outgoing protocol API directly and those that post messages to IOIOImpl. The message API will be the future API
-   + The tests mostly build the messages directly. That is because they all involve individual pins
+  + The tests mostly build the messages directly. That is because they all involve individual pins
  * Outgoing Messages
   + Outbound messages will eventually be built through the _IOIOMessageCommandFactory_.  That will eventually be the only public creation interface
   + Outbound messages implement the _IPostMessageCommand_ interface that binds to the _ResourceManager_ to allocate and free IOIO board pins, timers and other resources
@@ -61,6 +65,7 @@ Digital, Analog Out and Uart have been lightly tested.
  * Digital In _on state change_ has been tested.
  * Uart data has been received
  * The existance of Analog return values is tested but not their values.
+ * I2C has been verified with JeeLabs Expander
 
 ##Build Environemnt##
 Visual Studio 2015 with .Net 4 on Windows 8. Get the new Community edition if you don't have an MSDN license. There are only integration tests at this time.
@@ -72,6 +77,8 @@ Visual Studio 2015 with .Net 4 on Windows 8. Get the new Community edition if yo
 * The Uart tests expect that pin 31 and 32 are connected
 * The LED test should flash the LED twice on your device.
 * Either let the integration tests find your device or set a device name by in _IOIOLibDotNetTest.TestHarnessSetup.cs_
+* TwiI2CTest will fail if you do not have I2C device on TWI-0 at address 0x20 -- tested with Jee labs expander.
+Don't worry about it if you don't have an expander
 
 Connection and resource setup and teardown occur in the testing base class. The teardown code closes connections.  Failure to do this correctly may force you to remove and re-pair the IOIO. The teardown code requests thread cancellation for all _IOIOImpl_ based tests. Failure to do this results in thread abandonment messages in the Visual Studio log window.
 
@@ -87,13 +94,15 @@ The demo assumes a servo is hooked to pin 3 just like the Integration Tests
   * Board verification is not yet automatic
   * Higher level APIs are not yet implemented
   * IOIOImpl methods are missing code
-2. None of the complex abstractions or buses have been implemented.
+2. ICSP and SPI have not been coded. I don't have any peripherals of that type
+3. Pulse Input has not be tested
 
 ###Outbound Messages###
 Outbound message types_xxxTo_ have not been fully built for peripherals that have not yet been implemented.  The _IOIOMessageToFactory_ may not have factory methods for all message types.
 
 ###Inbound Change Notification###
-Programs can poll for changes.  Change notification loosely based on Observer/Observable pattern. See unit tests for examples
+Programs can poll for changes or be notified based on the handler.  
+Change notification loosely based on Observer/Observable pattern. See unit tests for examples
 
 ###Hardening###
 Board verificaton is not finished. 

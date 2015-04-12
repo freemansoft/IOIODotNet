@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Component\Types\DigitalInputSpec.cs" />
     <Compile Include="Component\Types\DigitalInputSpecMode.cs" />
+    <Compile Include="Component\Types\TwiSpec.cs" />
     <Compile Include="Component\Types\UartSpec.cs" />
     <Compile Include="Component\Types\DigitalOutputSpec.cs" />
     <Compile Include="Component\Types\DigitalOutputSpecMode.cs" />
@@ -210,6 +211,8 @@
     <Compile Include="MessageTo\Impl\PwmOutputUpdatePulseWidthCommand.cs" />
     <Compile Include="MessageTo\Impl\PwmOutputUpdateDutyCycleCommand.cs" />
     <Compile Include="MessageTo\Impl\PwmOutputUpdateCommand.cs" />
+    <Compile Include="MessageTo\Impl\TwiMasterSendDataCommand.cs" />
+    <Compile Include="MessageTo\Impl\TwiMasterConfigureCommand.cs" />
     <Compile Include="MessageTo\Impl\UartSendCommand.cs" />
     <Compile Include="MessageTo\IPwmOutputCloseCommand.cs" />
     <Compile Include="MessageTo\IDigitalOutputCloseCommand.cs" />
@@ -227,11 +230,13 @@
     <Compile Include="MessageTo\Impl\PulseInputConfigureCommand.cs" />
     <Compile Include="MessageTo\Impl\PwmOutputConfigureCommand.cs" />
     <Compile Include="MessageTo\Impl\SpiMasterConfigureCommand.cs" />
-    <Compile Include="MessageTo\Impl\TwiMasterConfigureCommand.cs" />
+    <Compile Include="MessageTo\Impl\TwiMasterCloseCommand.cs" />
     <Compile Include="MessageTo\Impl\UartConfigureCommand.cs" />
     <Compile Include="MessageTo\IPwmOutputUpdatePulseWidthCommand.cs" />
     <Compile Include="MessageTo\IPwmOutputUpdateDutyCycleCommand.cs" />
     <Compile Include="MessageTo\IPwmOutputUpdateCommand.cs" />
+    <Compile Include="MessageTo\ITwiMasterSendDataCommand.cs" />
+    <Compile Include="MessageTo\ITwiMasterCloseCommand.cs" />
     <Compile Include="MessageTo\IUartSendCommand.cs" />
     <Compile Include="MessageTo\IUartCloseCommand.cs" />
     <Compile Include="MessageTo\Impl\SequencerConfigureCommand.cs" />

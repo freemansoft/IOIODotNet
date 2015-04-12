@@ -11,7 +11,7 @@ namespace IOIOLib.MessageTo
 	 public partial class IOIOMessageCommandFactory
 	{
 
-		public IIcspMasterConfigureCommand createOpenIcspMaster()
+		public IIcspMasterConfigureCommand CreateIcspMasterConfigure()
 		{
 			return new IcspMasterConfigureCommand();
 		}

@@ -256,6 +256,7 @@ namespace IOIOLib.Device.Impl
 					bool didTake = WorkQueue.TryTake(out result, timeout);
 					if (didTake && result != null)
 					{
+                        LOG.Debug("Post: " + result);
 						result.ExecuteMessage(this.OutProt_);
 					}
 				}

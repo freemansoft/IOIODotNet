@@ -156,7 +156,7 @@ namespace IOIOLib.Device.Impl
         {
         }
 
-        public virtual void HandleI2cReportTxStatus(int spiNum, int bytesRemaining)
+        public virtual void HandleI2cReportTxStatus(int i2cNum, int bytesRemaining)
         {
         }
 

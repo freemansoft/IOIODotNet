@@ -58,7 +58,7 @@ namespace IOIOLib.MessageTo.Impl
         /// Create an inbound digital Port_ that notifies on state change
         /// </summary>
         /// <param name="digitalInputSpec"></param>
-        /// <param name="notifyOnChange"></param>
+        /// <param name="notifyOnChange">You must notify on state change if you ever want to know the state of a pin</param>
         public DigitalInputConfigureCommand(DigitalInputSpec digitalInputSpec, bool notifyOnChange)
         {
             this.PinDef = digitalInputSpec;

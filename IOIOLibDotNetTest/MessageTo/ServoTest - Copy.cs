@@ -48,7 +48,7 @@ namespace IOIOLibDotNetTest.MessageTo
 	[TestClass]
 	public class ServoTest : BaseTest
 	{
-		private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(ServoTest));
+		private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(TwiI2CTest));
 
 		[TestMethod]
 		public void ServoTest_SimpleServoTest()

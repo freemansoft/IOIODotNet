@@ -40,9 +40,18 @@ namespace IOIOLib.MessageFrom.Impl
 
         public int I2cNum { get; private set; }
 
+        /// <summary>
+        /// value of 0XFF means no data copied
+        /// </summary>
         public int Size { get; private set; }
         public byte[] Data { get; private set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="i2cNum"></param>
+        /// <param name="size">0xff means NO data</param>
+        /// <param name="data"></param>
         internal I2cResultFrom(int i2cNum, int size, byte[] data)
         {
             this.I2cNum = i2cNum;

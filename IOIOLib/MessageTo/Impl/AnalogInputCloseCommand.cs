@@ -51,12 +51,6 @@ namespace IOIOLib.MessageTo.Impl
         }
 
 
-        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound, Device.IResourceManager rManager)
-        {
-			outBound.setPinDigitalIn(BoundPin, DigitalInputSpecMode.FLOATING);
-			return true;
-        }
-
 		public bool Alloc(IResourceManager rManager)
 		{
 			rManager.Free(new Resource(ResourceType.PIN, BoundPin));
@@ -65,7 +59,8 @@ namespace IOIOLib.MessageTo.Impl
 
 		public bool ExecuteMessage(IOIOProtocolOutgoing outBound)
 		{
-			throw new NotImplementedException();
+            outBound.setPinDigitalIn(BoundPin, DigitalInputSpecMode.FLOATING);
+            return true;
 		}
 	}
 }

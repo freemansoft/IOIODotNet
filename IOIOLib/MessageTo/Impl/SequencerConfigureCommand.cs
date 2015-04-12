@@ -47,11 +47,6 @@ namespace IOIOLib.MessageTo.Impl
             this.ChannelConfiguration = config;
         }
 
-        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound, Device.IResourceManager rManager)
-        {
-            throw new NotImplementedException();
-        }
-
 		public bool Alloc(IResourceManager rManager)
 		{
 			throw new NotImplementedException();

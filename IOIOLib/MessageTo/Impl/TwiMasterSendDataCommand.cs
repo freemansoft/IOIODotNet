@@ -39,34 +39,60 @@ using IOIOLib.Device.Types;
 
 namespace IOIOLib.MessageTo.Impl
 {
-    public class TwiMasterConfigureCommand : ITwiMasterConfigureCommand
+    public class TwiMasterSendDataCommand : ITwiMasterSendDataCommand
     {
-        /// <summary>
-        /// populated after alloc.  used by other calls
-        /// </summary>
-        public TwiSpec TwiDef { get; private set; }
+        private int Address;
+        private bool IsTenBitAddress;
+        private byte[] Data;
+        private int NumBytesRead;
 
-        internal TwiMasterConfigureCommand(int twiNum, TwiMasterRate rate, bool smbus)
+        /// <summary>
+        /// populated by constructor.  used by other calls
+        /// </summary>
+        internal TwiSpec TwiDef { get; private set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="twiDef"></param>
+        /// <param name="address">Device address</param>
+        /// <param name="isTenBitAddress">i2C addressing</param>
+        /// <param name="writeData">a byte array to be written to IOIO I2C device.  Array length must be correct</param>
+        /// <param name="numBytesRead">passed to the IOIO to tell it how many response bytes to expect</param>
+        internal TwiMasterSendDataCommand(TwiSpec twiDef,
+            int address, bool isTenBitAddress, 
+            byte[] writeData, int numBytesRead)
         {
             // TODO: Complete member initialization
-            this.TwiDef = new TwiSpec(twiNum, rate, smbus);
+            this.TwiDef = twiDef;
+            this.Address = address;
+            this.IsTenBitAddress = isTenBitAddress;
+            this.Data = writeData;
+            this.NumBytesRead = numBytesRead;
         }
 
 
 
+        /// <summary>
+        /// no-op for this command
+        /// </summary>
+        /// <param name="rManager">the holder of resources for this board</param>
+        /// <returns>true if succeeds. always true since this command doesn't allocate resources</returns>
         public bool Alloc(IResourceManager rManager)
 		{
-            Resource twi = new Resource(ResourceType.TWI, this.TwiDef.TwiNum);
-            Resource pin0 = new Resource(ResourceType.PIN, rManager.BoundHardware.TwiPins[this.TwiDef.TwiNum, 0]);
-            Resource pin1 = new Resource(ResourceType.PIN, rManager.BoundHardware.TwiPins[this.TwiDef.TwiNum, 1]);
-            List<Resource> resources = new List<Resource>() { twi, pin0, pin1 };
-            rManager.Alloc(resources);
             return true;
 		}
 
+        /// <summary>
+        /// This will pretty much always generate a I2cResultFrom response (ack)
+        /// even if you set the expected response length to 0
+        /// </summary>
+        /// <param name="outBound"></param>
+        /// <returns>true if executes</returns>
 		public bool ExecuteMessage(IOIOProtocolOutgoing outBound)
 		{
-            outBound.i2cConfigureMaster(this.TwiDef.TwiNum, this.TwiDef.Rate, this.TwiDef.SmBus);
+            outBound.i2cWriteRead(TwiDef.TwiNum, this.IsTenBitAddress, this.Address,
+                this.Data.Length, this.NumBytesRead, this.Data);
             return true;
 		}
 	}
