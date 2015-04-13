@@ -33,6 +33,7 @@ using IOIOLib.Device;
 using IOIOLib.Device.Impl;
 using IOIOLib.Device.Types;
 using IOIOLib.MessageFrom;
+using IOIOLib.MessageFrom.Impl;
 using IOIOLib.MessageTo;
 using IOIOLib.MessageTo.Impl;
 using IOIOLib.Util;
@@ -53,27 +54,61 @@ namespace IOIOLibDotNetTest.MessageTo
         /// <summary>
         /// Parallax Gyroscope  L3G4200D found at Radio Shack in 2014
         /// You must use pullups on the IOIO I2C pins for this to work. I used 10K Ohm
-        /// This test has not yet been run with pullups -- joe needs to teset this more
+        /// Portions of this adapted from Sparkfun L3G4200D_Example.pde
         /// </summary>
-        //[TestMethod]
+        [TestMethod]
         public void TwiI2CTest_L3G4200D_Integration()
 		{
+            //from sparkfun L3G4200D.h also available in the docs
+            // WHO_AM_I 0x0F
+            // CTRL_REG1 0x20
+            // CTRL_REG2 0x21
+            // CTRL_REG3 0x22
+            // CTRL_REG4 0x23
+            // CTRL_REG5 0x24
+            // REFERENCE 0x25
+            // OUT_TEMP 0x26
+            // STATUS_REG 0x27
+            // OUT_X_L 0x28
+            // OUT_X_H 0x29
+            // OUT_Y_L 0x2A
+            // OUT_Y_H 0x2B
+            // OUT_Z_L 0x2C
+            // OUT_Z_H 0x2D
+            // FIFO_CTRL_REG 0x2E
+            // FIFO_SRC_REG 0x2F
+            // INT1_CFG 0x30
+            // INT1_SRC 0x31
+            // INT1_TSH_XH 0x32
+            // INT1_TSH_XL 0x33
+            // INT1_TSH_YH 0x34
+            // INT1_TSH_YL 0x35
+            // INT1_TSH_ZH 0x36
+            // INT1_TSH_ZL 0x37
+            // INT1_DURATION 0x38
+
             // slave address is 7 bits, the last bit is set by SD0 line
             int GyroSlaveAddress0 = Convert.ToInt32("1101000", 2);
+            // the parallax board seems to pull SD0 high so this is the address we need
             int GyroSlaveAddress1 = Convert.ToInt32("1101001", 2);
             byte Gyro_WhoAmI_Register = 0x0f;
-            //byte Gyro_CTRL_REG1 = 0x20;
-            byte Gyro_WhoAmI_ID = 0xD3;
-            byte[] ReadWhoAmiRegisterData = new Byte[] { Gyro_WhoAmI_Register };
-            //byte[] ReatCtrlReg1RegisterData = new Byte[] { Gyro_CTRL_REG1 };
+            byte Gyro_WhoAmI_ID_L3G4200D = 0xD3;
+            byte Gyro_CTRL_REG1 = 0x20;
+            byte Gyro_CTRL_REG2 = 0x21;
+            byte Gyro_CTRL_REG3 = 0x22;
+            byte Gyro_CTRL_REG4 = 0x23;
+            byte Gyro_CTRL_REG5 = 0x24;
+            byte Gyro_First_Out_Register = 0x28;
 
 
             IOIOConnection ourConn = this.CreateGoodSerialConnection(false);
             this.CreateCaptureLogHandlerSet();
+            // we'll inject our handlers on top of the default handlers so we don't have to peek into impl
+            IOIO ourImpl = CreateIOIOImplAndConnect(ourConn, new IOIOHandlerDistributor(
+               new List<IOIOIncomingHandler> { HandlerSingleQueueAllType_, HandlerObservable_ }));
+            ObserveI2cResultFrom observer = new ObserveI2cResultFrom();
+            HandlerObservable_.Subscribe(observer);
             LOG.Debug("Setup Complete");
-
-            // we'll add the handler state on top of the default handlers so we don't have to peek into impl
-            IOIO ourImpl = CreateIOIOImplAndConnect(ourConn, this.HandlerSingleQueueAllType_);
             System.Threading.Thread.Sleep(100);  // wait for us to get the hardware ids
 
             IOIOMessageCommandFactory factory = new IOIOMessageCommandFactory();
@@ -82,19 +117,63 @@ namespace IOIOLibDotNetTest.MessageTo
             System.Threading.Thread.Sleep(50);
             TwiSpec twiDef = startCommand.TwiDef;
 
-            // send the whoami command
-            ITwiMasterSendDataCommand startupCommand0 = factory.CreateTwiSendData(twiDef, GyroSlaveAddress0, false, ReadWhoAmiRegisterData, 1);
-            ourImpl.PostMessage(startupCommand0);
-            System.Threading.Thread.Sleep(50);
-
-            //ITwiMasterSendDataCommand readRegister1 = factory.CreateTwiSendData(twiDef, GyroSlaveAddress0, false, ReatCtrlReg1RegisterData, 1);
-            //ourImpl.PostMessage(readRegister1);
-            //System.Threading.Thread.Sleep(50);
-
+            LOG.Debug("Ask for Who Am I");
+            // send the whoami command - we expect the id to be Gyro_WhoAmI_ID
+            byte[] ReadWhoAmiRegisterData = new byte[] { Gyro_WhoAmI_Register };
             ITwiMasterSendDataCommand startupCommand1 = factory.CreateTwiSendData(twiDef, GyroSlaveAddress1, false, ReadWhoAmiRegisterData, 1);
             ourImpl.PostMessage(startupCommand1);
             System.Threading.Thread.Sleep(50);
+            // should check for Gyro_WhoAmI_ID_L3G4200D !
 
+            LOG.Debug("Updating Register "+Gyro_CTRL_REG1.ToString("X"));
+            // Enable x, y, z and turn off power down
+            byte[] Reg1Data = new byte[] { Gyro_CTRL_REG1, Convert.ToByte("00001111",2) };
+            ITwiMasterSendDataCommand Reg1EnableXYZCommand = factory.CreateTwiSendData(twiDef, GyroSlaveAddress1, false, Reg1Data, 0);
+            ourImpl.PostMessage(Reg1EnableXYZCommand);
+            System.Threading.Thread.Sleep(50);
+
+            // pretty much don't do anything fancy with Reg2
+            LOG.Debug("Updating Register " + Gyro_CTRL_REG2.ToString("X"));
+            byte[] Reg2Data = new byte[] { Gyro_CTRL_REG2, Convert.ToByte("00000000", 2) };
+            ITwiMasterSendDataCommand Reg2Command = factory.CreateTwiSendData(twiDef, GyroSlaveAddress1, false, Reg2Data, 0);
+            ourImpl.PostMessage(Reg2Command);
+            System.Threading.Thread.Sleep(50);
+
+            // No Interrupts INT2 = 0b00001000
+            LOG.Debug("Updating Register " + Gyro_CTRL_REG3.ToString("X"));
+            byte[] Reg3Data = new byte[] { Gyro_CTRL_REG3, Convert.ToByte("00000000", 2) };
+            ITwiMasterSendDataCommand Reg3CommandNoInterrupts = factory.CreateTwiSendData(twiDef, GyroSlaveAddress1, false, Reg3Data, 0);
+            ourImpl.PostMessage(Reg3CommandNoInterrupts);
+            System.Threading.Thread.Sleep(50);
+
+            // 0: 250 dps, 1: 500 dps, 2: 2000 dps - 0b00000000, 0b00010000, 0b00110000 we will use full scale
+            LOG.Debug("Updating Register " + Gyro_CTRL_REG4.ToString("X"));
+            byte[] Reg4Data = new byte[] { Gyro_CTRL_REG4, (((byte)0x02) <<4)  };
+            ITwiMasterSendDataCommand Reg4CommandScale = factory.CreateTwiSendData(twiDef, GyroSlaveAddress1, false, Reg4Data, 0);
+            ourImpl.PostMessage(Reg4CommandScale);
+            System.Threading.Thread.Sleep(50);
+
+            //Enable High pass filter
+            LOG.Debug("Updating Register " + Gyro_CTRL_REG5.ToString("X"));
+            byte[] Reg5Data = new byte[] { Gyro_CTRL_REG5, Convert.ToByte("00000000", 2) };
+            ITwiMasterSendDataCommand Reg5CommandScale = factory.CreateTwiSendData(twiDef, GyroSlaveAddress1, false, Reg5Data, 0);
+            ourImpl.PostMessage(Reg5CommandScale);
+            System.Threading.Thread.Sleep(50);
+
+            // Read back the current values -- whould wait for in to go high but....
+            // Top most bit in address turns on auto inc.  that is weirder than usual
+            // Who thought that there should be no bitwise byte operators but then came up with |= ?
+            for ( int i = 0; i < 20; i++) { 
+                LOG.Debug("Read values with read-only command and auto increment");
+                observer.LastResult_ = null;
+                byte[] ReadFromFirstOutRegisterWithAutoInc = new byte[] { Gyro_First_Out_Register |= Convert.ToByte(0x80) };
+                ITwiMasterSendDataCommand RedXYZ = factory.CreateTwiSendData(twiDef, GyroSlaveAddress1, false, ReadFromFirstOutRegisterWithAutoInc, 6);
+                ourImpl.PostMessage(RedXYZ);
+                System.Threading.Thread.Sleep(25);
+                LOG.Debug("Returned " + observer.ToXYZ());
+            }
+
+            LOG.Debug("Close Gyroscope");
             ITwiMasterCloseCommand closeCommand = factory.CreateTwiClose(twiDef);
             ourImpl.PostMessage(closeCommand);
             System.Threading.Thread.Sleep(100);
@@ -104,6 +183,7 @@ namespace IOIOLibDotNetTest.MessageTo
 			LOG.Debug(this.HandlerSingleQueueAllType_.GetEnumerator());
 			// should verify close command
 		}
+
 
         /// <summary>
         /// http://jeelabs.net/projects/hardware/wiki/Expander_Plug
@@ -176,7 +256,7 @@ namespace IOIOLibDotNetTest.MessageTo
             ITwiMasterSendDataCommand commandHigh = factory.CreateTwiSendData(twiDef, JeeExpanderAddress, false, WriteAllHigh, 0);
             ITwiMasterSendDataCommand commandLow = factory.CreateTwiSendData(twiDef, JeeExpanderAddress, false, WriteAllLow, 0);
             ITwiMasterSendDataCommand queryOLat = factory.CreateTwiSendData(twiDef, JeeExpanderAddress, false, ReadRegisterOutputLatch, 1);
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < 2; i++) {
                 LOG.Debug("Post Low");
                 ourImpl.PostMessage(commandLow);
                 ExpectedReceiveCount++; // I2cResultFrom
@@ -203,9 +283,51 @@ namespace IOIOLibDotNetTest.MessageTo
             // logging the messages with any other string doesn't show the messages themselves !?
             LOG.Debug("Captured:" + +this.HandlerSingleQueueAllType_.Count()+ " Expected:"+ExpectedReceiveCount);
             LOG.Debug(this.HandlerSingleQueueAllType_.GetEnumerator());
-            // should verify close command
+            // should verify close command!
+            // should verify results of the latch checks.!
+            // instead do this lame test!
             Assert.AreEqual(ExpectedReceiveCount, this.HandlerSingleQueueAllType_.Count(), 
-                "This test will fail if you do not have a JeeNodes port expander on Twi "+TwiVirtualDevice);
+                "This test will fail if you do not have a JeeNodes port expander at I2C address "+JeeExpanderAddress
+                +" on Twi "+TwiVirtualDevice);
+        }
+    }
+
+    public class ObserveI2cResultFrom : IObserver<II2cResultFrom>, IObserverIOIO
+    {
+        private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(ObserveI2cResultFrom));
+        internal II2cResultFrom LastResult_;
+
+        public void OnCompleted()
+        {
+            // do nothing
+        }
+
+        public void OnError(Exception error)
+        {
+            // do nothing
+        }
+
+        public void OnNext(II2cResultFrom value)
+        {
+            LastResult_ = value;
+            LOG.Debug("Received " + value);
+        }
+
+        public Tuple<int,int,int> ToXYZ()
+        {
+            if (this.LastResult_ == null || this.LastResult_.Data == null || this.LastResult_.Size != 6)
+            {
+                return null;
+            }
+            else
+            {
+                int x = (LastResult_.Data[1] << 8) + LastResult_.Data[0];
+                int y = (LastResult_.Data[3] << 8) + LastResult_.Data[2];
+                int z = (LastResult_.Data[5] << 8) + LastResult_.Data[4];
+                Tuple<int, int, int> result = new Tuple<int, int, int>(x,y,z);
+                //LOG.Debug("Values:" + result);
+                return result;
+            }
         }
     }
 }

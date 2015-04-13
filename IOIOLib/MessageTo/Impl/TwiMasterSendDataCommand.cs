@@ -36,6 +36,7 @@ using System.Threading.Tasks;
 using IOIOLib.Device;
 using IOIOLib.Device.Impl;
 using IOIOLib.Device.Types;
+using IOIOLib.Util;
 
 namespace IOIOLib.MessageTo.Impl
 {
@@ -95,5 +96,12 @@ namespace IOIOLib.MessageTo.Impl
                 this.Data.Length, this.NumBytesRead, this.Data);
             return true;
 		}
-	}
+
+        public override string ToString()
+        {
+            return base.ToString() + "Twi:" + this.TwiDef.TwiNum 
+                + " ExpectBack:"+this.NumBytesRead
+                + " SendingBytes:" + LoggingUtilities.ByteArrayToString(this.Data, this.Data.Length);
+        }
+    }
 }

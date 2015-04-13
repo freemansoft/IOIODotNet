@@ -58,6 +58,7 @@ namespace IOIOLibDotNetTest
         internal IOIOHandlerCaptureLog HandlerLog_;
         internal IOIOHandlerCaptureConnectionState HandlerCaptureConnectionState_;
         internal IOIOHandlerCaptureSingleQueue HandlerSingleQueueAllType_;
+        internal IOIOHandlerObservable HandlerObservable_;
         internal IOIOHandlerDistributor HandlerContainer_;
 
         /// <summary>
@@ -104,6 +105,7 @@ namespace IOIOLibDotNetTest
             HandlerLog_ = null;
             HandlerCaptureConnectionState_ = null;
             HandlerSingleQueueAllType_ = null;
+            HandlerObservable_ = null;
             HandlerContainer_ = null;
 
             System.Threading.Thread.Sleep(100);
@@ -136,12 +138,14 @@ namespace IOIOLibDotNetTest
         /// </summary>
         internal void CreateCaptureLogHandlerSet()
         {
+            // create handlers of our own so we don't have to peek in and understand how IOIOImpl is configured
             HandlerLog_ = new IOIOHandlerCaptureLog(10);
             HandlerSingleQueueAllType_ = new IOIOHandlerCaptureSingleQueue();
-			HandlerCaptureConnectionState_ = new IOIOHandlerCaptureConnectionState(); 
-			HandlerContainer_ = new IOIOHandlerDistributor(
-               new List<IOIOIncomingHandler> { HandlerLog_, 
-                   HandlerSingleQueueAllType_ ,HandlerCaptureConnectionState_
+			HandlerCaptureConnectionState_ = new IOIOHandlerCaptureConnectionState();
+            HandlerObservable_ = new IOIOHandlerObservable();
+            HandlerContainer_ = new IOIOHandlerDistributor(
+               new List<IOIOIncomingHandler> {
+                   HandlerLog_, HandlerSingleQueueAllType_ ,HandlerCaptureConnectionState_, HandlerObservable_
 			   });
         }
 

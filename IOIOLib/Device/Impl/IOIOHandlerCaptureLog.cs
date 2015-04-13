@@ -169,26 +169,6 @@ namespace IOIOLib.Device.Impl
             LogAndCapture(LogString);
         }
 
-        /// <summary>
-        // not the fastest but sort of fast and simple
-        // http://stackoverflow.com/questions/311165/how-do-you-convert-byte-array-to-hexadecimal-string-and-vice-versa
-        /// </summary>
-        /// <param name="ba"></param>
-        /// <returns></returns>
-        private string ByteArrayToString(byte[] ba, int size)
-        {
-            if (ba == null)
-            {
-                return "";
-            }
-            else
-            {
-                string hex = BitConverter.ToString(ba,0,size);
-                return hex.Replace("-", " ");
-            }
-        }
-
-
         public virtual void HandleSpiOpen(int spiNum)
         {
             string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " i2cNum:" + spiNum;
@@ -205,7 +185,7 @@ namespace IOIOLib.Device.Impl
         {
             string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " spiNum:" + spiNum
                 + " NumBytes:" + numberOfBytes
-                + " Data:" + (numberOfBytes != 0xff ? ByteArrayToString(data, numberOfBytes) : "none");
+                + " Data:" + (numberOfBytes != 0xff ? LoggingUtilities.ByteArrayToString(data, numberOfBytes) : "none");
             LogAndCapture(LogString);
         }
 
@@ -232,7 +212,7 @@ namespace IOIOLib.Device.Impl
         {
             string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " i2cNum:" + i2cNum
                 + " NumBytes:" + numberOfBytes 
-                + " Data:" + (numberOfBytes != 0xff ? ByteArrayToString(data, numberOfBytes) : "none");
+                + " ReceivedBytes:" + (numberOfBytes != 0xff ? LoggingUtilities.ByteArrayToString(data, numberOfBytes) : "none");
             LogAndCapture(LogString);
         }
 

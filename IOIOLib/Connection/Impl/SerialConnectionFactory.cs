@@ -95,22 +95,28 @@ namespace IOIOLib.Connection.Impl
         {
             string[] portNames = SerialPort.GetPortNames();
             ICollection<string> nameCollection = new List<string>();
+            ISet<string> uniqueNames = new HashSet<string>();
             foreach (string name in portNames)
             {
-                SerialPort foo = new SerialPort(name);
-                try
+                if (uniqueNames.Contains(name))
                 {
-                    foo.Open();
-                    LOG.Debug(name + " is available Port_");
-                    foo.Close();
-                    foo.Dispose();
-                    nameCollection.Add(name);
+                    LOG.Warn(name + " exists multiple times in com port list. Often a sign something still has a port handle.");
+                } else {
+                    uniqueNames.Add(name);
+                    SerialPort foo = new SerialPort(name);
+                    try
+                    {
+                        foo.Open();
+                        LOG.Debug(name + " is available Port_");
+                        foo.Close();
+                        foo.Dispose();
+                        nameCollection.Add(name);
+                    }
+                    catch (Exception e)
+                    {
+                        LOG.Debug("Couldn't IsOpen while scanning " + name, e);
+                    }
                 }
-                catch (Exception e)
-                {
-                    LOG.Debug("Couldn't IsOpen while scanning " + name, e);
-                }
-
             }
             return CreateConnections(nameCollection);
         }

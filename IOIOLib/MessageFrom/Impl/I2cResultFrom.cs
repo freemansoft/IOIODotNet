@@ -26,7 +26,8 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied.
  */
- 
+
+using IOIOLib.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,6 +58,12 @@ namespace IOIOLib.MessageFrom.Impl
             this.I2cNum = i2cNum;
             this.Size = size;
             this.Data = data;
+        }
+
+        public override string ToString()
+        {
+            return base.ToString() + " I2cNum:" + I2cNum + " NumBytes:" + this.Size 
+                + " Data:" + LoggingUtilities.ByteArrayToString(this.Data,this.Size);
         }
     }
 }

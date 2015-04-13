@@ -259,6 +259,7 @@
     <Compile Include="Util\Impl\IOIOLogImpl.cs" />
     <Compile Include="Util\IOIOLog.cs" />
     <Compile Include="Util\IOIOLogManager.cs" />
+    <Compile Include="Util\LoggingUtilities.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Connection\Types\" />
