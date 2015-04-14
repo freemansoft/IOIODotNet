@@ -53,8 +53,10 @@ namespace IOIOLibDotNetTest.MessageTo
 
         /// <summary>
         /// Parallax Gyroscope  L3G4200D found at Radio Shack in 2014
+        /// This is a Gyroscope not an Accelerometer https://www.sparkfun.com/pages/accel_gyro_guide
         /// You must use pullups on the IOIO I2C pins for this to work. I used 10K Ohm
         /// Portions of this adapted from Sparkfun L3G4200D_Example.pde
+        /// You can find a tutorial on gyroscopes at http://morf.lv/modules.php?name=tutorials&lasit=32
         /// </summary>
         [TestMethod]
         public void TwiI2CTest_L3G4200D_Integration()
@@ -164,13 +166,28 @@ namespace IOIOLibDotNetTest.MessageTo
             // Top most bit in address turns on auto inc.  that is weirder than usual
             // Who thought that there should be no bitwise byte operators but then came up with |= ?
             for ( int i = 0; i < 20; i++) { 
+                // on my machine it takes 15msec to receive a message after sending
                 LOG.Debug("Read values with read-only command and auto increment");
                 observer.LastResult_ = null;
                 byte[] ReadFromFirstOutRegisterWithAutoInc = new byte[] { Gyro_First_Out_Register |= Convert.ToByte(0x80) };
                 ITwiMasterSendDataCommand RedXYZ = factory.CreateTwiSendData(twiDef, GyroSlaveAddress1, false, ReadFromFirstOutRegisterWithAutoInc, 6);
                 ourImpl.PostMessage(RedXYZ);
-                System.Threading.Thread.Sleep(25);
-                LOG.Debug("Returned " + observer.ToXYZ());
+                // don't know how long it takes to get a reply
+                // you can queue up multiple requests and then wait until they all come back
+                // you may get a ReportTxStatus message with how backed up you are in the processing queue
+                Tuple<int, int, int> xyz = observer.ToXYZ();
+                int loopCount = 0;
+                while ( xyz == null)
+                {
+                    // test could hang here if the remote fails so after some msec say 20-30msec;
+                    if (loopCount > (30 / 5)){
+                        Assert.Fail("Didn't get a response within 30msec");
+                    }
+                    System.Threading.Thread.Sleep(5);
+                    xyz = observer.ToXYZ();
+                    loopCount++;
+                }
+                LOG.Debug("Compass Returned " + observer.ToXYZ());
             }
 
             LOG.Debug("Close Gyroscope");

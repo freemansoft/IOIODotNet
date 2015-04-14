@@ -160,12 +160,19 @@ namespace IOIOLib.Device.Impl
             }
         }
 
-        private void readBytes(int size, byte[] buffer)
+        /// <summary>
+        /// Allocates a buffer of the right size and reads that many bytes into it.
+        /// </summary>
+        /// <param name="size"></param>
+        /// <returns></returns>
+        private byte[] readBytes(int size)
         {
+            byte[] buffer = new byte[size];
             for (int i = 0; i < size; ++i)
             {
                 buffer[i] = (byte)readByte();
             }
+            return buffer;
         }
 
         /// <summary>
@@ -181,7 +188,8 @@ namespace IOIOLib.Device.Impl
             int arg2;
             int numPins;
             int size;
-            byte[] data = new byte[256];
+            byte[] data;
+
             try
             {
                 // this was while(true) in the java code
@@ -198,12 +206,9 @@ namespace IOIOLib.Device.Impl
                             {
                                 throw new IOException("Bad establish connection magic");
                             }
-                            byte[] hardwareId = new byte[8];
-                            byte[] bootloaderId = new byte[8];
-                            byte[] firmwareId = new byte[8];
-                            readBytes(8, hardwareId);
-                            readBytes(8, bootloaderId);
-                            readBytes(8, firmwareId);
+                            byte[] hardwareId = readBytes(8);
+                            byte[] bootloaderId = readBytes(8);
+                            byte[] firmwareId = readBytes(8);
 
                             Handler_.HandleEstablishConnection(hardwareId, bootloaderId, firmwareId);
                             break;
@@ -276,7 +281,7 @@ namespace IOIOLib.Device.Impl
                         case (int)IOIOProtocolCommands.UART_DATA:
                             arg1 = readByte();
                             size = (arg1 & 0x3F) + 1;
-                            readBytes(size, data);
+                                data = readBytes(size);
                             Handler_.HandleUartData(arg1 >> 6, size, data);
                             break;
 
@@ -296,7 +301,7 @@ namespace IOIOLib.Device.Impl
                             arg1 = readByte();
                             arg2 = readByte();
                             size = (arg1 & 0x3F) + 1;
-                            readBytes(size, data);
+                            data = readBytes(size);
                             Handler_.HandleSpiData(arg1 >> 6, arg2 & 0x3F, data, size);
                             break;
 
@@ -335,7 +340,10 @@ namespace IOIOLib.Device.Impl
                             arg2 = readByte();
                             if (arg2 != 0xFF)
                             {
-                                readBytes(arg2, data);
+                                data = readBytes(arg2);
+                            } else
+                            {
+                                data = new byte[0];
                             }
                             Handler_.HandleI2cResult(arg1 & 0x03, arg2, data);
                             break;
@@ -359,8 +367,9 @@ namespace IOIOLib.Device.Impl
                             break;
 
                         case (int)IOIOProtocolCommands.ICSP_RESULT:
-                            readBytes(2, data);
-                            Handler_.HandleIcspResult(2, data);
+                            size = 2;
+                            data = readBytes(size);
+                            Handler_.HandleIcspResult(size, data);
                             break;
 
                         case (int)IOIOProtocolCommands.ICSP_CONFIG:
@@ -394,7 +403,7 @@ namespace IOIOLib.Device.Impl
                             {
                                 size = 4;
                             }
-                            readBytes(size, data);
+                            data = readBytes(size);
                             Handler_.HandleIncapReport(arg1 & 0x0F, size, data);
                             break;
 

@@ -56,6 +56,7 @@ namespace IOIOLib.Device.Impl
 
         internal override void HandleMessage(IMessageFromIOIO message)
         {
+            LOG.Debug("Enqueue:" + message);
             CapturedMessages_.Enqueue(message);
         }
 

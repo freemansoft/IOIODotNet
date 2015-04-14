@@ -61,6 +61,8 @@ namespace IOIOLib.Connection.Impl
             Port_.ReceivedBytesThreshold = 1;
             Port_.ReadTimeout = 2000;
             //Port_.ReadTimeout = SerialPort.InfiniteTimeout;
+            // receive 6 bytes from accellerometer takes 1-2msec @ 9600 and <1msec @ 38400
+            Port_.BaudRate = 38400;
             // from the IOIO java code
             Port_.DtrEnable = true;
             Port_.Open();
