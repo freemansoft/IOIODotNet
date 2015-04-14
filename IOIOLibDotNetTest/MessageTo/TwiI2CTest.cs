@@ -167,7 +167,7 @@ namespace IOIOLibDotNetTest.MessageTo
             // Who thought that there should be no bitwise byte operators but then came up with |= ?
             for ( int i = 0; i < 20; i++) { 
                 // on my machine it takes 15msec to receive a message after sending
-                LOG.Debug("Read values with read-only command and auto increment");
+                LOG.Debug("Send read-only command for xyz - with auto increment");
                 observer.LastResult_ = null;
                 byte[] ReadFromFirstOutRegisterWithAutoInc = new byte[] { Gyro_First_Out_Register |= Convert.ToByte(0x80) };
                 ITwiMasterSendDataCommand RedXYZ = factory.CreateTwiSendData(twiDef, GyroSlaveAddress1, false, ReadFromFirstOutRegisterWithAutoInc, 6);

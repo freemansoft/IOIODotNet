@@ -40,9 +40,18 @@ namespace IOIOLib.MessageFrom.Impl
 
         public int I2cNum { get; private set; }
 
-        internal I2cReportTxStatusFrom(int spiNum)
+        public int BytesRemaining { get; private set; }
+
+
+        internal I2cReportTxStatusFrom(int spiNum, int bytesRemaining)
         {
             this.I2cNum = spiNum;
+            this.BytesRemaining = bytesRemaining;
+        }
+
+        public override string ToString()
+        {
+            return base.ToString() + " I2cNum:" + I2cNum + " NumBytesRemaining:" + BytesRemaining;
         }
     }
 }

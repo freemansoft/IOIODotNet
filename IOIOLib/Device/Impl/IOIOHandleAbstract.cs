@@ -175,7 +175,7 @@ namespace IOIOLib.Device.Impl
 
         public virtual void HandleI2cReportTxStatus(int i2cNum, int bytesRemaining)
         {
-            this.HandleMessage(new I2cReportTxStatusFrom(i2cNum));
+            this.HandleMessage(new I2cReportTxStatusFrom(i2cNum, bytesRemaining));
         }
 
         // default to close

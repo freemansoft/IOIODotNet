@@ -35,7 +35,12 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom
 {
+    /// <summary>
+    /// You typically get one of these when you open a connection and when you've 
+    /// sent commands faster than they can be processed. The 
+    /// </summary>
     public interface II2cReportTxStatusFrom : II2cFrom
     {
+        int BytesRemaining { get; }
     }
 }
