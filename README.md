@@ -96,6 +96,8 @@ The demo assumes a servo is hooked to pin 3 just like the Integration Tests
   * IOIOImpl methods are missing code
 2. ICSP and SPI have not been coded. I don't have any peripherals of that type
 3. Pulse Input has not be tested
+4. I2C, Uart and SPI flow control is NOT implemented. 
+handleI2cReportTxStatus,  handleUartReportTxStatus, handleSpiReportTxStatus are all ignored.
 
 ###Outbound Messages###
 Outbound message types_xxxTo_ have not been fully built for peripherals that have not yet been implemented.  The _IOIOMessageToFactory_ may not have factory methods for all message types.
