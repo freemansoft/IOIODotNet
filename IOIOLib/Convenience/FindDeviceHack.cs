@@ -67,7 +67,7 @@ namespace IOIOLib.Convenience
             }
             if (goodConnectionName != null)
             {
-                LOG.Debug("TryAndFindIOIODevice successsfull");
+                LOG.Debug("TryAndFindIOIODevice successfull");
             }
             else
             {

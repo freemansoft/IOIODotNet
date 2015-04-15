@@ -20,9 +20,15 @@ namespace IOIOLib.Util
             {
                 return "";
             }
-            else
+            else if (size <= ba.Length)
             {
                 string hex = BitConverter.ToString(ba, 0, size);
+                return hex.Replace("-", " ");
+            }
+            else
+            {
+                // avoid "byte array too small" message
+                string hex = BitConverter.ToString(ba, 0, ba.Length);
                 return hex.Replace("-", " ");
             }
         }

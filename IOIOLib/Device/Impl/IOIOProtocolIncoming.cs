@@ -458,15 +458,18 @@ namespace IOIOLib.Device.Impl
             catch (System.Threading.ThreadAbortException e)
             {
                 LOG.Error(IncomingTask_.Id + " Probably aborted thread (TAE): " + e.Message);
+                LOG.Error(IncomingTask_.Id + e.StackTrace);
             }
             catch (ObjectDisposedException e)
             {
                 //// see this when steram is closed
                 LOG.Error(IncomingTask_.Id + " Probably closed incoming Stream_: (ODE)" + e.Message);
+                LOG.Error(IncomingTask_.Id + e.StackTrace);
             }
             catch (Exception e)
             {
                 LOG.Error(IncomingTask_.Id + " Probably stopping incoming: (E)" + e.Message);
+                LOG.Error(IncomingTask_.Id + e.StackTrace);
             }
             finally
             {
