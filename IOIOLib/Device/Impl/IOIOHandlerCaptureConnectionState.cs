@@ -43,6 +43,7 @@ namespace IOIOLib.Device.Impl
     /// Small subset of IOIOHandlerCaptureSeparateQueue
     /// Used to capture connection state but nothing else.  No memory growth issue with this
     /// </summary>
+    public class IOIOHandlerCaptureConnectionState : IOIOHandleAbstract, IOIOIncomingHandler
     {
         private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(IOIOHandlerCaptureConnectionState));
         /// <summary>
@@ -61,6 +62,17 @@ namespace IOIOLib.Device.Impl
 
         internal override void HandleMessage(IMessageFromIOIO message)
         {
+            LOG.Debug(message);
+            IConnectedDeviceResponse theMessage = message as IConnectedDeviceResponse;
+            if (theMessage != null)
+            {
+                EstablishConnectionFrom_ = theMessage;
+            } else
+            {
+                ISupportedInterfaceFrom theInterface = message as ISupportedInterfaceFrom;
+                if (theInterface != null)
+                {
+                    this.Supported_ = theInterface;
                 }
             }
         }
