@@ -37,7 +37,7 @@ namespace IOIOLib.MessageFrom
 {
     public interface IIcspResultFrom : IIcspFrom
     {
-        int Size { get; }
+        int NumDataBytes { get; }
         byte[] Data { get; }
     }
 }

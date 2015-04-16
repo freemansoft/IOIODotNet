@@ -37,7 +37,7 @@ namespace IOIOLib.MessageFrom
 {
     public interface IIncapReportFrom : IIncapFrom
     {
-        int Size { get; }
+        int NumDataBytes { get; }
         byte[] Data { get; }
     }
 }

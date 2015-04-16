@@ -45,5 +45,9 @@ namespace IOIOLib.MessageFrom.Impl
             this.SpiNum = spiNum;
             this.BytesRemaining = bytesRemaining;
         }
+        public override string ToString()
+        {
+            return base.ToString() + " SpiNum:" + SpiNum+ " BytesRemaining:"+BytesRemaining;
+        }
     }
 }

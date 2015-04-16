@@ -46,5 +46,10 @@ namespace IOIOLib.MessageFrom.Impl
             this.Pin = pin;
             this.IsOpen = open;
         }
+
+        public override string ToString()
+        {
+            return base.ToString() + " Pin:" + Pin + " IsOpen:" + IsOpen;
+        }
     }
 }

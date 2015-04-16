@@ -41,10 +41,16 @@ namespace IOIOLib.MessageFrom.Impl
 
         public Device.Types.SequencerEvent SeqEvent { get; private set; }
         public int Identifier { get; private set; }
-        internal SequencerEventFrom(Device.Types.SequencerEvent seqEvent, int arg)
+
+        internal SequencerEventFrom(Device.Types.SequencerEvent seqEvent, int identifier)
         {
             this.SeqEvent = seqEvent;
-            this.Identifier = arg;
+            this.Identifier = identifier;
+        }
+
+        public override string ToString()
+        {
+            return base.ToString() + " SeqEvent:" + SeqEvent + " Identifier:" + this.Identifier;
         }
     }
 }

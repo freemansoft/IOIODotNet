@@ -39,13 +39,13 @@ namespace IOIOLib.MessageFrom.Impl
     {
         public int IncapNum { get; private set; }
 
-        public int Size { get; private set; }
+        public int NumDataBytes { get; private set; }
         public byte[] Data { get; private set; }
 
-        internal IncapReportFrom(int incapNum, int size, byte[] data)
+        internal IncapReportFrom(int incapNum, int numBytes, byte[] data)
         {
             this.IncapNum = incapNum;
-            this.Size = size;
+            this.NumDataBytes = numBytes;
             this.Data = data;
         }
     }

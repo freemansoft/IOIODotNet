@@ -44,5 +44,9 @@ namespace IOIOLib.MessageFrom.Impl
         {
             this.UartNum = uartNum;
         }
+        public override string ToString()
+        {
+            return base.ToString() + " UartNum:" + UartNum;
+        }
     }
 }

@@ -61,7 +61,7 @@ namespace IOIOLib.Device.Impl
 
         private void writeByte(int b)
         {
-            // wish this guy had a write() blog post
+            // wish this guy had a write() blog pots
             // http://www.sparxeng.com/blog/software/must-use-net-system-io-ports-serialport
             System.Diagnostics.Debug.Assert(b >= 0 && b < 256);
             LOG.Debug("sending: 0x" + b.ToString("X"));

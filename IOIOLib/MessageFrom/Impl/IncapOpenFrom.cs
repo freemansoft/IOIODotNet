@@ -43,5 +43,9 @@ namespace IOIOLib.MessageFrom.Impl
         {
             this.IncapNum = incapNum;
         }
+        public override string ToString()
+        {
+            return base.ToString() + " IncapNum:" + IncapNum;
+        }
     }
 }

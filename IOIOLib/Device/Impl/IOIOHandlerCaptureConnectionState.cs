@@ -43,7 +43,6 @@ namespace IOIOLib.Device.Impl
     /// Small subset of IOIOHandlerCaptureSeparateQueue
     /// Used to capture connection state but nothing else.  No memory growth issue with this
     /// </summary>
-    public class IOIOHandlerCaptureConnectionState : IOIOIncomingHandler
     {
         private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(IOIOHandlerCaptureConnectionState));
         /// <summary>
@@ -58,153 +57,12 @@ namespace IOIOLib.Device.Impl
             return EstablishConnectionFrom_;
         }
 
-        public virtual void HandleEstablishConnection(byte[] hardwareId, byte[] bootloaderId, byte[] firmwareId)
-        {
-            EstablishConnectionFrom_ = new ConnectedDeviceResponse(
-                System.Text.Encoding.ASCII.GetString(hardwareId),
-                System.Text.Encoding.ASCII.GetString(bootloaderId),
-                System.Text.Encoding.ASCII.GetString(firmwareId),
-                Board.AllBoards[System.Text.Encoding.ASCII.GetString(hardwareId)]
-                );
-        }
-
-        /// <summary>
-        /// TODO implement
-        /// </summary>
-        public virtual void HandleConnectionLost()
-        {
-        }
-
-        /// <summary>
-        ///  TODO implement
-        /// </summary>
-        public virtual void HandleSoftReset()
-        {
-        }
-
-        public virtual void HandleCheckInterfaceResponse(bool supported)
-        {
-            this.Supported_ = new SupportedInterfaceFrom(supported);
-        }
-
-        public virtual void HandleSetChangeNotify(int pin, bool changeNotify)
-        {
-        }
-
-        public virtual void HandleReportDigitalInStatus(int pin, bool level)
-        {
-        }
-
-        public virtual void HandleRegisterPeriodicDigitalSampling(int pin, int freqScale)
-        {
-        }
-
-        public virtual void HandleReportPeriodicDigitalInStatus(int frameNum, bool[] values)
-        {
-        }
-
-        public virtual void HandleAnalogPinStatus(int pin, bool open)
-        {
-        }
-
-        public virtual void HandleReportAnalogInStatus(List<int> pins, List<int> values)
-        {
-        }
-
-        public virtual void HandleUartOpen(int uartNum)
-        {
-        }
-
-        public virtual void HandleUartClose(int uartNum)
-        {
-        }
-
-        public virtual void HandleUartData(int uartNum, int numBytes, byte[] data)
-        {
-        }
 
 
-        public virtual void HandleUartReportTxStatus(int uartNum, int bytesRemaining)
+        internal override void HandleMessage(IMessageFromIOIO message)
         {
-        }
-
-        public virtual void HandleSpiOpen(int spiNum)
-        {
-        }
-
-        public virtual void HandleSpiClose(int spiNum)
-        {
-        }
-
-        public virtual void HandleSpiData(int spiNum, int ssPin, byte[] data, int dataBytes)
-        {
-        }
-
-        public virtual void HandleSpiReportTxStatus(int spiNum, int bytesRemaining)
-        {
-        }
-
-        public virtual void HandleI2cOpen(int i2cNum)
-        {
-        }
-
-        public virtual void HandleI2cClose(int i2cNum)
-        {
-        }
-
-        public virtual void HandleI2cResult(int i2cNum, int size, byte[] data)
-        {
-        }
-
-        public virtual void HandleI2cReportTxStatus(int i2cNum, int bytesRemaining)
-        {
-        }
-
-        public virtual void HandleIcspOpen()
-        {
-        }
-
-        public virtual void HandleIcspClose()
-        {
-        }
-
-        public virtual void HandleIcspReportRxStatus(int bytesRemaining)
-        {
-        }
-
-        public virtual void HandleIcspResult(int size, byte[] data)
-        {
-        }
-
-        public virtual void HandleIncapReport(int incapNum, int size, byte[] data)
-        {
-        }
-
-        public virtual void HandleIncapClose(int incapNum)
-        {
-        }
-
-        public virtual void HandleIncapOpen(int incapNum)
-        {
-        }
-
-        public virtual void HandleCapSenseReport(int pinNum, int value)
-        {
-        }
-
-        public virtual void HandleSetCapSenseSampling(int pinNum, bool enable)
-        {
-        }
-
-        public virtual void HandleSequencerEvent(Types.SequencerEvent seqEvent, int arg)
-        {
-        }
-
-        /// <summary>
-        /// TODO Implement... possibly
-        /// </summary>
-        public virtual void HandleSync()
-        {
+                }
+            }
         }
     }
 }

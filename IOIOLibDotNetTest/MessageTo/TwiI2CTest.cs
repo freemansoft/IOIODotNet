@@ -333,7 +333,7 @@ namespace IOIOLibDotNetTest.MessageTo
 
         public Tuple<int,int,int> ToXYZ(II2cResultFrom value)
         {
-            if (value == null || value.Data == null || value.Size != 6)
+            if (value == null || value.Data == null || value.NumDataBytes != 6)
             {
                 return null;
             }

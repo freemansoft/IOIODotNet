@@ -48,7 +48,10 @@ namespace IOIOLib.Device.Impl
     {
         private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(IOIOHandleAbstract));
 
-
+        /// <summary>
+        /// the one method subclass ned to implement
+        /// </summary>
+        /// <param name="message"></param>
 		internal abstract void HandleMessage(IMessageFromIOIO message);
 
 
@@ -65,10 +68,12 @@ namespace IOIOLib.Device.Impl
 
         public virtual void HandleConnectionLost()
         {
+            // need to implement ConnectionLostFrom
         }
 
         public virtual void HandleSoftReset()
         {
+            // need to implement SoftResetFrom
         }
 
         public virtual void HandleCheckInterfaceResponse(bool supported)

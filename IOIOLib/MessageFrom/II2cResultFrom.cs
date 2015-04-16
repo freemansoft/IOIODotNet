@@ -37,7 +37,7 @@ namespace IOIOLib.MessageFrom
 {
     public interface II2cResultFrom : II2cFrom
     {
-        int Size { get; }
+        int NumDataBytes { get; }
         byte[] Data { get; }
     }
 }

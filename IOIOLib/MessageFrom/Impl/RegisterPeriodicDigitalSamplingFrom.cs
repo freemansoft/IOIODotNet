@@ -46,5 +46,10 @@ namespace IOIOLib.MessageFrom.Impl
             this.Pin = pin;
             this.FrequencyScale = freqScale;
         }
+
+        public override string ToString()
+        {
+            return base.ToString() + " Pin:" + Pin + " FrequencyScale:" + FrequencyScale;
+        }
     }
 }

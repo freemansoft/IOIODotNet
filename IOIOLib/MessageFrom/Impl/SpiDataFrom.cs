@@ -26,7 +26,8 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied.
  */
- 
+
+using IOIOLib.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,6 +51,10 @@ namespace IOIOLib.MessageFrom.Impl
             this.SlaveSelectPin = ssPin;
             this.Data = data;
             this.NumDataBytes = dataBytes;
+        }
+        public override string ToString()
+        {
+            return base.ToString() + " NumBytes:" + NumDataBytes + " Data:" + LoggingUtilities.ByteArrayToString(this.Data, this.NumDataBytes);
         }
     }
 }

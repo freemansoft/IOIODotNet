@@ -37,7 +37,7 @@ namespace IOIOLib.MessageFrom
 {
     public interface IUartDataFrom : IUartFrom
     {
-        int NumberOfBytes { get; }
+        int NumDataBytes { get; }
         byte[] Data { get; }
     }
 }

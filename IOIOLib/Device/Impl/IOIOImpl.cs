@@ -206,12 +206,12 @@ namespace IOIOLib.Device.Impl
 
         public virtual void BeginBatch()
         {
-            throw new NotImplementedException();
+            OutProt_.beginBatch();
         }
 
         public virtual void EndBatch()
         {
-            throw new NotImplementedException();
+            OutProt_.endBatch();
         }
 
         public virtual void Sync()

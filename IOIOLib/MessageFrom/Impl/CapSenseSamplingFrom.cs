@@ -48,5 +48,10 @@ namespace IOIOLib.MessageFrom.Impl
             this.PinNum = pinNum;
             this.IsEnabled = isEnabled;
         }
+
+        public override string ToString()
+        {
+            return base.ToString() + " PinNum:" + PinNum + " IsEnabled:" + IsEnabled;
+        }
     }
 }

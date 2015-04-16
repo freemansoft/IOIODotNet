@@ -26,7 +26,7 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied.
  */
- 
+
 using IOIOLib.Device.Types;
 using IOIOLib.Util;
 using System;
@@ -34,13 +34,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IOIOLib.MessageFrom;
 
 namespace IOIOLib.Device.Impl
 {
     /// <summary>
     /// TODO: Captures a string message for every incoming.  Primarily used for testing
     /// </summary>
-    public class IOIOHandlerCaptureLog : IOIOIncomingHandler
+    public class IOIOHandlerCaptureLog : IOIOHandleAbstract, IOIOIncomingHandler
     {
         private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(IOIOHandlerCaptureLog));
 
@@ -62,230 +63,15 @@ namespace IOIOLib.Device.Impl
             MaxCount_ = maxCaptureDepth;
         }
 
-        private void LogAndCapture(string logString)
+        internal override void HandleMessage(IMessageFromIOIO message)
         {
+            string logString = message.ToString();
             LOG.Debug(logString);
             CapturedLogs_.Add(logString);
             if (MaxCount_ > 0 && CapturedLogs_.Count > MaxCount_)
             {
                 CapturedLogs_.RemoveAt(0);
             }
-        }
-
-
-        public virtual void HandleEstablishConnection(byte[] hardwareId, byte[] bootloaderId, byte[] firmwareId)
-        {
-
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name
-             + " hwId:" + System.Text.Encoding.ASCII.GetString(hardwareId)
-             + " bootId:" + System.Text.Encoding.ASCII.GetString(bootloaderId)
-             + " firmId:" + System.Text.Encoding.ASCII.GetString(firmwareId);
-            LogAndCapture(LogString);
-        }
-
-        public virtual void HandleConnectionLost()
-        {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name;
-            LogAndCapture(LogString);
-        }
-
-        public virtual void HandleSoftReset()
-        {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name;
-            LogAndCapture(LogString);
-        }
-
-        public virtual void HandleCheckInterfaceResponse(bool supported)
-        {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " supported: " + supported;
-            LogAndCapture(LogString);
-        }
-
-        public virtual void HandleSetChangeNotify(int pin, bool changeNotify)
-        {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " Pin:" + pin + " " + changeNotify;
-            LogAndCapture(LogString);
-        }
-
-        public virtual void HandleReportDigitalInStatus(int pin, bool level)
-        {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " Pin:" + pin + " " + level;
-            LogAndCapture(LogString);
-        }
-
-        public virtual void HandleRegisterPeriodicDigitalSampling(int pin, int freqScale)
-        {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " Pin:" + pin;
-            LogAndCapture(LogString);
-        }
-
-        public virtual void HandleReportPeriodicDigitalInStatus(int frameNum, bool[] values)
-        {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " FrameNum:" + frameNum;
-            LogAndCapture(LogString);
-        }
-
-        public virtual void HandleAnalogPinStatus(int pin, bool open)
-        {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " Pin:" + pin;
-            LogAndCapture(LogString);
-        }
-
-        public virtual void HandleReportAnalogInStatus(List<int> pins, List<int> values)
-        {
-            string LogString;
-            if (pins != null && values != null)
-            {
-                LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " pins:" + string.Join(", ", pins) + " Values: " + string.Join(", ", values);
-            }
-            else
-            {
-                LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " pins:" + pins + " Values: " + values;
-            }
-            LogAndCapture(LogString);
-        }
-
-        public virtual void HandleUartOpen(int uartNum)
-        {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " uartNum:" + uartNum;
-            LogAndCapture(LogString);
-        }
-
-        public virtual void HandleUartClose(int uartNum)
-        {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " uartNum:" + uartNum;
-            LogAndCapture(LogString);
-        }
-
-        public virtual void HandleUartData(int uartNum, int numBytes, byte[] data)
-        {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " uartNum:" + uartNum;
-            LogAndCapture(LogString);
-        }
-
-        public virtual void HandleUartReportTxStatus(int uartNum, int bytesRemaining)
-        {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " uartNum:" + uartNum;
-            LogAndCapture(LogString);
-        }
-
-        public virtual void HandleSpiOpen(int spiNum)
-        {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " i2cNum:" + spiNum;
-            LogAndCapture(LogString);
-        }
-
-        public virtual void HandleSpiClose(int spiNum)
-        {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " i2cNum:" + spiNum;
-            LogAndCapture(LogString);
-        }
-
-        public virtual void HandleSpiData(int spiNum, int ssPin, byte[] data, int numberOfBytes)
-        {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " spiNum:" + spiNum
-                + " NumBytes:" + numberOfBytes
-                + " Data:" + (numberOfBytes != 0xff ? LoggingUtilities.ByteArrayToString(data, numberOfBytes) : "none");
-            LogAndCapture(LogString);
-        }
-
-        public virtual void HandleSpiReportTxStatus(int spiNum, int bytesRemaining)
-        {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " i2cNum:" + spiNum 
-                + " bytesRemaining:"+bytesRemaining;
-            LogAndCapture(LogString);
-        }
-
-        public virtual void HandleI2cOpen(int i2cNum)
-        {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " i2cNum:" + i2cNum;
-            LogAndCapture(LogString);
-        }
-
-        public virtual void HandleI2cClose(int i2cNum)
-        {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " i2cNum:" + i2cNum;
-            LogAndCapture(LogString);
-        }
-
-        public virtual void HandleI2cResult(int i2cNum, int numberOfBytes, byte[] data)
-        {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " i2cNum:" + i2cNum
-                + " NumBytes:" + numberOfBytes 
-                + " ReceivedBytes:" + (numberOfBytes != 0xff ? LoggingUtilities.ByteArrayToString(data, numberOfBytes) : "none");
-            LogAndCapture(LogString);
-        }
-
-        public virtual void HandleI2cReportTxStatus(int i2cNum, int bytesRemaining)
-        {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " i2cNum:" + i2cNum
-                + " bytesRemaining:" + bytesRemaining;
-            LogAndCapture(LogString);
-        }
-
-        public virtual void HandleIcspOpen()
-        {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name;
-            LogAndCapture(LogString);
-        }
-
-        public virtual void HandleIcspClose()
-        {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name;
-            LogAndCapture(LogString);
-        }
-
-        public virtual void HandleIcspReportRxStatus(int bytesRemaining)
-        {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " bytesRemaing:" + bytesRemaining;
-            LogAndCapture(LogString);
-        }
-
-        public virtual void HandleIcspResult(int size, byte[] data)
-        {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " size:" + size;
-            LogAndCapture(LogString);
-        }
-        public virtual void HandleIncapReport(int incapNum, int size, byte[] data)
-        {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " incapNum:" + incapNum;
-            LogAndCapture(LogString);
-        }
-
-        public virtual void HandleIncapClose(int incapNum)
-        {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " Pin:" + incapNum;
-            LogAndCapture(LogString);
-        }
-
-        public virtual void HandleIncapOpen(int incapNum)
-        {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " Pin:" + incapNum;
-            LogAndCapture(LogString);
-        }
-
-        public virtual void HandleCapSenseReport(int pinNum, int value)
-        {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " Pin:" + pinNum;
-            LogAndCapture(LogString);
-        }
-
-        public virtual void HandleSetCapSenseSampling(int pinNum, bool enable)
-        {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " Pin:" + pinNum;
-            LogAndCapture(LogString);
-        }
-
-        public virtual void HandleSequencerEvent(Types.SequencerEvent seqEvent, int arg)
-        {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name + " Event:" + seqEvent;
-            LogAndCapture(LogString);
-        }
-
-        public virtual void HandleSync()
-        {
-            string LogString = System.Reflection.MethodBase.GetCurrentMethod().Name;
-            LogAndCapture(LogString);
         }
     }
 }

@@ -46,5 +46,9 @@ namespace IOIOLib.MessageFrom.Impl
             this.UartNum = uartNum;
             this.BytesRemaining = bytesRemaining;
         }
+        public override string ToString()
+        {
+            return base.ToString() + " UartNum:" + UartNum + " BytesRemaining:" + BytesRemaining;
+        }
     }
 }

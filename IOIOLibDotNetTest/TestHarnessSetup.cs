@@ -72,6 +72,16 @@ namespace IOIOLibDotNetTest
             if (TestHarnessSetup.GOOD_CONN_NAME == null)
             {
                 TestHarnessSetup.GOOD_CONN_NAME  = FindDeviceHack.TryAndFindIOIODevice();
+                if (TestHarnessSetup.GOOD_CONN_NAME == null)
+                {
+                    LOG.Debug("Hack did not find connection ");
+                }
+                else { 
+                    LOG.Debug("Hack found connection "+ TestHarnessSetup.GOOD_CONN_NAME);
+                }
+            } else
+            {
+                LOG.Debug("There was a previously configured connection");
             }
         }
 

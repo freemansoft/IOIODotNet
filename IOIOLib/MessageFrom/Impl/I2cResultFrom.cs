@@ -44,7 +44,7 @@ namespace IOIOLib.MessageFrom.Impl
         /// <summary>
         /// value of 0XFF means no data copied
         /// </summary>
-        public int Size { get; private set; }
+        public int NumDataBytes { get; private set; }
         public byte[] Data { get; private set; }
 
         /// <summary>
@@ -56,14 +56,14 @@ namespace IOIOLib.MessageFrom.Impl
         internal I2cResultFrom(int i2cNum, int size, byte[] data)
         {
             this.I2cNum = i2cNum;
-            this.Size = size;
+            this.NumDataBytes = size;
             this.Data = data;
         }
 
         public override string ToString()
         {
-            return base.ToString() + " I2cNum:" + I2cNum + " NumBytes:" + this.Size 
-                + " Data:" + LoggingUtilities.ByteArrayToString(this.Data,this.Size);
+            return base.ToString() + " I2cNum:" + I2cNum + " NumBytes:" + this.NumDataBytes 
+                + " Data:" + LoggingUtilities.ByteArrayToString(this.Data,this.NumDataBytes);
         }
     }
 }

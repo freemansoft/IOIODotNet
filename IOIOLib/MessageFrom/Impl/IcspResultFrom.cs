@@ -26,7 +26,8 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied.
  */
- 
+
+using IOIOLib.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,13 +39,18 @@ namespace IOIOLib.MessageFrom.Impl
     public class IcspResultFrom : MessageNotificationFromIOIO<IIcspResultFrom>, IIcspResultFrom
     {
 
-        public int Size { get; private set; }
+        public int NumDataBytes { get; private set; }
         public byte[] Data { get; private set; }
 
         internal IcspResultFrom(int size, byte[] data)
         {
-            this.Size = size;
+            this.NumDataBytes = size;
             this.Data = data;
+        }
+
+        public override string ToString()
+        {
+            return base.ToString()+" NumBytes:"+NumDataBytes+ " Data:"+ LoggingUtilities.ByteArrayToString(this.Data, this.NumDataBytes);
         }
     }
 }

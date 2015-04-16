@@ -43,5 +43,10 @@ namespace IOIOLib.MessageFrom.Impl
         {
             this.SpiNum = spiNum;
         }
+
+        public override string ToString()
+        {
+            return base.ToString()+" SpiNum:" + SpiNum;
+        }
     }
 }

@@ -28,6 +28,7 @@
  */
 
 using IOIOLib.Device.Types;
+using IOIOLib.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,15 +40,19 @@ namespace IOIOLib.MessageFrom.Impl
     public class UartDataFrom : MessageNotificationFromIOIO<IUartDataFrom>, IUartDataFrom
     {
         public int UartNum { get; private set; }
-        public int NumberOfBytes { get; private set; }
+        public int NumDataBytes { get; private set; }
         public byte[] Data { get; private set; }
 
         internal UartDataFrom(int uartNum, int numberOfBytes, byte[] data)
         {
             // TODO: Complete member initialization
             this.UartNum = uartNum;
-            this.NumberOfBytes = numberOfBytes;
+            this.NumDataBytes = numberOfBytes;
             this.Data = data;
+        }
+        public override string ToString()
+        {
+            return base.ToString() + " UartNum:" + UartNum + " NumBytes:"+NumDataBytes+ " Data:"+ LoggingUtilities.ByteArrayToString(this.Data, this.NumDataBytes); ;
         }
     }
 }

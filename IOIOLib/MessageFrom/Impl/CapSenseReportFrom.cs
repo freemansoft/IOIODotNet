@@ -45,5 +45,10 @@ namespace IOIOLib.MessageFrom.Impl
             this.PinNum = pinNum;
             this.Value = value;
         }
+
+        public override string ToString()
+        {
+            return base.ToString() + " PinNum:" + PinNum + " Value:" + Value;
+        }
     }
 }

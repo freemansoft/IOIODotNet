@@ -43,5 +43,10 @@ namespace IOIOLib.MessageFrom.Impl
         {
             IsSupported = isSupported;
         }
+
+        public override string ToString()
+        {
+            return base.ToString() + " IsSupported:" + IsSupported;
+        }
     }
 }

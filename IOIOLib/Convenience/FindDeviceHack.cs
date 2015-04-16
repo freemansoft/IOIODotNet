@@ -38,9 +38,9 @@ namespace IOIOLib.Convenience
                         // so we can verify
                         IOIOHandlerCaptureConnectionState handlerState = new IOIOHandlerCaptureConnectionState();
                         IOIOIncomingHandler handler = new IOIOHandlerDistributor(
-                            new List<IOIOIncomingHandler> { handlerLog, handlerState });
+                            new List<IOIOIncomingHandler> { handlerState, handlerLog });
                         IOIOProtocolIncoming foo = new IOIOProtocolIncoming(oneConn.GetInputStream(), handler);
-                        System.Threading.Thread.Sleep(100); // WaitForChangedResult for hw ids
+                        System.Threading.Thread.Sleep(50); // WaitForChangedResult for hw ids
                         if (handlerState.EstablishConnectionFrom_ != null)
                         {
                             goodConnectionName = oneConn.ConnectionString();
