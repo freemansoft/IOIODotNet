@@ -57,7 +57,7 @@ namespace IOIOLibDotNetTest.MessageTo
 			IResourceManager rManager = new ResourceManager(Hardware.IOIO0003);
 			IOIOConnection ourConn = this.CreateGoodSerialConnection();
 			this.CreateCaptureLogHandlerSet();
-			IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(ourConn.GetInputStream(), HandlerContainer_);
+			IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(ourConn.GetInputStream(), HandlerObservable_);
 			IOIOProtocolOutgoing fooOut = new IOIOProtocolOutgoing(ourConn.GetOutputStream());
 			System.Threading.Thread.Sleep(20);	// wait for us to get the hardware ids
 			int pwmFrequency = 100;
@@ -90,8 +90,8 @@ namespace IOIOLibDotNetTest.MessageTo
 			//	.OfType<IReportAnalogPinValuesFrom>();
 			//Assert.IsTrue(readValues.Count() >= 1, "Didn't find the number of expected IReportAnalogPinValuesFrom: " + readValues.Count());
 			// logging the messages with any other string doesn't show the messages themselves !?
-			LOG.Debug("Captured " + +this.HandlerSingleQueueAllType_.Count());
-			LOG.Debug(this.HandlerSingleQueueAllType_.GetEnumerator());
+			LOG.Debug("Captured " + +this.CapturedSingleQueueAllType_.Count());
+			LOG.Debug(this.CapturedSingleQueueAllType_.GetEnumerator());
 			// should verify close command
 		}
 

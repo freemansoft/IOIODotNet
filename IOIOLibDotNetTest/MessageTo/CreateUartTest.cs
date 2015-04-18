@@ -57,7 +57,8 @@ namespace IOIOLibDotNetTest.MessageTo
 			IResourceManager rManager = new ResourceManager(Hardware.IOIO0003);
 			IOIOConnection ourConn = this.CreateGoodSerialConnection();
             this.CreateCaptureLogHandlerSet();
-            IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(ourConn.GetInputStream(), HandlerContainer_);
+            // add our own handler so we don't have to grovel aroudn in there
+            IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(ourConn.GetInputStream(), HandlerObservable_);
             IOIOProtocolOutgoing fooOut = new IOIOProtocolOutgoing(ourConn.GetOutputStream());
             System.Threading.Thread.Sleep(100);	// wait for us to get the hardware ids
 
@@ -82,18 +83,18 @@ namespace IOIOLibDotNetTest.MessageTo
 			System.Threading.Thread.Sleep(50);
 
 			// IUartFrom is the parent interface for all messages coming from the UARt
-			Assert.AreEqual(1+1+helloWorldBytes.Count()+1, this.HandlerSingleQueueAllType_.OfType<IUartFrom>().Count());
+			Assert.AreEqual(1+1+helloWorldBytes.Count()+1, this.CapturedSingleQueueAllType_.OfType<IUartFrom>().Count());
 
-			Assert.AreEqual(1, this.HandlerSingleQueueAllType_.OfType<IUartOpenFrom>().Count(), "didn't get IUartOpenFrom");
-			Assert.AreEqual(1, this.HandlerSingleQueueAllType_.OfType<IUartReportTxStatusFrom>().Count(), "didn't get IUartReportTXStatusFrom");
+			Assert.AreEqual(1, this.CapturedSingleQueueAllType_.OfType<IUartOpenFrom>().Count(), "didn't get IUartOpenFrom");
+			Assert.AreEqual(1, this.CapturedSingleQueueAllType_.OfType<IUartReportTxStatusFrom>().Count(), "didn't get IUartReportTXStatusFrom");
 
-			IEnumerable<IUartDataFrom> readValues = this.HandlerSingleQueueAllType_.OfType<IUartDataFrom>();
+			IEnumerable<IUartDataFrom> readValues = this.CapturedSingleQueueAllType_.OfType<IUartDataFrom>();
             Assert.AreEqual(helloWorldBytes.Count(), readValues.Count(), "Didn't find the number of expected IUartFrom: "+readValues.Count());
 			// logging the messages with any other string doesn't show the messages themselves !?
-			LOG.Debug("Captured " + +this.HandlerSingleQueueAllType_.Count());
-			LOG.Debug(this.HandlerSingleQueueAllType_.GetEnumerator());
+			LOG.Debug("Captured " + +this.CapturedSingleQueueAllType_.Count());
+			LOG.Debug(this.CapturedSingleQueueAllType_.GetEnumerator());
 
-			Assert.AreEqual (1, this.HandlerSingleQueueAllType_.OfType<IUartCloseFrom>().Count());
+			Assert.AreEqual (1, this.CapturedSingleQueueAllType_.OfType<IUartCloseFrom>().Count());
 			// should verify close command in the resource
 		}
 

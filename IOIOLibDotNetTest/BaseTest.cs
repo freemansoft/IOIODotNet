@@ -27,14 +27,14 @@
  * or implied.
  */
 
-using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using IOIOLib.Device.Impl;
 using IOIOLib.Connection;
-using System.Collections.Generic;
-using IOIOLib.Util;
 using IOIOLib.Connection.Impl;
 using IOIOLib.Device;
+using IOIOLib.Device.Impl;
+using IOIOLib.Util;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
 
 namespace IOIOLibDotNetTest
 {
@@ -55,11 +55,10 @@ namespace IOIOLibDotNetTest
 
         private IOIOConnection GoodConnection_ = null;
 
-        internal IOIOHandlerCaptureLog HandlerLog_;
-        internal IOIOHandlerCaptureConnectionState HandlerCaptureConnectionState_;
-        internal IOIOHandlerCaptureSingleQueue HandlerSingleQueueAllType_;
+        internal IOIOLogObserver CapturedLogs_;
+        internal IOIOConnectionStateObserver CapturedConnectionState_;
+        internal IOIOCaptureQueueObserver CapturedSingleQueueAllType_;
         internal IOIOHandlerObservable HandlerObservable_;
-        internal IOIOHandlerDistributor HandlerContainer_;
 
         /// <summary>
         /// Create new GoodConnection_ test collections before each test
@@ -102,11 +101,10 @@ namespace IOIOLibDotNetTest
                 });
             GoodConnection_ = null;
 
-            HandlerLog_ = null;
-            HandlerCaptureConnectionState_ = null;
-            HandlerSingleQueueAllType_ = null;
+            CapturedLogs_ = null;
+            CapturedConnectionState_ = null;
+            CapturedSingleQueueAllType_ = null;
             HandlerObservable_ = null;
-            HandlerContainer_ = null;
 
             System.Threading.Thread.Sleep(100);
             LOG.Debug("Done MyTestCleanup");
@@ -139,14 +137,15 @@ namespace IOIOLibDotNetTest
         internal void CreateCaptureLogHandlerSet()
         {
             // create handlers of our own so we don't have to peek in and understand how IOIOImpl is configured
-            HandlerLog_ = new IOIOHandlerCaptureLog(10);
-            HandlerSingleQueueAllType_ = new IOIOHandlerCaptureSingleQueue();
-			HandlerCaptureConnectionState_ = new IOIOHandlerCaptureConnectionState();
+
+            CapturedSingleQueueAllType_ = new IOIOCaptureQueueObserver();
+            CapturedLogs_ = new IOIOLogObserver(10);
+            CapturedConnectionState_ = new IOIOConnectionStateObserver();
             HandlerObservable_ = new IOIOHandlerObservable();
-            HandlerContainer_ = new IOIOHandlerDistributor(
-               new List<IOIOIncomingHandler> {
-                   HandlerLog_, HandlerSingleQueueAllType_ ,HandlerCaptureConnectionState_, HandlerObservable_
-			   });
+            HandlerObservable_.Subscribe(CapturedLogs_);
+            HandlerObservable_.Subscribe(CapturedConnectionState_);
+            HandlerObservable_.Subscribe(CapturedSingleQueueAllType_);
+
         }
 
         /// <summary>

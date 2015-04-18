@@ -57,10 +57,10 @@ namespace IOIOLibDotNetTest.Device.Impl
             IOIOConnection ourConn = this.CreateGoodSerialConnection();
             this.CreateCaptureLogHandlerSet();
             LOG.Debug("Setup Complete");
-            IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(ourConn.GetInputStream(), HandlerContainer_);
+            IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(ourConn.GetInputStream(),HandlerObservable_);
             // wait for reply
             System.Threading.Thread.Sleep(2000);
-            Assert.IsNotNull(HandlerCaptureConnectionState_.EstablishConnectionFrom_);
+            Assert.IsNotNull(CapturedConnectionState_.EstablishConnectionFrom_);
         }
 
         [TestMethod]
@@ -68,7 +68,7 @@ namespace IOIOLibDotNetTest.Device.Impl
         {
             this.CreateCaptureLogHandlerSet();
             MemoryStream fakeStream = new MemoryStream();
-            IOIOProtocolIncoming fooOut = new IOIOProtocolIncoming(fakeStream, HandlerContainer_);
+            IOIOProtocolIncoming fooOut = new IOIOProtocolIncoming(fakeStream, HandlerObservable_);
             fakeStream.Close();
             System.Threading.Thread.Sleep(3000);
         }
@@ -80,7 +80,7 @@ namespace IOIOLibDotNetTest.Device.Impl
             this.CreateCaptureLogHandlerSet();
             LOG.Debug("Setup Complete");
 
-            IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(ourConn.GetInputStream(), HandlerContainer_);
+            IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(ourConn.GetInputStream(), HandlerObservable_);
             IOIOProtocolOutgoing fooOut = new IOIOProtocolOutgoing(ourConn.GetOutputStream());
             System.Threading.Thread.Sleep(50); // receive the HW ID
             LOG.Info("This test requires Pin 31 and 32 be shorted together");
@@ -95,15 +95,15 @@ namespace IOIOLibDotNetTest.Device.Impl
             System.Threading.Thread.Sleep(300);
             // all log  methods contain method name which is in the interface so this is reasonably safe
             // we get one change event as soon as the Pin input Pin is configured + 2 changes in test
-            int matchingLogs = this.HandlerLog_.CapturedLogs_.Count(s => s.StartsWith("HandleReportDigitalInStatus"));
+            int matchingLogs = this.CapturedLogs_.CapturedLogs_.Count(s => s.Contains(typeof(ReportDigitalInStatusFrom).Name));
             // sometimes we get 3 and sometimes 4 (!?)
             Assert.IsTrue(3 ==  matchingLogs || 4 == matchingLogs, "Should have captured 3 or 4 input changes, not " + matchingLogs + ".  Are pins 31 and 32 shorted together");
             // verify the system acknowledged our request to be notified of state change
-            Assert.AreEqual(1, this.HandlerSingleQueueAllType_
+            Assert.AreEqual(1, this.CapturedSingleQueueAllType_
 				.OfType<ISetChangeNotifyMessageFrom>().Where(m => m.Pin == 31).Count()
                 , "Unexpected count for IReportDigitalInStatusFrom");
             // verify we got Pin state changes for 31
-            Assert.AreEqual(3, this.HandlerSingleQueueAllType_
+            Assert.AreEqual(3, this.CapturedSingleQueueAllType_
 				.OfType<IReportDigitalInStatusFrom>().Where(m => m.Pin == 31).Count()
                 , "Unexpected count for IReportDigitalInStatusFrom");
         }

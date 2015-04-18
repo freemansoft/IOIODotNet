@@ -32,6 +32,7 @@ using IOIOLib.Component.Types;
 using IOIOLib.Connection;
 using IOIOLib.Device.Types;
 using IOIOLib.IOIOException;
+using IOIOLib.MessageFrom;
 using IOIOLib.MessageTo;
 using IOIOLib.MessageTo.Impl;
 using IOIOLib.Util;
@@ -64,8 +65,10 @@ namespace IOIOLib.Device.Impl
         private IOIOProtocolOutgoing OutProt_;
         private IOIOProtocolIncoming InProt_;
         private IOIOIncomingHandler InboundHandler_;
-        private IOIOHandlerCaptureConnectionState CapturedConnectionInformation_;
-        private IOIOHandlerCaptureLog CapturedLogs_;
+        private IOIOConnectionStateObserver CapturedConnectionInformation_;
+        private IOIOLogObserver CapturedLogs_;
+
+        private IOIOHandlerObservable CaptureObservable_;
 		private IResourceManager BoardResourceManager_;
 
         /// <summary>
@@ -86,7 +89,7 @@ namespace IOIOLib.Device.Impl
 
 
         /// <summary>
-        /// 
+        /// This lets you add a custom handler if you want to pick one of the other threading models
         /// </summary>
         /// <param name="conn"></param>
         /// <param name="customHandler">your handler.  This always adds:
@@ -98,26 +101,54 @@ namespace IOIOLib.Device.Impl
                 throw new IllegalStateException("Silly Rabbit: You can't create an IOIOImpl without a connection!");
             }
             this.Conn_ = conn;
-            ConfigureHandlers(customHandler);
+            ConfigureHandlers(customHandler, null);
+        }
+
+        /// <summary>
+        /// Tis lets you add observers to the default handler with the default threading model
+        /// </summary>
+        /// <param name="conn"></param>
+        /// <param name="observers"></param>
+        public IOIOImpl(IOIOConnection conn, List<IObserverIOIO> observers)
+        {
+            if (conn == null)
+            {
+                throw new IllegalStateException("Silly Rabbit: You can't create an IOIOImpl without a connection!");
+            }
+            this.Conn_ = conn;
+            ConfigureHandlers(null, observers);
         }
 
         /// <summary>
         /// Wrap the custom handler with our instrumentation handlers
         /// </summary>
         /// <param name="customHandler">optional handler provided by object creator</param>
-        private void ConfigureHandlers(IOIOIncomingHandler customHandler)
+        private void ConfigureHandlers(IOIOIncomingHandler customHandler, List<IObserverIOIO> observers)
         {
-            CapturedConnectionInformation_ = new IOIOHandlerCaptureConnectionState();
-            CapturedLogs_ = new IOIOHandlerCaptureLog(10);
+            CaptureObservable_ = new IOIOHandlerObservable();
+
+            CapturedConnectionInformation_ = new IOIOConnectionStateObserver();
+            CaptureObservable_.Subscribe(CapturedConnectionInformation_);
+            CapturedLogs_ = new IOIOLogObserver(10);
+            CaptureObservable_.Subscribe(CapturedLogs_);
+            
+            if (observers != null)
+            {
+                foreach (IObserverIOIO oneObserver in observers)
+                {
+                    CaptureObservable_.Subscribe(oneObserver);
+                }
+            }
+
             if (customHandler != null)
             {
                 InboundHandler_ = new IOIOHandlerDistributor(
-                    new List<IOIOIncomingHandler> { CapturedConnectionInformation_, CapturedLogs_, customHandler });
+                    new List<IOIOIncomingHandler> { CaptureObservable_, customHandler });
             }
             else
             {
                 InboundHandler_ = new IOIOHandlerDistributor(
-                    new List<IOIOIncomingHandler> { CapturedConnectionInformation_, CapturedLogs_ });
+                    new List<IOIOIncomingHandler> { CaptureObservable_ });
             }
         }
 

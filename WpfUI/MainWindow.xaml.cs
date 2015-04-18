@@ -40,13 +40,12 @@ namespace WpfUI
             string comPort = FindDeviceHack.TryAndFindIOIODevice();
             ComPort_Field.Text = comPort;
             if (comPort != null) { 
-                IOIOConnection connection = new SerialConnectionFactory().CreateConnection(comPort);                
-                IOIOHandlerCaptureConnectionState handlerCaptureState = new IOIOHandlerCaptureConnectionState();
+                IOIOConnection connection = new SerialConnectionFactory().CreateConnection(comPort);
+                IOIOConnectionStateObserver handlerCaptureState = new IOIOConnectionStateObserver();
                 IOIOHandlerObservable handlerNotifier = new IOIOHandlerObservable();
-                IOIOHandlerDistributor handler = new IOIOHandlerDistributor ( 
-                    new List<IOIOIncomingHandler> { handlerCaptureState, handlerNotifier });
+                handlerNotifier.Subscribe(handlerCaptureState);
                 handlerNotifier.Subscribe(new MessageObserver(this.MessageLog));
-                OurImpl_  = new IOIOImpl(connection, handler);
+                OurImpl_  = new IOIOImpl(connection, handlerNotifier);
                 OurImpl_.WaitForConnect();
 
                 IConnectedDeviceResponse device = handlerCaptureState.ConnectedDeviceDescription();

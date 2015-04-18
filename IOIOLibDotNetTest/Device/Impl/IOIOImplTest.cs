@@ -60,7 +60,7 @@ namespace IOIOLibDotNetTest.Device.Impl
             LOG.Debug("Setup Complete");
 
             // we'll add the handler state on top of the default handlers so we don't have to peek into impl
-            IOIO ourImpl = CreateIOIOImplAndConnect(ourConn, this.HandlerSingleQueueAllType_);
+            IOIO ourImpl = CreateIOIOImplAndConnect(ourConn, HandlerObservable_);
             System.Threading.Thread.Sleep(100);	// wait for us to get the hardware ids
 
 			DigitalOutputSpec ledSpec = new DigitalOutputSpec(Spec.LED_PIN);
@@ -90,7 +90,7 @@ namespace IOIOLibDotNetTest.Device.Impl
             LOG.Debug("Setup Complete");
 
             // we'll add the handler state on top of the default handlers so we don't have to peek into impl
-            IOIO ourImpl = CreateIOIOImplAndConnect(ourConn, this.HandlerSingleQueueAllType_);
+            IOIO ourImpl = CreateIOIOImplAndConnect(ourConn, HandlerObservable_);
             System.Threading.Thread.Sleep(100); // wait for us to get the hardware ids
 
             // SHOULD USE THE FACTORY instead of this lame ...
@@ -113,7 +113,7 @@ namespace IOIOLibDotNetTest.Device.Impl
             }
             System.Threading.Thread.Sleep(100);
 
-			IEnumerable<IMessageFromIOIO> digitalMessagesIn = this.HandlerSingleQueueAllType_;
+			IEnumerable<IMessageFromIOIO> digitalMessagesIn = this.CapturedSingleQueueAllType_;
             int changeCount =
                 digitalMessagesIn.OfType<IReportDigitalInStatusFrom>().Where(m => m.Pin == 32).Count();
 

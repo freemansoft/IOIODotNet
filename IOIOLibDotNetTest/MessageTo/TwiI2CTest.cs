@@ -107,8 +107,7 @@ namespace IOIOLibDotNetTest.MessageTo
             IOIOConnection ourConn = this.CreateGoodSerialConnection(false);
             this.CreateCaptureLogHandlerSet();
             // we'll inject our handlers on top of the default handlers so we don't have to peek into impl
-            IOIO ourImpl = CreateIOIOImplAndConnect(ourConn, new IOIOHandlerDistributor(
-               new List<IOIOIncomingHandler> { HandlerSingleQueueAllType_, HandlerObservable_ }));
+            IOIO ourImpl = CreateIOIOImplAndConnect(ourConn, HandlerObservable_);
             ObserveI2cResultFrom observer = new ObserveI2cResultFrom();
             HandlerObservable_.Subscribe(observer);
             LOG.Debug("Setup Complete");
@@ -193,10 +192,10 @@ namespace IOIOLibDotNetTest.MessageTo
             System.Threading.Thread.Sleep(100);
 
             // logging the messages with any other string doesn't show the messages themselves !?
-            LOG.Debug("Captured (all):" + this.HandlerSingleQueueAllType_.Count());
+            LOG.Debug("Captured (all):" + this.CapturedSingleQueueAllType_.Count());
             // expect 6 + number of reports we requested
             LOG.Debug("Captured (i2c):" + observer.allEvents.Count);
-			LOG.Debug(this.HandlerSingleQueueAllType_.GetEnumerator());
+			LOG.Debug(this.CapturedSingleQueueAllType_.GetEnumerator());
 			// should verify close command
 		}
 
@@ -241,7 +240,7 @@ namespace IOIOLibDotNetTest.MessageTo
 
             // we'll add the handler state on top of the default handlers so we don't have to peek into impl
             ExpectedReceiveCount++;
-            IOIO ourImpl = CreateIOIOImplAndConnect(ourConn, this.HandlerSingleQueueAllType_);
+            IOIO ourImpl = CreateIOIOImplAndConnect(ourConn, HandlerObservable_);
             System.Threading.Thread.Sleep(100);  // wait for us to get the hardware ids
 
             LOG.Debug("Configuring TWI");
@@ -297,12 +296,12 @@ namespace IOIOLibDotNetTest.MessageTo
             System.Threading.Thread.Sleep(100);
 
             // logging the messages with any other string doesn't show the messages themselves !?
-            LOG.Debug("Captured:" + +this.HandlerSingleQueueAllType_.Count()+ " Expected:"+ExpectedReceiveCount);
-            LOG.Debug(this.HandlerSingleQueueAllType_.GetEnumerator());
+            LOG.Debug("Captured:" + +this.CapturedSingleQueueAllType_.Count()+ " Expected:"+ExpectedReceiveCount);
+            LOG.Debug(this.CapturedSingleQueueAllType_.GetEnumerator());
             // should verify close command!
             // should verify results of the latch checks.!
             // instead do this lame test!
-            Assert.AreEqual(ExpectedReceiveCount, this.HandlerSingleQueueAllType_.Count(), 
+            Assert.AreEqual(ExpectedReceiveCount, this.CapturedSingleQueueAllType_.Count(), 
                 "This test will fail if you do not have a JeeNodes port expander at I2C address "+JeeExpanderAddress
                 +" on Twi "+TwiVirtualDevice);
         }

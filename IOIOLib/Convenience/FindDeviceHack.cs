@@ -3,6 +3,7 @@ using IOIOLib.Connection.Impl;
 using IOIOLib.Device;
 using IOIOLib.Device.Impl;
 using IOIOLib.IOIOException;
+using IOIOLib.MessageFrom;
 using IOIOLib.Util;
 using System;
 using System.Collections.Generic;
@@ -34,12 +35,13 @@ namespace IOIOLib.Convenience
                     try {
                         oneConn.WaitForConnect();
                         // logging without real capture
-                        IOIOHandlerCaptureLog handlerLog = new IOIOHandlerCaptureLog(1);
+                        IOIOLogObserver handlerLog = new IOIOLogObserver(1);
                         // so we can verify
-                        IOIOHandlerCaptureConnectionState handlerState = new IOIOHandlerCaptureConnectionState();
-                        IOIOIncomingHandler handler = new IOIOHandlerDistributor(
-                            new List<IOIOIncomingHandler> { handlerState, handlerLog });
-                        IOIOProtocolIncoming foo = new IOIOProtocolIncoming(oneConn.GetInputStream(), handler);
+                        IOIOConnectionStateObserver handlerState = new IOIOConnectionStateObserver();
+                        IOIOHandlerObservable observers = new IOIOHandlerObservable();
+                        observers.Subscribe(handlerState);
+                        observers.Subscribe(handlerLog);
+                        IOIOProtocolIncoming foo = new IOIOProtocolIncoming(oneConn.GetInputStream(), observers);
                         System.Threading.Thread.Sleep(50); // WaitForChangedResult for hw ids
                         if (handlerState.EstablishConnectionFrom_ != null)
                         {

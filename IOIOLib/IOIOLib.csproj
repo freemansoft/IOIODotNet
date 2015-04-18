@@ -80,13 +80,14 @@
     <Compile Include="Connection\IOIOConnection.cs" />
     <Compile Include="Connection\IOIOConnectionFactory.cs" />
     <Compile Include="Convenience\FindDeviceHack.cs" />
+    <Compile Include="Device\Impl\IOIOConnectionStateObserver.cs" />
     <Compile Include="Device\Impl\IOIOHandleAbstract.cs" />
     <Compile Include="Device\Impl\IOIOHandlerObservable.cs" />
     <Compile Include="Device\Impl\IOIOHandlerObservableNoWaitParallel.cs" />
+    <Compile Include="Device\Impl\IOIOCaptureQueueObserver.cs" />
+    <Compile Include="Device\Impl\IOIOLogObserver.cs" />
     <Compile Include="Device\IResourceManager.cs" />
     <Compile Include="Device\Impl\ResourceAllocatorGeneric.cs" />
-    <Compile Include="Device\Impl\IOIOHandlerCaptureConnectionState.cs" />
-    <Compile Include="Device\Impl\IOIOHandlerCaptureSingleQueue.cs" />
     <Compile Include="Device\Impl\ResourceAllocatorSpecific.cs" />
     <Compile Include="Device\IResourceAllocator.cs" />
     <Compile Include="Device\Impl\ResourceManager.cs" />
@@ -118,7 +119,6 @@
     <Compile Include="MessageTo\CommandFactoryDigitalInputFragment.cs" />
     <Compile Include="MessageTo\IAnalogInputCloseCommand.cs" />
     <Compile Include="MessageTo\ICheckInterfaceVersionCommand.cs" />
-    <Compile Include="Device\Impl\IOIOHandlerCaptureLog.cs" />
     <Compile Include="Device\Impl\IOIOHandlerDistributor.cs" />
     <Compile Include="Device\Impl\IOIOHandlerObservableNoWait.cs" />
     <Compile Include="Device\Impl\IOIOProtocolIncoming.cs" />
