@@ -28,6 +28,8 @@
  */
 
 using IOIOLib.Device.Types;
+using IOIOLib.Message;
+using IOIOLib.Util;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -41,11 +43,18 @@ namespace IOIOLib.Device.Impl
 {
     public class ResourceManager : IResourceManager
 	{
+        private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(ResourceManager));
 
-		public Hardware BoundHardware { get; private set; }
+        public Hardware BoundHardware { get; private set; }
 
         private IResourceAllocator[] Allocators_ = new IResourceAllocator[
             Enum.GetNames(typeof(ResourceType)).Length];
+
+        private ObserverTxStatusI2c I2cObserver_;
+        private ObserverTxStatusSpi SpiObserver_;
+        private ObserverTxStatusUart UartObserver_;
+        // visible to IOIO - ugh
+        internal List<IObserverIOIO> Observers_ { get; private set; }
 
         public ResourceManager(Hardware hardware)
         {
@@ -61,13 +70,19 @@ namespace IOIOLib.Device.Impl
             Allocators_[(int)ResourceType.INCAP_DOUBLE] = new ResourceAllocatorGeneric(
                 hardware.IncapDoubleModules);
             Allocators_[(int)ResourceType.SEQUENCER] = new ResourceAllocatorGeneric(0, 1);
-        }
 
-        /// <summary>
-        /// Th
-        /// </summary>
-        /// <param name="args">variable number of args.  can just call with Alloc(a,b,c,d)</param>
-        [MethodImpl(MethodImplOptions.Synchronized)]
+            I2cObserver_ = new ObserverTxStatusI2c();
+            SpiObserver_ = new ObserverTxStatusSpi();
+            UartObserver_ = new ObserverTxStatusUart();
+            Observers_ = new List<IObserverIOIO>() { I2cObserver_, SpiObserver_, UartObserver_ };
+
+    }
+
+    /// <summary>
+    /// Th
+    /// </summary>
+    /// <param name="args">variable number of args.  can just call with Alloc(a,b,c,d)</param>
+    [MethodImpl(MethodImplOptions.Synchronized)]
         public virtual void Alloc(params Object[] args)
         {
             int i = 0;
@@ -193,6 +208,21 @@ namespace IOIOLib.Device.Impl
             if (r != null)
             {
                 Allocators_[(int)r.Type].Free(r);
+            }
+        }
+
+        /// <summary>
+        /// Registers the bus observers with the observable, 
+        /// usually an IOIOImpl observer handler to catch inbound messages via the inboudn protocol handler
+        /// should also be added to the outbound protocol handler so that we can get in and out on the busses
+        /// </summary>
+        /// <param name="observable"></param>
+        internal void RegisterWithObservable(IObservableIOIO observable)
+        {
+            LOG.Debug("Registering " + Observers_.Count + " observers");
+            foreach (IObserverIOIO oneObserver in this.Observers_)
+            {
+                observable.Subscribe(oneObserver);
             }
         }
     }

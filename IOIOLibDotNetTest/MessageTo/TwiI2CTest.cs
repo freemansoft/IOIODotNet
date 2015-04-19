@@ -32,6 +32,7 @@ using IOIOLib.Connection;
 using IOIOLib.Device;
 using IOIOLib.Device.Impl;
 using IOIOLib.Device.Types;
+using IOIOLib.Message;
 using IOIOLib.MessageFrom;
 using IOIOLib.MessageFrom.Impl;
 using IOIOLib.MessageTo;

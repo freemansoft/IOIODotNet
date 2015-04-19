@@ -55,9 +55,9 @@ namespace IOIOLibDotNetTest
 
         private IOIOConnection GoodConnection_ = null;
 
-        internal IOIOLogObserver CapturedLogs_;
-        internal IOIOConnectionStateObserver CapturedConnectionState_;
-        internal IOIOCaptureQueueObserver CapturedSingleQueueAllType_;
+        internal ObserverLog CapturedLogs_;
+        internal ObserverConnectionState CapturedConnectionState_;
+        internal ObserverCaptureQueue CapturedSingleQueueAllType_;
         internal IOIOHandlerObservable HandlerObservable_;
 
         /// <summary>
@@ -138,9 +138,9 @@ namespace IOIOLibDotNetTest
         {
             // create handlers of our own so we don't have to peek in and understand how IOIOImpl is configured
 
-            CapturedSingleQueueAllType_ = new IOIOCaptureQueueObserver();
-            CapturedLogs_ = new IOIOLogObserver(10);
-            CapturedConnectionState_ = new IOIOConnectionStateObserver();
+            CapturedSingleQueueAllType_ = new ObserverCaptureQueue();
+            CapturedLogs_ = new ObserverLog(10);
+            CapturedConnectionState_ = new ObserverConnectionState();
             HandlerObservable_ = new IOIOHandlerObservable();
             HandlerObservable_.Subscribe(CapturedLogs_);
             HandlerObservable_.Subscribe(CapturedConnectionState_);
@@ -154,7 +154,7 @@ namespace IOIOLibDotNetTest
         /// <param name="connection"></param>
         /// <param name="handler"></param>
         /// <returns></returns>
-        internal IOIO CreateIOIOImplAndConnect(IOIOConnection connection, IOIOIncomingHandler handler)
+        internal IOIO CreateIOIOImplAndConnect(IOIOConnection connection, IIncomingHandlerIOIO handler)
         {
             IOIO ourImpl = new IOIOImpl(connection, handler);
             DevicesOpenedDuringTest.Add(ourImpl);

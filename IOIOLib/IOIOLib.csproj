@@ -80,26 +80,31 @@
     <Compile Include="Connection\IOIOConnection.cs" />
     <Compile Include="Connection\IOIOConnectionFactory.cs" />
     <Compile Include="Convenience\FindDeviceHack.cs" />
-    <Compile Include="Device\Impl\IOIOConnectionStateObserver.cs" />
+    <Compile Include="Device\Impl\ObserverConnectionState.cs" />
     <Compile Include="Device\Impl\IOIOHandleAbstract.cs" />
     <Compile Include="Device\Impl\IOIOHandlerObservable.cs" />
     <Compile Include="Device\Impl\IOIOHandlerObservableNoWaitParallel.cs" />
-    <Compile Include="Device\Impl\IOIOCaptureQueueObserver.cs" />
-    <Compile Include="Device\Impl\IOIOLogObserver.cs" />
+    <Compile Include="Device\Impl\ObserverCaptureQueue.cs" />
+    <Compile Include="Device\Impl\ObserverLog.cs" />
+    <Compile Include="Device\Impl\ObserverTxStatusBase.cs" />
+    <Compile Include="Device\Impl\ObserverTxStatusI2c.cs" />
+    <Compile Include="Device\Impl\ObserverTxStatusSpi.cs" />
+    <Compile Include="Device\Impl\ObserverTxStatusUart.cs" />
     <Compile Include="Device\IResourceManager.cs" />
     <Compile Include="Device\Impl\ResourceAllocatorGeneric.cs" />
     <Compile Include="Device\Impl\ResourceAllocatorSpecific.cs" />
     <Compile Include="Device\IResourceAllocator.cs" />
     <Compile Include="Device\Impl\ResourceManager.cs" />
-    <Compile Include="Device\Types\CapSenseCoefficients.cs" />
+    <Compile Include="Component\Types\CapSenseCoefficients.cs" />
     <Compile Include="Device\Types\Resource.cs" />
     <Compile Include="Device\Types\ResourceType.cs" />
     <Compile Include="MessageFrom\IAnalogInFrom.cs" />
     <Compile Include="MessageFrom\IDigitalInFrom.cs" />
     <Compile Include="MessageFrom\ICapSenseFrom.cs" />
-    <Compile Include="MessageFrom\IMessageNotificationFromIOIO.cs" />
-    <Compile Include="MessageFrom\Impl\MessageNotificationFromIOIO.cs" />
-    <Compile Include="MessageFrom\IObserverIOIO.cs" />
+    <Compile Include="Message\IMessageNotificationIOIO.cs" />
+    <Compile Include="Message\Impl\IOIOMessageNotification.cs" />
+    <Compile Include="Message\IObservableIOIO.cs" />
+    <Compile Include="Message\IObserverIOIO.cs" />
     <Compile Include="MessageFrom\Impl\AnalogPinStatusFrom.cs" />
     <Compile Include="MessageFrom\Impl\SupportedInterfaceFrom.cs" />
     <Compile Include="MessageFrom\Impl\UartDataFrom.cs" />
@@ -127,7 +132,7 @@
     <Compile Include="Device\IOIO.cs" />
     <Compile Include="Device\Impl\IOIOProtocolOutgoing.cs" />
     <Compile Include="Device\Types\Board.cs" />
-    <Compile Include="Device\IOIOIncomingHandler.cs" />
+    <Compile Include="Device\IIncomingHandlerIOIO.cs" />
     <Compile Include="Device\Types\IOIORequiredInterfaceId.cs" />
     <Compile Include="Device\Types\IOIOState.cs" />
     <Compile Include="Device\Types\Function.cs" />
@@ -136,9 +141,9 @@
     </Compile>
     <Compile Include="Device\Types\IOIOProtocolCommands.cs" />
     <Compile Include="Device\Types\IOIOVersionType.cs" />
-    <Compile Include="Device\Types\PwmScale.cs" />
+    <Compile Include="Component\Types\PwmScale.cs" />
     <Compile Include="Device\Types\ScaleDivider.cs" />
-    <Compile Include="Device\Types\SequencerEvent.cs" />
+    <Compile Include="Component\Types\SequencerEventState.cs" />
     <Compile Include="Device\Types\SpecialPin.cs" />
     <Compile Include="IOIOException\ConnectionCreationException.cs" />
     <Compile Include="IOIOException\IllegalStateException.cs" />
@@ -265,6 +270,8 @@
     <Folder Include="Connection\Types\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Component\Types\README.md" />
+    <None Include="Device\Types\README.md" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

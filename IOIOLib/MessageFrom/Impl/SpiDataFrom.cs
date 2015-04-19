@@ -27,6 +27,7 @@
  * or implied.
  */
 
+using IOIOLib.Message.Impl;
 using IOIOLib.Util;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom.Impl
 {
-    public class SpiDataFrom : MessageNotificationFromIOIO<ISpiDataFrom>, ISpiDataFrom
+    public class SpiDataFrom : IOIOMessageNotification<ISpiDataFrom>, ISpiDataFrom
     {
         public int SpiNum { get; private set; }
 

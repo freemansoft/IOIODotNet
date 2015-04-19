@@ -36,6 +36,7 @@ using IOIOLib.MessageFrom;
 using System.Collections.Concurrent;
 using IOIOLib.IOIOException;
 using IOIOLib.Util;
+using IOIOLib.Message;
 
 namespace IOIOLib.Device.Impl
 {
@@ -43,8 +44,8 @@ namespace IOIOLib.Device.Impl
 	/// Notify interested parties when messages are received.
     /// Observers are notified serially in same thread.
 	/// </summary>
-	public class IOIOHandlerObservable : IOIOHandleAbstract
-	{
+	public class IOIOHandlerObservable : IOIOHandleAbstract, IObservableIOIO
+    {
         private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(IOIOHandlerObservableNoWait));
 
         /// <summary>
@@ -54,7 +55,7 @@ namespace IOIOLib.Device.Impl
 		internal override void  HandleMessage(IMessageFromIOIO message)
 		{
             // messages must support notification to do notification...
-            IMessageNotificationFromIOIO notifier = message as IMessageNotificationFromIOIO;
+            IMessageNotificationIOIO notifier = message as IMessageNotificationIOIO;
             if (notifier != null) {
                 foreach (IObserverIOIO observer in Interested_)
                 {
@@ -80,6 +81,5 @@ namespace IOIOLib.Device.Impl
 			Interested_.Add(observer);
 			return null;
 		}
-
-	}
+    }
 }

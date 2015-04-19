@@ -33,10 +33,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IOIOLib.Device.Types
+namespace IOIOLib.Component.Types
 {
-    class CapSenseCoefficients
+    /// <summary>
+    /// Scales and encoding let us change the timer multipliers to get bigger ranges
+    /// </summary>
+    public class PwmScale
     {
-        public static float DEFAULT_COEF = 25.0F;
+        internal static PwmScale Scale1X = new PwmScale(1, 0);
+        internal static PwmScale Scale8X = new PwmScale(8, 3);
+        internal static PwmScale Scale64X = new PwmScale(64, 2);
+        internal static PwmScale Scale256X = new PwmScale(256, 1);
+
+        public static IEnumerable<PwmScale> AllScales = new List<PwmScale> { Scale1X, Scale8X, Scale64X, Scale256X };
+
+        internal int scale { get; set; }
+        internal int encoding { get; set; }
+
+        PwmScale(int scale, int encoding)
+        {
+            this.scale = scale;
+            this.encoding = encoding;
+        }
     }
 }

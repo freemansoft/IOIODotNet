@@ -35,6 +35,9 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.Device.Types
 {
+    /// <summary>
+    /// individual pin functions when requesting a resource
+    /// </summary>
     internal enum Function
     {
         PERIPHERAL_OUT = 0,

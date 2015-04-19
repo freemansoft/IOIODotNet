@@ -27,6 +27,7 @@
  * or implied.
  */
 
+using IOIOLib.Message.Impl;
 using IOIOLib.Util;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom.Impl
 {
-    public class ReportPeriodicDigitalInStatusFrom : MessageNotificationFromIOIO<IReportPeriodicDigitalInStatusFrom>, IReportPeriodicDigitalInStatusFrom
+    public class ReportPeriodicDigitalInStatusFrom : IOIOMessageNotification<IReportPeriodicDigitalInStatusFrom>, IReportPeriodicDigitalInStatusFrom
     {
         public int FrameNum { get; private set; }
         public bool[] Values { get; private set; }

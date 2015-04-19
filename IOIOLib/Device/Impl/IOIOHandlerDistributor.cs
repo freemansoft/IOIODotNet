@@ -26,7 +26,8 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied.
  */
- 
+
+using IOIOLib.Component.Types;
 using IOIOLib.Device.Types;
 using IOIOLib.Util;
 using System;
@@ -40,19 +41,19 @@ namespace IOIOLib.Device.Impl
     /// <summary>
     /// TODO: This class should be a dispatcher for event listeners.
     /// </summary>
-    public class IOIOHandlerDistributor : IOIOIncomingHandler
+    public class IOIOHandlerDistributor : IIncomingHandlerIOIO
     {
         private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(IOIOHandlerDistributor));
 
-        private List<IOIOIncomingHandler> Distributees_ = new List<IOIOIncomingHandler>();
+        private List<IIncomingHandlerIOIO> Distributees_ = new List<IIncomingHandlerIOIO>();
 
-        public IOIOHandlerDistributor(List<IOIOIncomingHandler> distributees)
+        public IOIOHandlerDistributor(List<IIncomingHandlerIOIO> distributees)
         {
             this.Distributees_.AddRange(distributees);
         }
         public virtual void HandleEstablishConnection(byte[] hardwareId, byte[] bootloaderId, byte[] firmwareId)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees_)
+            foreach (IIncomingHandlerIOIO Distributee in Distributees_)
             {
                 Distributee.HandleEstablishConnection(hardwareId, bootloaderId, firmwareId);
             }
@@ -60,7 +61,7 @@ namespace IOIOLib.Device.Impl
 
         public virtual void HandleConnectionLost()
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees_)
+            foreach (IIncomingHandlerIOIO Distributee in Distributees_)
             {
                 Distributee.HandleConnectionLost();
             }
@@ -68,7 +69,7 @@ namespace IOIOLib.Device.Impl
 
         public virtual void HandleSoftReset()
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees_)
+            foreach (IIncomingHandlerIOIO Distributee in Distributees_)
             {
                 Distributee.HandleSoftReset();
             }
@@ -76,7 +77,7 @@ namespace IOIOLib.Device.Impl
 
         public virtual void HandleCheckInterfaceResponse(bool supported)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees_)
+            foreach (IIncomingHandlerIOIO Distributee in Distributees_)
             {
                 Distributee.HandleCheckInterfaceResponse(supported);
             }
@@ -84,7 +85,7 @@ namespace IOIOLib.Device.Impl
 
         public virtual void HandleSetChangeNotify(int pin, bool changeNotify)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees_)
+            foreach (IIncomingHandlerIOIO Distributee in Distributees_)
             {
                 Distributee.HandleSetChangeNotify(pin, changeNotify);
             }
@@ -92,7 +93,7 @@ namespace IOIOLib.Device.Impl
 
         public virtual void HandleReportDigitalInStatus(int pin, bool level)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees_)
+            foreach (IIncomingHandlerIOIO Distributee in Distributees_)
             {
                 Distributee.HandleReportDigitalInStatus(pin, level);
             }
@@ -100,7 +101,7 @@ namespace IOIOLib.Device.Impl
 
         public virtual void HandleRegisterPeriodicDigitalSampling(int pin, int freqScale)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees_)
+            foreach (IIncomingHandlerIOIO Distributee in Distributees_)
             {
                 Distributee.HandleRegisterPeriodicDigitalSampling(pin, freqScale);
             }
@@ -108,7 +109,7 @@ namespace IOIOLib.Device.Impl
 
         public virtual void HandleReportPeriodicDigitalInStatus(int frameNum, bool[] values)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees_)
+            foreach (IIncomingHandlerIOIO Distributee in Distributees_)
             {
                 Distributee.HandleReportPeriodicDigitalInStatus(frameNum, values);
             }
@@ -116,7 +117,7 @@ namespace IOIOLib.Device.Impl
 
         public virtual void HandleAnalogPinStatus(int pin, bool open)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees_)
+            foreach (IIncomingHandlerIOIO Distributee in Distributees_)
             {
                 Distributee.HandleAnalogPinStatus(pin, open);
             }
@@ -124,7 +125,7 @@ namespace IOIOLib.Device.Impl
 
         public virtual void HandleReportAnalogInStatus(List<int> pins, List<int> values)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees_)
+            foreach (IIncomingHandlerIOIO Distributee in Distributees_)
             {
                 Distributee.HandleReportAnalogInStatus(pins, values);
             }
@@ -132,7 +133,7 @@ namespace IOIOLib.Device.Impl
 
         public virtual void HandleUartOpen(int uartNum)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees_)
+            foreach (IIncomingHandlerIOIO Distributee in Distributees_)
             {
                 Distributee.HandleUartOpen(uartNum);
             }
@@ -140,7 +141,7 @@ namespace IOIOLib.Device.Impl
 
         public virtual void HandleUartClose(int uartNum)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees_)
+            foreach (IIncomingHandlerIOIO Distributee in Distributees_)
             {
                 Distributee.HandleUartClose(uartNum);
             }
@@ -148,7 +149,7 @@ namespace IOIOLib.Device.Impl
 
         public virtual void HandleUartData(int uartNum, int numBytes, byte[] data)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees_)
+            foreach (IIncomingHandlerIOIO Distributee in Distributees_)
             {
                 Distributee.HandleUartData(uartNum, numBytes, data);
             }
@@ -156,7 +157,7 @@ namespace IOIOLib.Device.Impl
 
         public virtual void HandleUartReportTxStatus(int uartNum, int bytesRemaining)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees_)
+            foreach (IIncomingHandlerIOIO Distributee in Distributees_)
             {
                 Distributee.HandleUartReportTxStatus(uartNum, bytesRemaining);
             }
@@ -164,7 +165,7 @@ namespace IOIOLib.Device.Impl
 
         public virtual void HandleSpiOpen(int spiNum)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees_)
+            foreach (IIncomingHandlerIOIO Distributee in Distributees_)
             {
                 Distributee.HandleSpiOpen(spiNum);
             }
@@ -172,7 +173,7 @@ namespace IOIOLib.Device.Impl
 
         public virtual void HandleSpiClose(int spiNum)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees_)
+            foreach (IIncomingHandlerIOIO Distributee in Distributees_)
             {
                 Distributee.HandleSpiClose(spiNum);
             }
@@ -180,7 +181,7 @@ namespace IOIOLib.Device.Impl
 
         public virtual void HandleSpiData(int spiNum, int ssPin, byte[] data, int dataBytes)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees_)
+            foreach (IIncomingHandlerIOIO Distributee in Distributees_)
             {
                 Distributee.HandleSpiData(spiNum, ssPin, data, dataBytes);
             }
@@ -188,7 +189,7 @@ namespace IOIOLib.Device.Impl
 
         public virtual void HandleSpiReportTxStatus(int spiNum, int bytesRemaining)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees_)
+            foreach (IIncomingHandlerIOIO Distributee in Distributees_)
             {
                 Distributee.HandleSpiReportTxStatus(spiNum, bytesRemaining);
             }
@@ -196,7 +197,7 @@ namespace IOIOLib.Device.Impl
 
         public virtual void HandleI2cOpen(int i2cNum)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees_)
+            foreach (IIncomingHandlerIOIO Distributee in Distributees_)
             {
                 Distributee.HandleI2cOpen(i2cNum);
             }
@@ -204,7 +205,7 @@ namespace IOIOLib.Device.Impl
 
         public virtual void HandleI2cClose(int i2cNum)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees_)
+            foreach (IIncomingHandlerIOIO Distributee in Distributees_)
             {
                 Distributee.HandleI2cClose(i2cNum);
             }
@@ -212,7 +213,7 @@ namespace IOIOLib.Device.Impl
 
         public virtual void HandleI2cResult(int i2cNum, int size, byte[] data)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees_)
+            foreach (IIncomingHandlerIOIO Distributee in Distributees_)
             {
                 Distributee.HandleI2cResult(i2cNum, size, data);
             }
@@ -220,7 +221,7 @@ namespace IOIOLib.Device.Impl
 
         public virtual void HandleI2cReportTxStatus(int i2cNum, int bytesRemaining)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees_)
+            foreach (IIncomingHandlerIOIO Distributee in Distributees_)
             {
                 Distributee.HandleI2cReportTxStatus(i2cNum, bytesRemaining);
             }
@@ -228,7 +229,7 @@ namespace IOIOLib.Device.Impl
 
         public virtual void HandleIcspOpen()
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees_)
+            foreach (IIncomingHandlerIOIO Distributee in Distributees_)
             {
                 Distributee.HandleIcspOpen();
             }
@@ -236,7 +237,7 @@ namespace IOIOLib.Device.Impl
 
         public virtual void HandleIcspClose()
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees_)
+            foreach (IIncomingHandlerIOIO Distributee in Distributees_)
             {
                 Distributee.HandleIcspClose();
             }
@@ -244,7 +245,7 @@ namespace IOIOLib.Device.Impl
 
         public virtual void HandleIcspReportRxStatus(int bytesRemaining)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees_)
+            foreach (IIncomingHandlerIOIO Distributee in Distributees_)
             {
                 Distributee.HandleIcspReportRxStatus(bytesRemaining);
             }
@@ -252,7 +253,7 @@ namespace IOIOLib.Device.Impl
 
         public virtual void HandleIcspResult(int size, byte[] data)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees_)
+            foreach (IIncomingHandlerIOIO Distributee in Distributees_)
             {
                 Distributee.HandleIcspResult(size, data);
             }
@@ -260,7 +261,7 @@ namespace IOIOLib.Device.Impl
 
         public virtual void HandleIncapReport(int incapNum, int size, byte[] data)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees_)
+            foreach (IIncomingHandlerIOIO Distributee in Distributees_)
             {
                 Distributee.HandleIncapReport(incapNum, size, data);
             }
@@ -268,7 +269,7 @@ namespace IOIOLib.Device.Impl
 
         public virtual void HandleIncapClose(int incapNum)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees_)
+            foreach (IIncomingHandlerIOIO Distributee in Distributees_)
             {
                 Distributee.HandleIncapClose(incapNum);
             }
@@ -276,7 +277,7 @@ namespace IOIOLib.Device.Impl
 
         public virtual void HandleIncapOpen(int incapNum)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees_)
+            foreach (IIncomingHandlerIOIO Distributee in Distributees_)
             {
                 Distributee.HandleIncapOpen(incapNum);
             }
@@ -284,7 +285,7 @@ namespace IOIOLib.Device.Impl
 
         public virtual void HandleCapSenseReport(int pinNum, int value)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees_)
+            foreach (IIncomingHandlerIOIO Distributee in Distributees_)
             {
                 Distributee.HandleCapSenseReport(pinNum, value);
             }
@@ -292,15 +293,15 @@ namespace IOIOLib.Device.Impl
 
         public virtual void HandleSetCapSenseSampling(int pinNum, bool enable)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees_)
+            foreach (IIncomingHandlerIOIO Distributee in Distributees_)
             {
                 Distributee.HandleSetCapSenseSampling(pinNum, enable);
             }
         }
 
-        public virtual void HandleSequencerEvent(Types.SequencerEvent seqEvent, int arg)
+        public virtual void HandleSequencerEvent(SequencerEventState seqEvent, int arg)
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees_)
+            foreach (IIncomingHandlerIOIO Distributee in Distributees_)
             {
                 Distributee.HandleSequencerEvent(seqEvent, arg);
             }
@@ -308,7 +309,7 @@ namespace IOIOLib.Device.Impl
 
         public virtual void HandleSync()
         {
-            foreach (IOIOIncomingHandler Distributee in Distributees_)
+            foreach (IIncomingHandlerIOIO Distributee in Distributees_)
             {
                 Distributee.HandleSync();
             }

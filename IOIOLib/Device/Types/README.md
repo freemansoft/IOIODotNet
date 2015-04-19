@@ -1,0 +1,1 @@
+﻿The types in this folder are tied to Resource Management and communication with the IOIO.

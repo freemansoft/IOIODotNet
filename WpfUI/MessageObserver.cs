@@ -1,4 +1,5 @@
-﻿using IOIOLib.MessageFrom;
+﻿using IOIOLib.Message;
+using IOIOLib.MessageFrom;
 using System;
 using System.Windows;
 using System.Windows.Controls;

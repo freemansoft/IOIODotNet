@@ -33,14 +33,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IOIOLib.MessageFrom
+namespace IOIOLib.Message
 {
     /// <summary>
     /// Interface applied to messages that the notification handler calls whenever a message
     /// is received and needs to be dispatched to the observers.
     /// Called once for each observer
     /// </summary>
-    public interface IMessageNotificationFromIOIO
+    public interface IMessageNotificationIOIO
     {
         void Notify(IObserverIOIO observer);
     }

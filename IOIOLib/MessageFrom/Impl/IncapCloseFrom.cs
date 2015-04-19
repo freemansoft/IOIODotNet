@@ -26,7 +26,8 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied.
  */
- 
+
+using IOIOLib.Message.Impl;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +36,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom.Impl
 {
-    public class IncapCloseFrom : MessageNotificationFromIOIO<IIncapCloseFrom>, IIncapCloseFrom
+    public class IncapCloseFrom : IOIOMessageNotification<IIncapCloseFrom>, IIncapCloseFrom
     {
         public int IncapNum { get; private set; }
 

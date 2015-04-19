@@ -26,7 +26,8 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied.
  */
- 
+
+using IOIOLib.Message.Impl;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +36,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom.Impl
 {
-    public class I2cCloseFrom : MessageNotificationFromIOIO<II2cCloseFrom>, II2cCloseFrom
+    public class I2cCloseFrom : IOIOMessageNotification<II2cCloseFrom>, II2cCloseFrom
     {
 
         public int I2cNum { get; private set; }

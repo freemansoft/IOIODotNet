@@ -32,6 +32,7 @@ using IOIOLib.Component.Types;
 using IOIOLib.Connection;
 using IOIOLib.Device.Types;
 using IOIOLib.IOIOException;
+using IOIOLib.Message;
 using IOIOLib.MessageFrom;
 using IOIOLib.MessageTo;
 using IOIOLib.MessageTo.Impl;
@@ -62,13 +63,16 @@ namespace IOIOLib.Device.Impl
         /// TODO Need to get on this and make state be correct!
         /// </summary>
         private IOIOState State_ = IOIOState.INIT;
+
         private IOIOProtocolOutgoing OutProt_;
         private IOIOProtocolIncoming InProt_;
-        private IOIOIncomingHandler InboundHandler_;
-        private IOIOConnectionStateObserver CapturedConnectionInformation_;
-        private IOIOLogObserver CapturedLogs_;
 
+        private IIncomingHandlerIOIO InboundHandler_;
         private IOIOHandlerObservable CaptureObservable_;
+
+        private ObserverConnectionState CapturedConnectionInformation_;
+        private ObserverLog CapturedLogs_;
+
 		private IResourceManager BoardResourceManager_;
 
         /// <summary>
@@ -94,7 +98,7 @@ namespace IOIOLib.Device.Impl
         /// <param name="conn"></param>
         /// <param name="customHandler">your handler.  This always adds:
         ///     IOIOHandlerCaptureConnectionState , IOIOHandlerCaptureLog</param>
-        public IOIOImpl(IOIOConnection conn, IOIOIncomingHandler customHandler)
+        public IOIOImpl(IOIOConnection conn, IIncomingHandlerIOIO customHandler)
         {
             if (conn == null)
             {
@@ -105,7 +109,7 @@ namespace IOIOLib.Device.Impl
         }
 
         /// <summary>
-        /// Tis lets you add observers to the default handler with the default threading model
+        /// This lets you add observers to the default handler with the default threading model
         /// </summary>
         /// <param name="conn"></param>
         /// <param name="observers"></param>
@@ -123,13 +127,13 @@ namespace IOIOLib.Device.Impl
         /// Wrap the custom handler with our instrumentation handlers
         /// </summary>
         /// <param name="customHandler">optional handler provided by object creator</param>
-        private void ConfigureHandlers(IOIOIncomingHandler customHandler, List<IObserverIOIO> observers)
+        private void ConfigureHandlers(IIncomingHandlerIOIO customHandler, List<IObserverIOIO> observers)
         {
             CaptureObservable_ = new IOIOHandlerObservable();
 
-            CapturedConnectionInformation_ = new IOIOConnectionStateObserver();
+            CapturedConnectionInformation_ = new ObserverConnectionState();
             CaptureObservable_.Subscribe(CapturedConnectionInformation_);
-            CapturedLogs_ = new IOIOLogObserver(10);
+            CapturedLogs_ = new ObserverLog(10);
             CaptureObservable_.Subscribe(CapturedLogs_);
             
             if (observers != null)
@@ -143,15 +147,14 @@ namespace IOIOLib.Device.Impl
             if (customHandler != null)
             {
                 InboundHandler_ = new IOIOHandlerDistributor(
-                    new List<IOIOIncomingHandler> { CaptureObservable_, customHandler });
+                    new List<IIncomingHandlerIOIO> { CaptureObservable_, customHandler });
             }
             else
             {
                 InboundHandler_ = new IOIOHandlerDistributor(
-                    new List<IOIOIncomingHandler> { CaptureObservable_ });
+                    new List<IIncomingHandlerIOIO> { CaptureObservable_ });
             }
         }
-
 
         /// <summary>
         /// This method is not yet finished.
@@ -192,7 +195,10 @@ namespace IOIOLib.Device.Impl
             else
             {
                 State_ = IOIOState.CONNECTED;
-				BoardResourceManager_ = new ResourceManager(CapturedConnectionInformation_.EstablishConnectionFrom_.Hardware);
+				ResourceManager resourceManagerImpl = new ResourceManager(CapturedConnectionInformation_.EstablishConnectionFrom_.Hardware);
+                BoardResourceManager_ = resourceManagerImpl;
+                // kind of an ugly coupling to the implementation .. could create an interface but I'm tired
+                resourceManagerImpl.RegisterWithObservable(CaptureObservable_);
             }
             LOG.Info("Hardware is " + CapturedConnectionInformation_.EstablishConnectionFrom_);
         }

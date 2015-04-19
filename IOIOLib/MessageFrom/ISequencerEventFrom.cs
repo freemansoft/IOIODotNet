@@ -26,7 +26,8 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied.
  */
- 
+
+using IOIOLib.Component.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +38,7 @@ namespace IOIOLib.MessageFrom
 {
     public interface ISequencerEventFrom : IMessageFromIOIO
     {
-        Device.Types.SequencerEvent SeqEvent { get; }
+        SequencerEventState SeqEvent { get; }
         int Identifier { get; }
     }
 }

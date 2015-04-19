@@ -33,12 +33,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IOIOLib.MessageFrom
+namespace IOIOLib.Component.Types
 {
-    /// <summary>
-    /// Marker interface for notification.  Code then uses IObserver&lt;T&gt; to do actual notificaiton
-    /// </summary>
-    public interface IObserverIOIO
+    class CapSenseCoefficients
     {
+        public static float DEFAULT_COEF = 25.0F;
     }
 }

@@ -27,6 +27,7 @@
  * or implied.
  */
 
+using IOIOLib.Message.Impl;
 using IOIOLib.Util;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom.Impl
 {
-    public class I2cResultFrom : MessageNotificationFromIOIO<II2cResultFrom>, II2cResultFrom
+    public class I2cResultFrom : IOIOMessageNotification<II2cResultFrom>, II2cResultFrom
     {
 
         public int I2cNum { get; private set; }

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IOIOLib.MessageFrom.Impl
+namespace IOIOLib.Message.Impl
 {
-    public class MessageNotificationFromIOIO<MessageType> : IMessageNotificationFromIOIO where MessageType : class
+    public class IOIOMessageNotification<MessageType> : IMessageNotificationIOIO where MessageType : class
     {
         /// <summary>
         /// Dispatch method on the message itself that notifies the passed in observer via the most targeted method

@@ -57,6 +57,8 @@ namespace IOIOLibDotNetTest.MessageTo
 			IResourceManager rManager = new ResourceManager(Hardware.IOIO0003);
 			IOIOConnection ourConn = this.CreateGoodSerialConnection();
             this.CreateCaptureLogHandlerSet();
+            ObserverTxStatusUart bufferObserver = new ObserverTxStatusUart();
+            this.HandlerObservable_.Subscribe(bufferObserver);
             // add our own handler so we don't have to grovel aroudn in there
             IOIOProtocolIncoming fooIn = new IOIOProtocolIncoming(ourConn.GetInputStream(), HandlerObservable_);
             IOIOProtocolOutgoing fooOut = new IOIOProtocolOutgoing(ourConn.GetOutputStream());

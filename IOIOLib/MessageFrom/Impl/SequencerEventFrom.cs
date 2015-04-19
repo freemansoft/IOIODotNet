@@ -26,8 +26,10 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied.
  */
- 
+
+using IOIOLib.Component.Types;
 using IOIOLib.Device.Types;
+using IOIOLib.Message.Impl;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,13 +38,13 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom.Impl
 {
-    public class SequencerEventFrom : MessageNotificationFromIOIO<ISequencerEventFrom>,ISequencerEventFrom
+    public class SequencerEventFrom : IOIOMessageNotification<ISequencerEventFrom>,ISequencerEventFrom
     {
 
-        public Device.Types.SequencerEvent SeqEvent { get; private set; }
+        public SequencerEventState SeqEvent { get; private set; }
         public int Identifier { get; private set; }
 
-        internal SequencerEventFrom(Device.Types.SequencerEvent seqEvent, int identifier)
+        internal SequencerEventFrom(SequencerEventState seqEvent, int identifier)
         {
             this.SeqEvent = seqEvent;
             this.Identifier = identifier;

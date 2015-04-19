@@ -35,6 +35,9 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.Device.Types
 {
+    /// <summary>
+    /// ???
+    /// </summary>
     internal class ScaleDivider
     {
         internal static int[] ScaleDiv = new int[] {

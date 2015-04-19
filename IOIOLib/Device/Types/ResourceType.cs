@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.Device.Types
 {
+    /// <summary>
+    /// Resource Pool types
+    /// </summary>
     public enum ResourceType
     {
         PIN = 0,

@@ -33,9 +33,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IOIOLib.Device.Types
+namespace IOIOLib.Component.Types
 {
-    public enum SequencerEvent
+    /// <summary>
+    /// Current state of the sequencer
+    /// </summary>
+    public enum SequencerEventState
     {
         PAUSED = 0,
         STALLED = 1,

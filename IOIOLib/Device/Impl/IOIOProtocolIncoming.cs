@@ -27,6 +27,7 @@
  * or implied.
  */
 
+using IOIOLib.Component.Types;
 using IOIOLib.Device.Types;
 using IOIOLib.IOIOException;
 using IOIOLib.Util;
@@ -58,7 +59,7 @@ namespace IOIOLib.Device.Impl
         /// <summary>
         /// Could be a handler distributor with multiple other handlers in it
         /// </summary>
-        private IOIOIncomingHandler Handler_;
+        private IIncomingHandlerIOIO Handler_;
         /// <summary>
         /// this should go somewhere else
         /// </summary
@@ -74,7 +75,7 @@ namespace IOIOLib.Device.Impl
         /// <param name="Stream_">incoming Stream_ from the IOIO</param>
         /// <param name="handler">handler or handler distributor that will added to the notification list</param>
         /// <param name="cancelTokenSource">A cancellation token so that this will be stopped with other threads. Creates a token if none passed in</param>
-        public IOIOProtocolIncoming(Stream stream, IOIOIncomingHandler handler, CancellationTokenSource cancelTokenSource)
+        public IOIOProtocolIncoming(Stream stream, IIncomingHandlerIOIO handler, CancellationTokenSource cancelTokenSource)
         {
             this.Stream_ = stream;
             this.Handler_ = handler;
@@ -95,7 +96,7 @@ namespace IOIOLib.Device.Impl
         /// </summary>
         /// <param name="Stream_"></param>
         /// <param name="handler"></param>
-        public IOIOProtocolIncoming(Stream stream, IOIOIncomingHandler handler) :
+        public IOIOProtocolIncoming(Stream stream, IIncomingHandlerIOIO handler) :
             this(stream, handler, new CancellationTokenSource())
         {
             // constructor exists only for constructor chaining   
@@ -436,7 +437,7 @@ namespace IOIOLib.Device.Impl
                             try
                             {
                                 // should be able to cast since enums are really int (gag)
-                                Handler_.HandleSequencerEvent((SequencerEvent)arg1, arg2);
+                                Handler_.HandleSequencerEvent((SequencerEventState)arg1, arg2);
                             }
                             catch (Exception e)
                             {

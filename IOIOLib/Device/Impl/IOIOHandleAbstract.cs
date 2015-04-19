@@ -38,13 +38,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
+using IOIOLib.Component.Types;
 
 namespace IOIOLib.Device.Impl
 {
     /// <summary>
     /// This class leaks if you don't read the messages it captures
     /// </summary>
-    public abstract class IOIOHandleAbstract : IOIOIncomingHandler
+    public abstract class IOIOHandleAbstract : IIncomingHandlerIOIO
     {
         private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(IOIOHandleAbstract));
 
@@ -229,7 +230,7 @@ namespace IOIOLib.Device.Impl
             this.HandleMessage(new CapSenseSamplingFrom(pinNum, enable));
         }
 
-        public virtual void HandleSequencerEvent(Types.SequencerEvent seqEvent, int arg)
+        public virtual void HandleSequencerEvent(SequencerEventState seqEvent, int arg)
         {
             this.HandleMessage(new SequencerEventFrom(seqEvent, arg));
         }

@@ -35,9 +35,9 @@ namespace IOIOLib.Convenience
                     try {
                         oneConn.WaitForConnect();
                         // logging without real capture
-                        IOIOLogObserver handlerLog = new IOIOLogObserver(1);
+                        ObserverLog handlerLog = new ObserverLog(1);
                         // so we can verify
-                        IOIOConnectionStateObserver handlerState = new IOIOConnectionStateObserver();
+                        ObserverConnectionState handlerState = new ObserverConnectionState();
                         IOIOHandlerObservable observers = new IOIOHandlerObservable();
                         observers.Subscribe(handlerState);
                         observers.Subscribe(handlerLog);

@@ -1,4 +1,5 @@
-﻿using IOIOLib.MessageFrom;
+﻿using IOIOLib.Message;
+using IOIOLib.MessageFrom;
 using IOIOLib.Util;
 using System;
 
@@ -8,9 +9,9 @@ namespace IOIOLib.Device.Impl
     /// This class catches configuration information.
     /// It should also catch state and reset and other operations
     /// </summary>
-    public class IOIOConnectionStateObserver : IObserver<IConnectedDeviceResponse>, IObserver<ISupportedInterfaceFrom>, IObserverIOIO
+    public class ObserverConnectionState : IObserver<IConnectedDeviceResponse>, IObserver<ISupportedInterfaceFrom>, IObserverIOIO
     {
-        private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(IOIOConnectionStateObserver));
+        private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(ObserverConnectionState));
         /// <summary>
         /// response from the checkInterfaceResponse call 
         /// </summary>

@@ -36,6 +36,7 @@ using IOIOLib.MessageFrom;
 using System.Collections.Concurrent;
 using IOIOLib.IOIOException;
 using IOIOLib.Util;
+using IOIOLib.Message;
 
 /// <summary>
 /// THE THREADING IN THIS CLASS SHOULD BE REVIEWED
@@ -46,8 +47,8 @@ namespace IOIOLib.Device.Impl
 	/// Notify interested parties when messages are received.
     /// Observers are notified serially in a new Task.
 	/// </summary>
-	public class IOIOHandlerObservableNoWait : IOIOHandleAbstract
-	{
+	public class IOIOHandlerObservableNoWait : IOIOHandleAbstract,IObservableIOIO
+    {
         private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(IOIOHandlerObservableNoWait));
 
         /// <summary>
@@ -57,7 +58,7 @@ namespace IOIOLib.Device.Impl
 		internal override void  HandleMessage(IMessageFromIOIO message)
 		{
             // messages must support notification to do notification...
-            IMessageNotificationFromIOIO notifier = message as IMessageNotificationFromIOIO;
+            IMessageNotificationIOIO notifier = message as IMessageNotificationIOIO;
             if (notifier != null) {
                 Task.Factory.StartNew(() =>
                 {

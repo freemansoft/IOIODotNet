@@ -28,6 +28,7 @@
  */
 
 using IOIOLib.Device.Types;
+using IOIOLib.Message.Impl;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,7 +37,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom.Impl
 {
-    public class UartOpenFrom : MessageNotificationFromIOIO<IUartOpenFrom>, IUartOpenFrom
+    public class UartOpenFrom : IOIOMessageNotification<IUartOpenFrom>, IUartOpenFrom
     {
         public int UartNum { get; private set; }
 

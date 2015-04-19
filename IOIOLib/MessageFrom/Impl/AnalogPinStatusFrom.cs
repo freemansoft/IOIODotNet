@@ -32,10 +32,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IOIOLib.Message.Impl;
 
 namespace IOIOLib.MessageFrom.Impl
 {
-    class AnalogPinStatusFrom : MessageNotificationFromIOIO<IAnalogPinStatusFrom>, IAnalogPinStatusFrom
+    class AnalogPinStatusFrom : IOIOMessageNotification<IAnalogPinStatusFrom>, IAnalogPinStatusFrom
     {
 
         public int Pin { get; protected set; }

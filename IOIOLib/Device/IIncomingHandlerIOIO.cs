@@ -26,7 +26,8 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied.
  */
- 
+
+using IOIOLib.Component.Types;
 using IOIOLib.Device.Types;
 using System;
 using System.Collections.Generic;
@@ -39,7 +40,7 @@ namespace IOIOLib.Device
     /// <summary>
     /// The incoming protocol handler
     /// </summary>
-    public interface IOIOIncomingHandler
+    public interface IIncomingHandlerIOIO
     {
         void HandleEstablishConnection(byte[] hardwareId, byte[] bootloaderId,
                 byte[] firmwareId);
@@ -114,7 +115,7 @@ namespace IOIOLib.Device
 
         void HandleSetCapSenseSampling(int pinNum, bool enable);
 
-        void HandleSequencerEvent(SequencerEvent seqEvent, int arg);
+        void HandleSequencerEvent(SequencerEventState seqEvent, int arg);
 
         void HandleSync();
     }

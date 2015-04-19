@@ -36,6 +36,7 @@ using IOIOLib.MessageFrom;
 using System.Collections.Concurrent;
 using IOIOLib.IOIOException;
 using IOIOLib.Util;
+using IOIOLib.Message;
 
 /// <summary>
 /// THE THREADING IN THIS CLASS SHOULD BE REVIEWED
@@ -47,7 +48,7 @@ namespace IOIOLib.Device.Impl
     /// Observers are notified in PARALLEL. 
     /// It does not wait because we don't know how slow the observers are.
     /// </summary>
-    public class IOIOHandlerObservableNoWaitParallel : IOIOHandleAbstract
+    public class IOIOHandlerObservableNoWaitParallel : IOIOHandleAbstract,  IObservableIOIO
     {
         private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(IOIOHandlerObservableNoWaitParallel));
 
@@ -58,7 +59,7 @@ namespace IOIOLib.Device.Impl
 		internal override void HandleMessage(IMessageFromIOIO message)
         {
             // messages must support notification to do notification...
-            IMessageNotificationFromIOIO notifier = message as IMessageNotificationFromIOIO;
+            IMessageNotificationIOIO notifier = message as IMessageNotificationIOIO;
             if (notifier != null)
             {
                 foreach (IObserverIOIO observer in Interested_)

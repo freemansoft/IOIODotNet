@@ -6,6 +6,7 @@ using IOIOLib.Device.Impl;
 using IOIOLib.MessageFrom;
 using IOIOLib.MessageFrom.Impl;
 using IOIOLib.Util;
+using IOIOLib.Message;
 
 namespace IOIOLibDotNetTest.Device.Impl
 {
@@ -95,7 +96,8 @@ namespace IOIOLibDotNetTest.Device.Impl
             Assert.AreEqual(1, dataFromObsv.countClose);
 
             // they could be the same but it is unlikely
-            Assert.IsFalse(fromObsv.managedThreads.SetEquals(dataFromObsv.managedThreads));
+            Assert.IsFalse(fromObsv.managedThreads.SetEquals(dataFromObsv.managedThreads), 
+                "This test could sparodically fail based on how threads get managed");
         }
     }
 
