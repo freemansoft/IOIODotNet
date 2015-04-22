@@ -44,7 +44,8 @@ using IOIOLib.Message;
 namespace IOIOLib.Device.Impl
 {
     /// <summary>
-    /// Notify interested parties when messages are received.
+    /// Notify observers when messages are received.
+    /// Observers subscribe for notification.
     /// Observers are notified in PARALLEL. 
     /// It does not wait because we don't know how slow the observers are.
     /// </summary>

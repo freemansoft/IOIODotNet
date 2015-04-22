@@ -40,11 +40,12 @@ using IOIOLib.Message;
 
 namespace IOIOLib.Device.Impl
 {
-	/// <summary>
-	/// Notify interested parties when messages are received.
+    /// <summary>
+    /// Notify observers when messages are received.
+    /// Observers subscribe for notification.
     /// Observers are notified serially in same thread.
-	/// </summary>
-	public class IOIOHandlerObservable : IOIOHandleAbstract, IObservableIOIO
+    /// </summary>
+    public class IOIOHandlerObservable : IOIOHandleAbstract, IObservableIOIO
     {
         private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(IOIOHandlerObservableNoWait));
 
