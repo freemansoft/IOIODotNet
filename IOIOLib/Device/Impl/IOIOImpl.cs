@@ -69,9 +69,17 @@ namespace IOIOLib.Device.Impl
         private IOIOProtocolIncoming InProt_;
 
         private IIncomingHandlerIOIO InboundHandler_;
+        /// <summary>
+        /// used internally to manage IOIO state like board resources
+        /// </summary>
         private IOIOHandlerObservable CaptureObservable_;
-
+        /// <summary>
+        /// our current board configuration
+        /// </summary>
         private ObserverConnectionState CapturedConnectionInformation_;
+        /// <summary>
+        /// really only used for debugging. Retains string information about messages received
+        /// </summary>
         private ObserverLog CapturedLogs_;
 
 		private IResourceManager BoardResourceManager_;
@@ -126,15 +134,16 @@ namespace IOIOLib.Device.Impl
         }
 
         /// <summary>
-        /// Wrap the custom handler with our instrumentation handlers
+        /// Wrap the custom handler with our instrumentation handlers.
+        /// Additional observers may be added once the board is initialized
         /// </summary>
         /// <param name="customHandler">optional handler provided by object creator. </param>
         private void ConfigureHandlers(IIncomingHandlerIOIO customHandler, List<IObserverIOIO> observers)
         {
             CaptureObservable_ = new IOIOHandlerObservable();
             CapturedConnectionInformation_ = new ObserverConnectionState();
-            CaptureObservable_.Subscribe(CapturedConnectionInformation_);
             CapturedLogs_ = new ObserverLog(10);
+            CaptureObservable_.Subscribe(CapturedConnectionInformation_);
             CaptureObservable_.Subscribe(CapturedLogs_);
             // observers using the default handler threading model
             if (observers != null)
@@ -177,7 +186,9 @@ namespace IOIOLib.Device.Impl
 		}
 
 		/// <summary>
-		/// Verify we are connected and set our state accordingly
+		/// Verify we are connected and set our state accordingly.
+        /// Fire up the resource manager
+        /// Let the Resource manager add its on buffer listeners.
 		/// </summary>
 		private void initBoardVersion()
         {
@@ -298,7 +309,17 @@ namespace IOIOLib.Device.Impl
 					{
                         LOG.Debug("Post: " + nextMessage);
 						nextMessage.ExecuteMessage(this.OutProt_);
-					}
+                        ICommandIOIO nextCommand = nextMessage as ICommandIOIO;
+                        // post notifications down our internal chain
+                        // This works only for observers on CaptureObservable_
+                        // This does not post outbound messages to any observers on custom handlers
+                        if (nextCommand != null)
+                        {
+                            // this really exists for TX buffer calculation, 
+                            // ie: IOIO internal resource management
+                            this.CaptureObservable_.HandleMessage(nextCommand);
+                        }
+                    }
 				}
 			}
 			catch (System.Threading.ThreadAbortException e)

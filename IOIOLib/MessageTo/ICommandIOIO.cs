@@ -27,8 +27,8 @@
  * or implied.
  */
 
-using IOIOLib.Component.Types;
-using IOIOLib.Device.Types;
+using IOIOLib.Device.Impl;
+using IOIOLib.Message;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,8 +37,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageTo
 {
-    public interface IUartSendCommand : ICommandToIOIO, IPostMessageCommand
+    public interface ICommandIOIO : IMessageIOIO
     {
-		UartSpec UartDef { get; }
     }
 }

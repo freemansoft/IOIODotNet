@@ -39,21 +39,36 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
 using IOIOLib.Component.Types;
+using IOIOLib.Message;
 
 namespace IOIOLib.Device.Impl
 {
     /// <summary>
     /// This class leaks if you don't read the messages it captures
     /// </summary>
-    public abstract class IOIOHandleAbstract : IIncomingHandlerIOIO
+    public abstract class IOIOHandlerObservableAbstract : IIncomingHandlerIOIO, IObservableIOIO
     {
-        private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(IOIOHandleAbstract));
+        private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(IOIOHandlerObservableAbstract));
+
+        internal ConcurrentBag<IObserverIOIO> Interested_ = new ConcurrentBag<IObserverIOIO>();
+
+        /// <summary>
+        /// Does not yet return an actual unsubscriber
+        /// </summary>
+        /// <param name="t">the specific subtype of IMessageFromIOIO you are interested in</param>
+        /// <param name="observer">object that wishes to be notified</param>
+        /// <returns></returns>
+        public virtual IDisposable Subscribe(IObserverIOIO observer)
+        {
+            Interested_.Add(observer);
+            return null;
+        }
 
         /// <summary>
         /// the one method subclass ned to implement
         /// </summary>
         /// <param name="message"></param>
-		internal abstract void HandleMessage(IMessageFromIOIO message);
+		public abstract void HandleMessage(IMessageIOIO message);
 
 
 		public virtual void HandleEstablishConnection(byte[] hardwareId, byte[] bootloaderId, byte[] firmwareId)

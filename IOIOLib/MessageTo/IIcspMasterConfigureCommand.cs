@@ -35,7 +35,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageTo
 {
-    public interface IIcspMasterConfigureCommand : ICommandToIOIO, IPostMessageCommand
+    public interface IIcspMasterConfigureCommand : ICommandIOIO, IPostMessageCommand
     {
     }
 }

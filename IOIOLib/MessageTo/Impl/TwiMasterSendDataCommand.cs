@@ -37,10 +37,12 @@ using IOIOLib.Device;
 using IOIOLib.Device.Impl;
 using IOIOLib.Device.Types;
 using IOIOLib.Util;
+using IOIOLib.Message;
+using IOIOLib.Message.Impl;
 
 namespace IOIOLib.MessageTo.Impl
 {
-    public class TwiMasterSendDataCommand : ITwiMasterSendDataCommand
+    public class TwiMasterSendDataCommand : IOIOMessageNotification<ITwiMasterSendDataCommand>, ITwiMasterSendDataCommand
     {
         private int Address;
         private bool IsTenBitAddress;
@@ -50,7 +52,7 @@ namespace IOIOLib.MessageTo.Impl
         /// <summary>
         /// populated by constructor.  used by other calls
         /// </summary>
-        internal TwiSpec TwiDef { get; private set; }
+        public TwiSpec TwiDef { get; private set; }
 
         /// <summary>
         /// 
@@ -102,6 +104,17 @@ namespace IOIOLib.MessageTo.Impl
             return base.ToString() + "Twi:" + this.TwiDef.TwiNum 
                 + " ExpectBack:"+this.NumBytesRead
                 + " SendingBytes:" + LoggingUtilities.ByteArrayToString(this.Data, this.Data.Length);
+        }
+
+        /// <summary>
+        /// used in buffer calculations
+        /// </summary>
+        /// <returns></returns>
+        public int PayloadSize()
+        {
+            // does not include the uart number which is used to determine which buffer payload goes in
+            // address, is10BitAddress , return length, send length, 
+            return 4 + this.Data.Length;
         }
     }
 }

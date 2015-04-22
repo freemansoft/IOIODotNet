@@ -45,7 +45,7 @@ namespace IOIOLib.Device.Impl
     /// Observers subscribe for notification.
     /// Observers are notified serially in same thread.
     /// </summary>
-    public class IOIOHandlerObservable : IOIOHandleAbstract, IObservableIOIO
+    public class IOIOHandlerObservable : IOIOHandlerObservableAbstract
     {
         private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(IOIOHandlerObservableNoWait));
 
@@ -53,7 +53,7 @@ namespace IOIOLib.Device.Impl
         /// Notify the observers
         /// </summary>
         /// <param name="message"></param>
-		internal override void  HandleMessage(IMessageFromIOIO message)
+		public override void  HandleMessage(IMessageIOIO message)
 		{
             // messages must support notification to do notification...
             IMessageNotificationIOIO notifier = message as IMessageNotificationIOIO;
@@ -69,18 +69,5 @@ namespace IOIOLib.Device.Impl
             }
         }
 
-		internal ConcurrentBag<IObserverIOIO> Interested_ =	new ConcurrentBag<IObserverIOIO>();
-
-		/// <summary>
-		/// Does not yet return an actual unsubscriber
-		/// </summary>
-		/// <param name="t">the specific subtype of IMessageFromIOIO you are interested in</param>
-		/// <param name="observer">object that wishes to be notified</param>
-		/// <returns></returns>
-		public virtual IDisposable Subscribe(IObserverIOIO observer)
-		{
-			Interested_.Add(observer);
-			return null;
-		}
     }
 }

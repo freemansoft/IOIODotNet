@@ -42,7 +42,17 @@ namespace IOIOLib.MessageTo
     /// <summary>
     /// This interface sends data to the IOIO.  You will always get back an I2cResultFrom message
     /// </summary>
-    public interface ITwiMasterSendDataCommand : ICommandToIOIO, IPostMessageCommand
+    public interface ITwiMasterSendDataCommand : ICommandIOIO, IPostMessageCommand
     {
+        /// <summary>
+        /// populated after alloc.  used by other calls
+        /// </summary>
+        TwiSpec TwiDef { get; }
+
+        /// <summary>
+        /// Number of bytes that will sit in the I2C payload buffer
+        /// </summary>
+        /// <returns></returns>
+        int PayloadSize();
     }
 }

@@ -35,7 +35,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageTo
 {
-    public interface ICapSenseConfigureCommand : ICommandToIOIO, IPostMessageCommand
+    public interface ICapSenseConfigureCommand : ICommandIOIO, IPostMessageCommand
     {
         int Pin { get; }
         float FilterCoefficent { get; }

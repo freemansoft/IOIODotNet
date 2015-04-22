@@ -36,7 +36,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageTo
 {
-    public interface ISpiMasterConfigureCommand : ICommandToIOIO, IPostMessageCommand
+    public interface ISpiMasterConfigureCommand : ICommandIOIO, IPostMessageCommand
     {
         DigitalInputSpec Miso { get; }
         DigitalOutputSpec Mosi { get; }

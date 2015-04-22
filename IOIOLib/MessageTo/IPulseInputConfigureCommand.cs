@@ -35,7 +35,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageTo
 {
-    public interface IPulseInputConfigureCommand : ICommandToIOIO, IPostMessageCommand
+    public interface IPulseInputConfigureCommand : ICommandIOIO, IPostMessageCommand
     {
     }
 }

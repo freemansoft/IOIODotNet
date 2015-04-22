@@ -37,7 +37,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageTo
 {
-    public interface IUartCloseCommand : ICommandToIOIO, IPostMessageCommand
+    public interface IUartCloseCommand : ICommandIOIO, IPostMessageCommand
     {
 		UartSpec UartDef { get; }
     }

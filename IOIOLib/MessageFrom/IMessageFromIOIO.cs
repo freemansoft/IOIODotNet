@@ -26,7 +26,8 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied.
  */
- 
+
+using IOIOLib.Message;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +36,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageFrom
 {
-    public interface IMessageFromIOIO
+    public interface IMessageFromIOIO : IMessageIOIO
    {
     }
 }

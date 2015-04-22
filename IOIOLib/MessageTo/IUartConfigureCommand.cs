@@ -37,7 +37,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageTo
 {
-    public interface IUartConfigureCommand : ICommandToIOIO, IPostMessageCommand
+    public interface IUartConfigureCommand : ICommandIOIO, IPostMessageCommand
     {
 
         UartParity Parity { get; }

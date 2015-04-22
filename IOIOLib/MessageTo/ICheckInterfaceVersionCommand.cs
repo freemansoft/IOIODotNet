@@ -34,7 +34,7 @@ using System.Text;
 
 namespace IOIOLib.MessageTo.Impl
 {
-    public interface ICheckInterfaceVersionTo:ICommandToIOIO, IPostMessageCommand
+    public interface ICheckInterfaceVersionTo:ICommandIOIO, IPostMessageCommand
     {
         byte[] InterfaceId { get; }
     }

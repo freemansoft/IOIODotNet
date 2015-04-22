@@ -26,17 +26,56 @@
  * authors and should not be interpreted as representing official policies, either expressed
  * or implied.
  */
- 
-using IOIOLib.Device.Impl;
+
+using IOIOLib.Device.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IOIOLib.Device;
+using IOIOLib.Component.Types;
+using IOIOLib.Util;
+using IOIOLib.Message.Impl;
 
-namespace IOIOLib.MessageTo
+namespace IOIOLib.MessageTo.Impl
 {
-    public interface ICommandToIOIO
+    public class UartSendDataCommand : IOIOMessageNotification<IUartSendDataCommand>,IUartSendDataCommand
     {
+		private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(UartCloseCommand));
+
+		public UartSpec UartDef { get; private set; }
+
+		public byte[] Data { get; private set; }
+		public int Size { get; private set; }
+
+
+        internal UartSendDataCommand(UartSpec uart, byte[] data, int size)
+        {
+            this.UartDef = uart;
+			this.Data = data;
+			this.Size = size;
+        }
+
+        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound)
+        {
+			outBound.uartData(UartDef.UartNumber, Size, Data);
+			return true;
+		}
+
+
+
+		public bool Alloc(IResourceManager rManager)
+		{
+			return true;
+		}
+
+        public int PayloadSize()
+        {
+            // does not include the uart number which is used to determine which buffer payload goes in
+            // size + the data
+            return 1 + this.Data.Length;
+        }
+
     }
 }

@@ -36,7 +36,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageTo
 {
-    public interface IDigitalOutputCloseCommand : ICommandToIOIO, IPostMessageCommand
+    public interface IDigitalOutputCloseCommand : ICommandIOIO, IPostMessageCommand
     {
         DigitalOutputSpec PinDef { get;  }
     }

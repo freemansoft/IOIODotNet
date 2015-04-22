@@ -45,7 +45,7 @@ namespace IOIOLib.MessageTo.Impl
         /// <summary>
         /// populated by constructor.  used by other calls
         /// </summary>
-        internal TwiSpec TwiDef { get; private set; }
+        public TwiSpec TwiDef { get; private set; }
 
         internal TwiMasterCloseCommand(TwiSpec twiDef)
         {

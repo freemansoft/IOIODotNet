@@ -35,7 +35,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageTo
 {
-    public interface IAnalogInputCloseCommand : ICommandToIOIO, IPostMessageCommand
+    public interface IAnalogInputCloseCommand : ICommandIOIO, IPostMessageCommand
     {
         int BoundPin { get; }
 

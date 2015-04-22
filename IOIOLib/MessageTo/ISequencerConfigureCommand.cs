@@ -36,7 +36,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageTo
 {
-    public interface ISequencerConfigureCommand : ICommandToIOIO, IPostMessageCommand
+    public interface ISequencerConfigureCommand : ICommandIOIO, IPostMessageCommand
     {
         ISequencerChannelConfig[] ChannelConfiguration { get; }
     }

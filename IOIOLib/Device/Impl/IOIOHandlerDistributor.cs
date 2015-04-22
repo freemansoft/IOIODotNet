@@ -39,7 +39,7 @@ using System.Threading.Tasks;
 namespace IOIOLib.Device.Impl
 {
     /// <summary>
-    /// TODO: This class should be a dispatcher for event listeners.
+    /// Lets us have more than one handler. This lets us use different threading models for different observer chains
     /// </summary>
     public class IOIOHandlerDistributor : IIncomingHandlerIOIO
     {

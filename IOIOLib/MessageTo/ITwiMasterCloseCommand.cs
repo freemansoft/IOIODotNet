@@ -39,7 +39,11 @@ using System.Threading.Tasks;
 /// </summary>
 namespace IOIOLib.MessageTo
 {
-    public interface ITwiMasterCloseCommand : ICommandToIOIO, IPostMessageCommand
+    public interface ITwiMasterCloseCommand : ICommandIOIO, IPostMessageCommand
     {
+        /// <summary>
+        /// populated after alloc.  used by other calls
+        /// </summary>
+        TwiSpec TwiDef { get; }
     }
 }

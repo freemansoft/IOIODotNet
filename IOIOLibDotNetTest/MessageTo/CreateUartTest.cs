@@ -74,12 +74,14 @@ namespace IOIOLibDotNetTest.MessageTo
 			string helloWorld = "Hello World";
 			byte[] helloWorldBytes = System.Text.Encoding.ASCII.GetBytes(helloWorld);
 
-			UartSendCommand commandSend = new UartSendCommand(commandCreate.UartDef, helloWorldBytes, helloWorldBytes.Length);
+            LOG.Debug("Sending Hello World");
+			UartSendDataCommand commandSend = new UartSendDataCommand(commandCreate.UartDef, helloWorldBytes, helloWorldBytes.Length);
 			commandSend.Alloc(rManager);
 			commandSend.ExecuteMessage(fooOut);
 			System.Threading.Thread.Sleep(50);
 
-			UartCloseCommand commandClose = new UartCloseCommand(commandCreate.UartDef);
+            LOG.Debug("Sending Hello World");
+            UartCloseCommand commandClose = new UartCloseCommand(commandCreate.UartDef);
 			commandClose.Alloc(rManager);
 			commandClose.ExecuteMessage(fooOut);
 			System.Threading.Thread.Sleep(50);

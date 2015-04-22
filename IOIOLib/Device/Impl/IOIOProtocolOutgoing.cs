@@ -286,6 +286,7 @@ namespace IOIOLib.Device.Impl
 
         public virtual void setAnalogInSampling(int pin, bool enable)
         {
+            LOG.Debug("Sending ANALOG_IN_SAMPLING");
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.SET_ANALOG_IN_SAMPLING);
             writeByte((enable ? 0x80 : 0x00) | (pin & 0x3F));
@@ -294,6 +295,7 @@ namespace IOIOLib.Device.Impl
 
         public virtual void uartData(int uartNum, int numBytes, byte[] data)
         {
+            LOG.Debug("Sending UART_DATA");
             if (numBytes > 64)
             {
                 throw new ArgumentException(
@@ -323,6 +325,7 @@ namespace IOIOLib.Device.Impl
 
         public virtual void uartClose(int uartNum)
         {
+            LOG.Debug("Sending UART_CLOSE");
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.UART_CONFIG);
             writeByte(uartNum << 6);
@@ -332,6 +335,7 @@ namespace IOIOLib.Device.Impl
 
         public virtual void setPinUart(int pin, int uartNum, bool tx, bool enable)
         {
+            LOG.Debug("Sending UART_OPEN"); // not exactly right
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.SET_PIN_UART);
             writeByte(pin);

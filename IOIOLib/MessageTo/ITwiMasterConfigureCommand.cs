@@ -92,7 +92,7 @@ namespace IOIOLib.MessageTo
      * 
      * @see IOIO#openTwiMaster(int, ioio.lib.api.TwiMaster.Rate, boolean)
      */
-    public interface ITwiMasterConfigureCommand : ICommandToIOIO, IPostMessageCommand
+    public interface ITwiMasterConfigureCommand : ICommandIOIO, IPostMessageCommand
     {
         /// <summary>
         /// populated after alloc.  used by other calls

@@ -27,46 +27,24 @@
  * or implied.
  */
 
+using IOIOLib.Component.Types;
 using IOIOLib.Device.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using IOIOLib.Device;
-using IOIOLib.Component.Types;
-using IOIOLib.Util;
 
-namespace IOIOLib.MessageTo.Impl
+namespace IOIOLib.MessageTo
 {
-    public class UartSendCommand : IUartSendCommand
+    public interface IUartSendDataCommand : ICommandIOIO, IPostMessageCommand
     {
-		private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(UartCloseCommand));
+		UartSpec UartDef { get; }
 
-		public UartSpec UartDef { get; private set; }
-
-		public byte[] Data { get; private set; }
-		public int Size { get; private set; }
-
-
-        internal UartSendCommand(UartSpec uart, byte[] data, int size)
-        {
-            this.UartDef = uart;
-			this.Data = data;
-			this.Size = size;
-        }
-
-        public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound)
-        {
-			outBound.uartData(UartDef.UartNumber, Size, Data);
-			return true;
-		}
-
-
-
-		public bool Alloc(IResourceManager rManager)
-		{
-			return true;
-		}
-	}
+        /// <summary>
+        /// Number of bytes that will sit in the I2C payload buffer
+        /// </summary>
+        /// <returns></returns>
+        int PayloadSize();
+    }
 }

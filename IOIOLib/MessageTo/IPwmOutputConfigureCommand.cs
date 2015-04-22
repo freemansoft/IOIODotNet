@@ -37,7 +37,7 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.MessageTo
 {
-    public interface IPwmOutputConfigureCommand : ICommandToIOIO, IPostMessageCommand
+    public interface IPwmOutputConfigureCommand : ICommandIOIO, IPostMessageCommand
     {
 		PwmOutputSpec PwmDef { get; }
 

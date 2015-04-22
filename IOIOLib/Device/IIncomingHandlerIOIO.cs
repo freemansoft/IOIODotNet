@@ -38,7 +38,8 @@ using System.Threading.Tasks;
 namespace IOIOLib.Device
 {
     /// <summary>
-    /// The incoming protocol handler
+    /// The incoming protocol handler.
+    /// This signature set is retained to make it easier to map to new features in the Java code
     /// </summary>
     public interface IIncomingHandlerIOIO
     {

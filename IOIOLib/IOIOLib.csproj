@@ -81,7 +81,7 @@
     <Compile Include="Connection\IOIOConnectionFactory.cs" />
     <Compile Include="Convenience\FindDeviceHack.cs" />
     <Compile Include="Device\Impl\ObserverConnectionState.cs" />
-    <Compile Include="Device\Impl\IOIOHandleAbstract.cs" />
+    <Compile Include="Device\Impl\IOIOHandlerObservableAbstract.cs" />
     <Compile Include="Device\Impl\IOIOHandlerObservable.cs" />
     <Compile Include="Device\Impl\IOIOHandlerObservableNoWaitParallel.cs" />
     <Compile Include="Device\Impl\ObserverCaptureQueue.cs" />
@@ -101,6 +101,7 @@
     <Compile Include="MessageFrom\IAnalogInFrom.cs" />
     <Compile Include="MessageFrom\IDigitalInFrom.cs" />
     <Compile Include="MessageFrom\ICapSenseFrom.cs" />
+    <Compile Include="Message\IMessageIOIO.cs" />
     <Compile Include="Message\IMessageNotificationIOIO.cs" />
     <Compile Include="Message\Impl\IOIOMessageNotification.cs" />
     <Compile Include="Message\IObservableIOIO.cs" />
@@ -211,14 +212,14 @@
     <Compile Include="MessageFrom\IUartFrom.cs" />
     <Compile Include="MessageFrom\IUartCloseFrom.cs" />
     <Compile Include="MessageFrom\IUartOpenFrom.cs" />
-    <Compile Include="MessageTo\ICommandToIOIO.cs" />
+    <Compile Include="MessageTo\ICommandIOIO.cs" />
     <Compile Include="MessageTo\IDigitalInputCloseCommand.cs" />
     <Compile Include="MessageTo\Impl\PwmOutputUpdatePulseWidthCommand.cs" />
     <Compile Include="MessageTo\Impl\PwmOutputUpdateDutyCycleCommand.cs" />
     <Compile Include="MessageTo\Impl\PwmOutputUpdateCommand.cs" />
     <Compile Include="MessageTo\Impl\TwiMasterSendDataCommand.cs" />
     <Compile Include="MessageTo\Impl\TwiMasterConfigureCommand.cs" />
-    <Compile Include="MessageTo\Impl\UartSendCommand.cs" />
+    <Compile Include="MessageTo\Impl\UartSendDataCommand.cs" />
     <Compile Include="MessageTo\IPwmOutputCloseCommand.cs" />
     <Compile Include="MessageTo\IDigitalOutputCloseCommand.cs" />
     <Compile Include="MessageTo\Impl\AnalogInputCloseCommand.cs" />
@@ -242,7 +243,7 @@
     <Compile Include="MessageTo\IPwmOutputUpdateCommand.cs" />
     <Compile Include="MessageTo\ITwiMasterSendDataCommand.cs" />
     <Compile Include="MessageTo\ITwiMasterCloseCommand.cs" />
-    <Compile Include="MessageTo\IUartSendCommand.cs" />
+    <Compile Include="MessageTo\IUartSendDataCommand.cs" />
     <Compile Include="MessageTo\IUartCloseCommand.cs" />
     <Compile Include="MessageTo\Impl\SequencerConfigureCommand.cs" />
     <Compile Include="MessageTo\Impl\DigitalOutputSetValueCommand.cs" />
