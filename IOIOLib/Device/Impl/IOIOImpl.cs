@@ -40,6 +40,7 @@ using IOIOLib.Util;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -94,6 +95,7 @@ namespace IOIOLib.Device.Impl
 
         /// <summary>
         /// This lets you add a custom handler if you want to pick one of the other threading models
+        /// for your observers
         /// </summary>
         /// <param name="conn"></param>
         /// <param name="customHandler">your handler.  This always adds:
@@ -126,16 +128,15 @@ namespace IOIOLib.Device.Impl
         /// <summary>
         /// Wrap the custom handler with our instrumentation handlers
         /// </summary>
-        /// <param name="customHandler">optional handler provided by object creator</param>
+        /// <param name="customHandler">optional handler provided by object creator. </param>
         private void ConfigureHandlers(IIncomingHandlerIOIO customHandler, List<IObserverIOIO> observers)
         {
             CaptureObservable_ = new IOIOHandlerObservable();
-
             CapturedConnectionInformation_ = new ObserverConnectionState();
             CaptureObservable_.Subscribe(CapturedConnectionInformation_);
             CapturedLogs_ = new ObserverLog(10);
             CaptureObservable_.Subscribe(CapturedLogs_);
-            
+            // observers using the default handler threading model
             if (observers != null)
             {
                 foreach (IObserverIOIO oneObserver in observers)
@@ -143,7 +144,7 @@ namespace IOIOLib.Device.Impl
                     CaptureObservable_.Subscribe(oneObserver);
                 }
             }
-
+            // probably observers attached to something other than the default threading model
             if (customHandler != null)
             {
                 InboundHandler_ = new IOIOHandlerDistributor(
@@ -151,8 +152,7 @@ namespace IOIOLib.Device.Impl
             }
             else
             {
-                InboundHandler_ = new IOIOHandlerDistributor(
-                    new List<IIncomingHandlerIOIO> { CaptureObservable_ });
+                InboundHandler_ = CaptureObservable_;
             }
         }
 
@@ -278,6 +278,9 @@ namespace IOIOLib.Device.Impl
         //////////////////////////////////////////////////////////
 
 
+            /// <summary>
+            /// We should have only one thread pulling items off the queue
+            /// </summary>
         public virtual void run()
         {
 			try
@@ -287,20 +290,20 @@ namespace IOIOLib.Device.Impl
 				while (true)
 				{
 					this.CancelTokenSource_.Token.ThrowIfCancellationRequested();
-					IPostMessageCommand result;
+					IPostMessageCommand nextMessage;
 					// use timeout so we can get cancellation token
 					// use blocking queue so that we aren't spinning
-					bool didTake = WorkQueue.TryTake(out result, timeout);
-					if (didTake && result != null)
+					bool didTake = WorkQueue.TryTake(out nextMessage, timeout);
+					if (didTake && nextMessage != null)
 					{
-                        LOG.Debug("Post: " + result);
-						result.ExecuteMessage(this.OutProt_);
+                        LOG.Debug("Post: " + nextMessage);
+						nextMessage.ExecuteMessage(this.OutProt_);
 					}
 				}
 			}
 			catch (System.Threading.ThreadAbortException e)
 			{
-				LOG.Error(OutgoingTask_.Id + " Probably aborted thread (TAE): " + e.Message);
+                LOG.Error(OutgoingTask_.Id + " Probably aborted: (" + e.GetType() + ")" + e.Message);
 			}
 			catch (ObjectDisposedException e)
 			{
@@ -311,9 +314,14 @@ namespace IOIOLib.Device.Impl
 			{
 				LOG.Error(OutgoingTask_+" Caught Null Reference when sending message",e);
 			}
-			catch (Exception e)
+            catch (IOException e)
+            {
+                LOG.Error(OutgoingTask_.Id + " Probably aborted incoming: (" + e.GetType() + ")" + e.Message);
+                LOG.Error(OutgoingTask_.Id + e.StackTrace);
+            }
+            catch (Exception e)
 			{
-				LOG.Error(OutgoingTask_.Id + " Probably stopping outgoing: (E)" + e.Message);
+				LOG.Error(OutgoingTask_.Id + " Probably stopping outgoing: ("+e.GetType()+")" + e.Message);
 			}
 			finally
 			{

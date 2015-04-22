@@ -21,6 +21,7 @@ using IOIOLib.MessageFrom;
 using IOIOLib.Component.Types;
 using IOIOLib.MessageTo;
 using IOIOLib.Device.Types;
+using IOIOLib.Message;
 
 namespace WpfUI
 {
@@ -41,11 +42,14 @@ namespace WpfUI
             ComPort_Field.Text = comPort;
             if (comPort != null) { 
                 IOIOConnection connection = new SerialConnectionFactory().CreateConnection(comPort);
-                ObserverConnectionState handlerCaptureState = new ObserverConnectionState();
                 IOIOHandlerObservable handlerNotifier = new IOIOHandlerObservable();
-                handlerNotifier.Subscribe(handlerCaptureState);
-                handlerNotifier.Subscribe(new MessageObserver(this.MessageLog));
-                OurImpl_  = new IOIOImpl(connection, handlerNotifier);
+
+                ObserverConnectionState handlerCaptureState = new ObserverConnectionState();
+                MessageObserver textBoxObserver = new MessageObserver(this.MessageLog);
+
+                OurImpl_  = new IOIOImpl(connection, new List<IObserverIOIO>()
+                    { handlerCaptureState, textBoxObserver}
+                    );
                 OurImpl_.WaitForConnect();
 
                 IConnectedDeviceResponse device = handlerCaptureState.ConnectedDeviceDescription();

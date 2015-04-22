@@ -282,7 +282,7 @@ namespace IOIOLib.Device.Impl
                         case (int)IOIOProtocolCommands.UART_DATA:
                             arg1 = readByte();
                             size = (arg1 & 0x3F) + 1;
-                                data = readBytes(size);
+                            data = readBytes(size);
                             Handler_.HandleUartData(arg1 >> 6, size, data);
                             break;
 
@@ -458,18 +458,23 @@ namespace IOIOLib.Device.Impl
             }
             catch (System.Threading.ThreadAbortException e)
             {
-                LOG.Error(IncomingTask_.Id + " Probably aborted thread (TAE): " + e.Message);
+                LOG.Error(IncomingTask_.Id + " Probably aborted: (" + e.GetType() + ")" + e.Message);
                 LOG.Error(IncomingTask_.Id + e.StackTrace);
             }
             catch (ObjectDisposedException e)
             {
                 //// see this when steram is closed
-                LOG.Error(IncomingTask_.Id + " Probably closed incoming Stream_: (ODE)" + e.Message);
+                LOG.Error(IncomingTask_.Id + " Probably closed incoming Stream_: (" + e.GetType() + ")" + e.Message);
+                LOG.Error(IncomingTask_.Id + e.StackTrace);
+            }
+            catch (IOException e)
+            {
+                LOG.Error(IncomingTask_.Id + " Probably aborted incoming: (" + e.GetType() + ")" + e.Message);
                 LOG.Error(IncomingTask_.Id + e.StackTrace);
             }
             catch (Exception e)
             {
-                LOG.Error(IncomingTask_.Id + " Probably stopping incoming: (E)" + e.Message);
+                LOG.Error(IncomingTask_.Id + " Unexepcted Exception: (" + e.GetType() + ")" + e.Message);
                 LOG.Error(IncomingTask_.Id + e.StackTrace);
             }
             finally
