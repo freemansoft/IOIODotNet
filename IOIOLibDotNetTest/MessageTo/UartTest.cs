@@ -125,7 +125,8 @@ namespace IOIOLibDotNetTest.MessageTo
             // create byte buffer
             // only 64 can be sent in a single message
             StringBuilder builder = new StringBuilder();
-            for (int i = 0; i < 4; i++)
+            int numBlock10 = 4;
+            for (int i = 0; i < numBlock10; i++)
             {
                 builder.Append( "0123456789");
             }
@@ -133,7 +134,8 @@ namespace IOIOLibDotNetTest.MessageTo
 
             // overrun the internal buffer to make sure observer flow control is working
             char hack = 'A';
-            for (int i = 0; i < 3; i++) {
+            int numBufferSend = 3;
+            for (int i = 0; i < numBufferSend; i++) {
                 byte[] helloWorldBytes = System.Text.Encoding.ASCII.GetBytes(helloWorld+hack);
                 LOG.Debug("Sending long string " + i + ":" + helloWorldBytes.Length);
                 UartSendDataCommand commandSend = new UartSendDataCommand(commandCreate.UartDef, helloWorldBytes);
@@ -148,26 +150,31 @@ namespace IOIOLibDotNetTest.MessageTo
             UartCloseCommand commandClose = new UartCloseCommand(commandCreate.UartDef);
             ourImpl.PostMessage(commandClose);
 
-            System.Threading.Thread.Sleep(5000);
-            // wait until we get the close ack
-            //while (this.CapturedSingleQueueAllType_.OfType<IUartCloseFrom>().Count() == 0) { 
-            //    System.Threading.Thread.Sleep(10);
-            //}
-
-            // IUartFrom is the parent interface for all messages coming from the UARt
-            Assert.AreEqual(1 + 1 + helloWorld.Count() + 1, this.CapturedSingleQueueAllType_.OfType<IUartFrom>().Count());
+            // either sleep for some time 
+            //System.Threading.Thread.Sleep(5000);
+            // or wait until we get the close ack
+            while (this.CapturedSingleQueueAllType_.OfType<IUartCloseFrom>().Count() == 0) { 
+                System.Threading.Thread.Sleep(10);
+            }
 
             Assert.AreEqual(1, this.CapturedSingleQueueAllType_.OfType<IUartOpenFrom>().Count(), "didn't get IUartOpenFrom");
             Assert.AreEqual(1, this.CapturedSingleQueueAllType_.OfType<IUartReportTxStatusFrom>().Count(), "didn't get IUartReportTXStatusFrom");
 
+            int expectedDataPacketsReceived = (numBlock10 * 10 + 1) * numBufferSend;
             IEnumerable<IUartDataFrom> readValues = this.CapturedSingleQueueAllType_.OfType<IUartDataFrom>();
-            Assert.AreEqual(helloWorld.Count(), readValues.Count(), "Didn't find the number of expected IUartFrom: " + readValues.Count());
+            Assert.AreEqual(expectedDataPacketsReceived, readValues.Count(), "Didn't find the number of expected IUartFrom: " + readValues.Count());
+
             // logging the messages with any other string doesn't show the messages themselves !?
             LOG.Debug("Captured " + +this.CapturedSingleQueueAllType_.Count());
             LOG.Debug(this.CapturedSingleQueueAllType_.GetEnumerator());
 
             Assert.AreEqual(1, this.CapturedSingleQueueAllType_.OfType<IUartCloseFrom>().Count());
-            // should verify close command in the resource
+            // should verify close command in the Resource manager
+
+            // We get back one packet for each character send + open, TX buffer status ,close
+            int expectedNumDataPackets = expectedDataPacketsReceived;
+            Assert.AreEqual(1 + 1 + expectedNumDataPackets + 1, this.CapturedSingleQueueAllType_.OfType<IUartFrom>().Count());
+
         }
     }
 }

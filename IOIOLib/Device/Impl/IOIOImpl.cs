@@ -72,7 +72,11 @@ namespace IOIOLib.Device.Impl
         /// <summary>
         /// used internally to manage IOIO state like board resources
         /// </summary>
-        private IObservableHandlerIOIO CaptureObservable_;
+        private IObservableHandlerIOIO CaptureInboundObservable_;
+        /// <summary>
+        /// used internally to manage IOIO state like board resources
+        /// </summary>
+        private IObservableHandlerIOIO CaptureOutboundObservable_;
         /// <summary>
         /// our current board configuration
         /// </summary>
@@ -136,27 +140,29 @@ namespace IOIOLib.Device.Impl
         /// <param name="customHandler">optional handler provided by object creator. </param>
         private void ConfigureHandlers(IIncomingHandlerIOIO customHandler, List<IObserverIOIO> observers)
         {
-            //CaptureObservable_ = new IOIOHandlerObservable();
-            CaptureObservable_ = new IOIOHandlerObservableNoWait();
+            // we want this one to be blocking so that outbound wait for resources
+            CaptureOutboundObservable_ = new IOIOHandlerObservable();
+            // we want this one to be non blocking
+            CaptureInboundObservable_ = new IOIOHandlerObservableNoWait();
             CapturedConnectionInformation_ = new ObserverConnectionState();
-            CaptureObservable_.Subscribe(CapturedConnectionInformation_);
+            CaptureInboundObservable_.Subscribe(CapturedConnectionInformation_);
             // observers using the default handler threading model
             if (observers != null)
             {
                 foreach (IObserverIOIO oneObserver in observers)
                 {
-                    CaptureObservable_.Subscribe(oneObserver);
+                    CaptureInboundObservable_.Subscribe(oneObserver);
                 }
             }
             // probably observers attached to something other than the default threading model
             if (customHandler != null)
             {
                 InboundHandler_ = new IOIOHandlerDistributor(
-                    new List<IIncomingHandlerIOIO> { CaptureObservable_, customHandler });
+                    new List<IIncomingHandlerIOIO> { CaptureInboundObservable_, customHandler });
             }
             else
             {
-                InboundHandler_ = CaptureObservable_;
+                InboundHandler_ = CaptureInboundObservable_;
             }
         }
 
@@ -203,8 +209,9 @@ namespace IOIOLib.Device.Impl
                 State_ = IOIOState.CONNECTED;
 				ResourceManager resourceManagerImpl = new ResourceManager(CapturedConnectionInformation_.EstablishConnectionFrom_.Hardware);
                 BoardResourceManager_ = resourceManagerImpl;
-                // kind of an ugly coupling to the implementation .. could create an interface but I'm tired
-                resourceManagerImpl.RegisterWithObservable(CaptureObservable_);
+                // Hook the resource manager observers to inbound and outbound observables
+                resourceManagerImpl.RegisterWithObservable(CaptureInboundObservable_);
+                resourceManagerImpl.RegisterWithObservable(CaptureOutboundObservable_);
             }
             LOG.Info("Hardware is " + CapturedConnectionInformation_.EstablishConnectionFrom_);
         }
@@ -317,7 +324,7 @@ namespace IOIOLib.Device.Impl
                         {
                             // this really exists for TX buffer calculation, 
                             // ie: IOIO internal resource management
-                            this.CaptureObservable_.HandleMessage(possibleNotifyableMessage);
+                            this.CaptureOutboundObservable_.HandleMessage(possibleNotifyableMessage);
                         }
                         */
                         LOG.Debug("Executing: " + nextMessage);
