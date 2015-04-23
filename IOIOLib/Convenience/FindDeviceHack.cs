@@ -58,7 +58,7 @@ namespace IOIOLib.Convenience
                     }
                     catch (System.UnauthorizedAccessException e)
                     {
-                        LOG.Info("No Permission " + oneConn.ConnectionString());
+                        LOG.Info("No Permission " + oneConn.ConnectionString() + e.Message);
                     }
                 }
                 catch (ConnectionLostException e)

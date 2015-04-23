@@ -1,10 +1,11 @@
-﻿using System;
+﻿using IOIOLib.Message;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IOIOLib.Message
+namespace IOIOLib.Device
 {
     /// <summary>
     /// This is public because public classes implement it.

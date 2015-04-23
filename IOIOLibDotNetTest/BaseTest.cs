@@ -58,7 +58,7 @@ namespace IOIOLibDotNetTest
         internal ObserverLog CapturedLogs_;
         internal ObserverConnectionState CapturedConnectionState_;
         internal ObserverCaptureQueue CapturedSingleQueueAllType_;
-        internal IOIOHandlerObservableAbstract HandlerObservable_;
+        internal IObservableHandlerIOIO HandlerObservable_;
 
         /// <summary>
         /// Create new GoodConnection_ test collections before each test

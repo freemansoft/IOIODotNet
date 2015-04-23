@@ -72,7 +72,7 @@ namespace IOIOLib.Device.Impl
         /// <summary>
         /// used internally to manage IOIO state like board resources
         /// </summary>
-        private IOIOHandlerObservableAbstract CaptureObservable_;
+        private IObservableHandlerIOIO CaptureObservable_;
         /// <summary>
         /// our current board configuration
         /// </summary>

@@ -46,7 +46,7 @@ namespace IOIOLib.Device.Impl
     /// <summary>
     /// This class leaks if you don't read the messages it captures
     /// </summary>
-    public abstract class IOIOHandlerObservableAbstract : IIncomingHandlerIOIO, IObservableIOIO
+    public abstract class IOIOHandlerObservableAbstract : IObservableHandlerIOIO
     {
         private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(IOIOHandlerObservableAbstract));
 
