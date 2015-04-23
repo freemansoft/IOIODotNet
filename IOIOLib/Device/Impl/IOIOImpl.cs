@@ -77,10 +77,6 @@ namespace IOIOLib.Device.Impl
         /// our current board configuration
         /// </summary>
         private ObserverConnectionState CapturedConnectionInformation_;
-        /// <summary>
-        /// really only used for debugging. Retains string information about messages received
-        /// </summary>
-        private ObserverLog CapturedLogs_;
 
 		private IResourceManager BoardResourceManager_;
 
@@ -143,9 +139,7 @@ namespace IOIOLib.Device.Impl
             //CaptureObservable_ = new IOIOHandlerObservable();
             CaptureObservable_ = new IOIOHandlerObservableNoWait();
             CapturedConnectionInformation_ = new ObserverConnectionState();
-            CapturedLogs_ = new ObserverLog(10);
             CaptureObservable_.Subscribe(CapturedConnectionInformation_);
-            CaptureObservable_.Subscribe(CapturedLogs_);
             // observers using the default handler threading model
             if (observers != null)
             {
@@ -313,6 +307,7 @@ namespace IOIOLib.Device.Impl
                         // notify observers we are ABOUT to send a message
                         // the observers can block the send if they are 
                         // waiting for device bus internal buffer space
+                        // this only works if the observer is a blocking observer
                         // this is DIFFERENT than the Java library which hanldes puts each bus buffer in own payload queue
                         IMessageIOIO possibleNotifyableMessage = nextMessage as IMessageIOIO;
                         // post notifications down our internal chain
