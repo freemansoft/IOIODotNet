@@ -57,10 +57,9 @@ namespace IOIOLibDotNetTest.Device.Impl
         {
             IOIOConnection ourConn = this.CreateGoodSerialConnection(false);
             this.CreateCaptureLogHandlerSet();
-            LOG.Debug("Setup Complete");
-
             // we'll add the handler state on top of the default handlers so we don't have to peek into impl
             IOIO ourImpl = CreateIOIOImplAndConnect(ourConn, HandlerObservable_);
+            LOG.Debug("Setup Complete");
             System.Threading.Thread.Sleep(100);	// wait for us to get the hardware ids
 
 			DigitalOutputSpec ledSpec = new DigitalOutputSpec(Spec.LED_PIN);

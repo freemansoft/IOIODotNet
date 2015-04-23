@@ -22,11 +22,6 @@ namespace IOIOLib.Device.Impl
     {
         private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(ObserverTxStatusUart));
 
-        /// <summary>
-        /// buffer space remainin
-        /// </summary>
-        private int Remaining_ = 0;
-
         public void OnCompleted()
         {
             // do nothing
@@ -42,23 +37,38 @@ namespace IOIOLib.Device.Impl
             ClearCount(value.UartNum);
         }
 
-        public void OnNext(IUartSendDataCommand value)
-        {
-            int key = value.UartDef.UartNumber;
-            this.Remaining_ = UpdateTXBufferState(key, -value.PayloadSize());
-            LOG.Debug("Device:" + key + " BufferDepth:" + Remaining_);
-        }
-
         public void OnNext(IUartOpenFrom value)
         {
             ClearCount(value.UartNum);
         }
 
+        /// <summary>
+        /// Sent by IOIO. Tells us how much buffer space is left.
+        /// </summary>
+        /// <param name="value"></param>
         public void OnNext(IUartReportTxStatusFrom value)
         {
             int key = value.UartNum;
-            this.Remaining_ = SetTXBufferState(key, value.BytesRemaining);
-            LOG.Debug("Device:" + key + " BufferDepth:" + Remaining_);
+            int newRemaining = SetTXBufferState(key, value.BytesRemaining);
+            LOG.Debug("Device:" + key + " BufferDepth:" + newRemaining);
+        }
+
+        /// <summary>
+        /// received when we are about to send data
+        /// </summary>
+        /// <param name="value"></param>
+        public void OnNext(IUartSendDataCommand value)
+        {
+            int key = value.UartDef.UartNumber;
+            // wait until we know there is room on the remote side
+            int bytesBeforeAction = GetTXBufferState(key);
+            while (bytesBeforeAction < value.PayloadSize())
+            {
+                System.Threading.Thread.Sleep(5);
+                bytesBeforeAction = GetTXBufferState(key);
+            }
+            int newRemaining = UpdateTXBufferState(key, -value.PayloadSize());
+            LOG.Debug("Device:" + key + " BufferRemaining:" + newRemaining);
         }
 
     }

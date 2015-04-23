@@ -41,6 +41,8 @@ namespace IOIOLib.MessageTo
     {
 		UartSpec UartDef { get; }
 
+         byte[] Data { get; }
+
         /// <summary>
         /// Number of bytes that will sit in the I2C payload buffer
         /// </summary>

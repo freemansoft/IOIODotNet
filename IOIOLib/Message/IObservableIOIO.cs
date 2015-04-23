@@ -15,6 +15,8 @@ namespace IOIOLib.Message
     {
         /// <summary>
         /// the one method subclass ned to implement
+        /// This is called <b>before</b> an outbound message is sent
+        /// It is called <b>after</b> an inbound message is received
         /// </summary>
         /// <param name="message"></param>
         void HandleMessage(IMessageIOIO message);

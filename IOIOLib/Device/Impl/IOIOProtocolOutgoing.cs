@@ -70,10 +70,12 @@ namespace IOIOLib.Device.Impl
 
         private void writeBytes(byte[] buf, int offset, int size)
         {
-            while (size-- > 0)
-            {
-                writeByte(((int)buf[offset++]) & 0xFF);
-            }
+            LOG.Debug("sending: " + LoggingUtilities.ByteArrayToString(buf,size));
+            Stream_.Write(buf, offset, size);
+            //while (size-- > 0)
+            //{
+            //    writeByte(((int)buf[offset++]) & 0xFF);
+            //}
         }
 
         public virtual void beginBatch()
@@ -304,16 +306,14 @@ namespace IOIOLib.Device.Impl
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.UART_DATA);
             writeByte((numBytes - 1) | uartNum << 6);
-            for (int i = 0; i < numBytes; ++i)
-            {
-                writeByte(((int)data[i]) & 0xFF);
-            }
+            writeBytes(data, 0, numBytes);
             endBatch();
         }
 
         public virtual void uartConfigure(int uartNum, int rate, bool speed4x,
                 UartStopBits stopbits, UartParity parity)
         {
+            LOG.Debug("Sending UART_CONFIG");
             int parbits = parity == UartParity.EVEN ? 1 : (parity == UartParity.ODD ? 2 : 0);
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.UART_CONFIG);
@@ -335,7 +335,7 @@ namespace IOIOLib.Device.Impl
 
         public virtual void setPinUart(int pin, int uartNum, bool tx, bool enable)
         {
-            LOG.Debug("Sending UART_OPEN"); // not exactly right
+            LOG.Debug("Sending UART_CONFIG_PIN"); // not exactly right
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.SET_PIN_UART);
             writeByte(pin);

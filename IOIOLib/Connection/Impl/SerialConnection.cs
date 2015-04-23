@@ -57,15 +57,18 @@ namespace IOIOLib.Connection.Impl
 
         public virtual void WaitForConnect()
         {
-            Port_ = new SerialPort(ConnectionString_);
+            Port_ = new SerialPort(ConnectionString_,38400,Parity.None,8,StopBits.One);
             Port_.ReceivedBytesThreshold = 1;
             Port_.ReadTimeout = 2000;
             //Port_.ReadTimeout = SerialPort.InfiniteTimeout;
             // receive 6 bytes from accellerometer takes 1-2msec @ 9600 and <1msec @ 38400
-            Port_.BaudRate = 38400;
+            //Port_.BaudRate = 38400;
             // from the IOIO java code
             Port_.DtrEnable = true;
             Port_.Open();
+            // this will toss the initialization strings
+            //Port_.DiscardInBuffer();
+            //Port_.DiscardOutBuffer();
             System.Threading.Thread.Sleep(100);
         }
 

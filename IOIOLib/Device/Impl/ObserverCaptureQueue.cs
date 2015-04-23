@@ -46,7 +46,7 @@ namespace IOIOLib.Device.Impl
         public void OnNext(IMessageFromIOIO message)
         {
            
-            LOG.Debug("Enqueue:" + message);
+            LOG.Debug("Received:" + message);
             CapturedMessages_.Enqueue(message);
         }
 

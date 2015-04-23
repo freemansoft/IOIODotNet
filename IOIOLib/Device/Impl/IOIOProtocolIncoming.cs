@@ -215,6 +215,7 @@ namespace IOIOLib.Device.Impl
                             break;
 
                         case (int)IOIOProtocolCommands.SOFT_RESET:
+                            // why only analog pins?
                             AnalogFramePins_.Clear();
                             Handler_.HandleSoftReset();
                             break;
@@ -282,6 +283,8 @@ namespace IOIOLib.Device.Impl
                         case (int)IOIOProtocolCommands.UART_DATA:
                             arg1 = readByte();
                             size = (arg1 & 0x3F) + 1;
+                            // HACK HACK HACK while troubleshooting a buffer issue
+                            // size = 1;
                             data = readBytes(size);
                             Handler_.HandleUartData(arg1 >> 6, size, data);
                             break;
@@ -441,7 +444,7 @@ namespace IOIOLib.Device.Impl
                             }
                             catch (Exception e)
                             {
-                                throw new IOException("Unexpected eveent: " + arg1, e);
+                                throw new IOException("Unexpected event: " + arg1, e);
                             }
                             break;
 
@@ -474,7 +477,7 @@ namespace IOIOLib.Device.Impl
             }
             catch (Exception e)
             {
-                LOG.Error(IncomingTask_.Id + " Unexepcted Exception: (" + e.GetType() + ")" + e.Message);
+                LOG.Error(IncomingTask_.Id + " Unexpected Exception: (" + e.GetType() + ")" + e.Message);
                 LOG.Error(IncomingTask_.Id + e.StackTrace);
             }
             finally

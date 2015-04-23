@@ -100,5 +100,9 @@ namespace IOIOLib.MessageTo.Impl
 			}
 			return true;
 		}
-	}
+        public override string ToString()
+        {
+            return base.ToString() + "Uart:" + this.UartDef.UartNumber;
+        }
+    }
 }

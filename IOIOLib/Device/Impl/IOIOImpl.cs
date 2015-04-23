@@ -72,7 +72,7 @@ namespace IOIOLib.Device.Impl
         /// <summary>
         /// used internally to manage IOIO state like board resources
         /// </summary>
-        private IOIOHandlerObservable CaptureObservable_;
+        private IOIOHandlerObservableAbstract CaptureObservable_;
         /// <summary>
         /// our current board configuration
         /// </summary>
@@ -140,7 +140,8 @@ namespace IOIOLib.Device.Impl
         /// <param name="customHandler">optional handler provided by object creator. </param>
         private void ConfigureHandlers(IIncomingHandlerIOIO customHandler, List<IObserverIOIO> observers)
         {
-            CaptureObservable_ = new IOIOHandlerObservable();
+            //CaptureObservable_ = new IOIOHandlerObservable();
+            CaptureObservable_ = new IOIOHandlerObservableNoWait();
             CapturedConnectionInformation_ = new ObserverConnectionState();
             CapturedLogs_ = new ObserverLog(10);
             CaptureObservable_.Subscribe(CapturedConnectionInformation_);
@@ -290,7 +291,7 @@ namespace IOIOLib.Device.Impl
 
 
             /// <summary>
-            /// We should have only one thread pulling items off the queue
+            /// We only one thread pulling items off the queue
             /// </summary>
         public virtual void run()
         {
@@ -307,18 +308,25 @@ namespace IOIOLib.Device.Impl
 					bool didTake = WorkQueue.TryTake(out nextMessage, timeout);
 					if (didTake && nextMessage != null)
 					{
-                        LOG.Debug("Post: " + nextMessage);
-						nextMessage.ExecuteMessage(this.OutProt_);
-                        ICommandIOIO nextCommand = nextMessage as ICommandIOIO;
+                        /*
+                        LOG.Debug("Execution candidate: " + nextMessage);
+                        // notify observers we are ABOUT to send a message
+                        // the observers can block the send if they are 
+                        // waiting for device bus internal buffer space
+                        // this is DIFFERENT than the Java library which hanldes puts each bus buffer in own payload queue
+                        IMessageIOIO possibleNotifyableMessage = nextMessage as IMessageIOIO;
                         // post notifications down our internal chain
                         // This works only for observers on CaptureObservable_
                         // This does not post outbound messages to any observers on custom handlers
-                        if (nextCommand != null)
+                        if (possibleNotifyableMessage != null)
                         {
                             // this really exists for TX buffer calculation, 
                             // ie: IOIO internal resource management
-                            this.CaptureObservable_.HandleMessage(nextCommand);
+                            this.CaptureObservable_.HandleMessage(possibleNotifyableMessage);
                         }
+                        */
+                        LOG.Debug("Executing: " + nextMessage);
+                        nextMessage.ExecuteMessage(this.OutProt_);
                     }
 				}
 			}

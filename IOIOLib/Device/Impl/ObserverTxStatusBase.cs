@@ -22,9 +22,28 @@ namespace IOIOLib.Device.Impl
         /// <summary>
         /// adds the passed in bytes to the dcurrent number of bytes
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="numBytesChange"></param>
-        /// <returns></returns>
+        /// <param name="key">bus unit identifier, uart num, Twi bus num...</param>
+        /// <returns>number of bytes left in remote buffer.  -1 if bus not initialized</returns>
+        internal int GetTXBufferState(int key)
+        {
+            // update requires the old value
+            int oldRemaining;
+            bool gotValue = BufferDepth_.TryGetValue(key, out oldRemaining);
+            if (gotValue) { 
+                return oldRemaining;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+
+        /// <summary>
+        /// adds the passed in bytes to the dcurrent number of bytes
+        /// </summary>
+        /// <param name="key">bus unit identifier, uart num, Twi bus num...</param>
+        /// <param name="numBytesChange">number of bytes to increment or decrement the buffer</param>
+        /// <returns>avalable buffer space</returns>
         internal int UpdateTXBufferState(int key, int numBytesChange)
         {
             // make sure we always have a key with an initial value. Ignore success/fail code
@@ -43,9 +62,9 @@ namespace IOIOLib.Device.Impl
         /// <summary>
         /// adds the passed in bytes to the dcurrent number of bytes
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="numBytesRemaining"></param>
-        /// <returns></returns>
+        /// <param name="key">bus unit identifier, uart num, Twi bus num...</param>
+        /// <param name="numBytesRemaining">current buffer size</param>
+        /// <returns>available buffer space.  should be same as numBytesRemaining</returns>
         internal int SetTXBufferState(int key, int numBytesRemaining)
         {
             // make sure we always have a key with an initial value. Ignore success/fail code

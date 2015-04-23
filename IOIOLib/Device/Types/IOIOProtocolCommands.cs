@@ -56,8 +56,8 @@ namespace IOIOLib.Device.Types
         REPORT_ANALOG_IN_STATUS = 0x0B,
         SET_ANALOG_IN_SAMPLING = 0x0C,
         REPORT_ANALOG_IN_FORMAT = 0x0C,
-        UART_CONFIG = 0x0D,
-        UART_STATUS = 0x0D,
+        UART_CONFIG = 0x0D, // outbound open / close status
+        UART_STATUS = 0x0D, // inbound open / close status
         UART_DATA = 0x0E,
         SET_PIN_UART = 0x0F,
         UART_REPORT_TX_STATUS = 0x0F,

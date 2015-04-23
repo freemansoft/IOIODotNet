@@ -2,6 +2,7 @@
 using IOIOLib.MessageFrom;
 using IOIOLib.Util;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,7 @@ namespace IOIOLib.Device.Impl
         /// <summary>
         /// TODO:  Use more efficient queue that retains last N
         /// </summary>
-        internal List<string> CapturedLogs_ = new List<string>();
+        internal ConcurrentQueue<string> CapturedLogs_ = new ConcurrentQueue<string>();
 
         internal int MaxCount_ = 5;
 
@@ -45,10 +46,12 @@ namespace IOIOLib.Device.Impl
         {
             string logString = message.ToString();
             LOG.Debug(logString);
-            CapturedLogs_.Add(logString);
-            if (MaxCount_ > 0 && CapturedLogs_.Count > MaxCount_)
+            CapturedLogs_.Enqueue(logString);
+            while (MaxCount_ > 0 && CapturedLogs_.Count > MaxCount_)
             {
-                CapturedLogs_.RemoveAt(0);
+                // we dont' care what the results are
+                string foo;
+                CapturedLogs_.TryDequeue(out foo);
             }
         }
     }

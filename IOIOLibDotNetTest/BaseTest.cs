@@ -58,7 +58,7 @@ namespace IOIOLibDotNetTest
         internal ObserverLog CapturedLogs_;
         internal ObserverConnectionState CapturedConnectionState_;
         internal ObserverCaptureQueue CapturedSingleQueueAllType_;
-        internal IOIOHandlerObservable HandlerObservable_;
+        internal IOIOHandlerObservableAbstract HandlerObservable_;
 
         /// <summary>
         /// Create new GoodConnection_ test collections before each test
@@ -141,7 +141,7 @@ namespace IOIOLibDotNetTest
             CapturedSingleQueueAllType_ = new ObserverCaptureQueue();
             CapturedLogs_ = new ObserverLog(10);
             CapturedConnectionState_ = new ObserverConnectionState();
-            HandlerObservable_ = new IOIOHandlerObservable();
+            HandlerObservable_ = new IOIOHandlerObservableNoWait();
             HandlerObservable_.Subscribe(CapturedLogs_);
             HandlerObservable_.Subscribe(CapturedConnectionState_);
             HandlerObservable_.Subscribe(CapturedSingleQueueAllType_);

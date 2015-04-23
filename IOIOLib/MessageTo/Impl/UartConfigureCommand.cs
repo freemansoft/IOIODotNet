@@ -122,5 +122,11 @@ namespace IOIOLib.MessageTo.Impl
 			this.UartDef = new UartSpec(this.UartDef.RxSpec, this.UartDef.TxSpec, uart.Id_);
 			return true;
 		}
-	}
+
+        public override string ToString()
+        {
+            return base.ToString() + "Uart:" + this.UartDef.UartNumber
+                + " TX:"+UartDef.TxSpec.Pin+ " RX:"+UartDef.RxSpec.Pin;
+        }
+    }
 }

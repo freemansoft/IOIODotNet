@@ -47,22 +47,25 @@ namespace IOIOLib.MessageTo.Impl
 		public UartSpec UartDef { get; private set; }
 
 		public byte[] Data { get; private set; }
-		public int Size { get; private set; }
 
 
-        internal UartSendDataCommand(UartSpec uart, byte[] data, int size)
+        /// <summary>
+        /// The IOIO supports up to 64 bytes per message
+        /// </summary>
+        /// <param name="uart"></param>
+        /// <param name="data"></param>
+        /// <param name="size"></param>
+        internal UartSendDataCommand(UartSpec uart, byte[] data)
         {
             this.UartDef = uart;
 			this.Data = data;
-			this.Size = size;
         }
 
         public bool ExecuteMessage(Device.Impl.IOIOProtocolOutgoing outBound)
         {
-			outBound.uartData(UartDef.UartNumber, Size, Data);
+			outBound.uartData(UartDef.UartNumber, Data.Length, Data);
 			return true;
 		}
-
 
 
 		public bool Alloc(IResourceManager rManager)
@@ -74,7 +77,12 @@ namespace IOIOLib.MessageTo.Impl
         {
             // does not include the uart number which is used to determine which buffer payload goes in
             // size + the data
-            return 1 + this.Data.Length;
+            return this.Data.Length;
+        }
+
+        public override string ToString()
+        {
+            return base.ToString() + "Uart:" + this.UartDef.UartNumber+ " Size:"+this.PayloadSize();
         }
 
     }
