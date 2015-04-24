@@ -49,6 +49,7 @@ namespace IOIOLib.Device.Impl
     {
         private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(IOIOProtocolIncoming));
 
+        // in theory , there is only incoming protocol handler per IOIO so these fields do not have to be thread safe
         private List<int> AnalogPinValues_ = new List<int>();
         private List<int> AnalogFramePins_ = new List<int>();
         private List<int> NewFramePins_ = new List<int>();
@@ -140,23 +141,23 @@ namespace IOIOLib.Device.Impl
                             throw new IOException("Unexpected Stream_ closure");
                         }
 
-                        LOG.Debug(IncomingTask_.Id + " received 0x" + b.ToString("X"));
+                        LOG.Debug("T:"+IncomingTask_.Id + " received 0x" + b.ToString("X"));
                         return b;
                     }
                     catch (TimeoutException e)
                     {
-                        LOG.Debug(IncomingTask_.Id + " readByte " + e.Message + " retrying");
+                        LOG.Debug("T:"+IncomingTask_.Id + " readByte " + e.Message + " retrying");
                     }
                 }
             }
             catch (System.Threading.ThreadAbortException e)
             {
-                LOG.Warn(IncomingTask_.Id + " Thread aborted while in read ", e);
+                LOG.Warn("T:"+IncomingTask_.Id + " Thread aborted while in read ", e);
                 throw e;
             }
             catch (IOException e)
             {
-                LOG.Warn(IncomingTask_.Id + " IOIO disconnected while in read");
+                LOG.Warn("T:"+IncomingTask_.Id + " IOIO disconnected while in read");
                 throw e;
             }
         }
@@ -198,7 +199,7 @@ namespace IOIOLib.Device.Impl
                 {
                     CancelTokenSource_.Token.ThrowIfCancellationRequested();
                     arg1 = readByte();
-                    LOG.Debug(IncomingTask_.Id + " Processing reply Type " + arg1.ToString("X"));
+                    LOG.Debug("T:"+IncomingTask_.Id + " Processing reply Type " + arg1.ToString("X"));
                     switch (arg1)
                     {
                         case (int)IOIOProtocolCommands.ESTABLISH_CONNECTION:
@@ -412,7 +413,7 @@ namespace IOIOLib.Device.Impl
                             break;
 
                         case (int)IOIOProtocolCommands.SOFT_CLOSE:
-                            LOG.Debug(IncomingTask_.Id + " Received soft close.");
+                            LOG.Debug("T:"+IncomingTask_.Id + " Received soft close.");
                             throw new IOException("Soft close");
 
                         case (int)IOIOProtocolCommands.CAPSENSE_REPORT:
@@ -461,30 +462,30 @@ namespace IOIOLib.Device.Impl
             }
             catch (System.Threading.ThreadAbortException e)
             {
-                LOG.Error(IncomingTask_.Id + " Probably aborted: (" + e.GetType() + ")" + e.Message);
-                LOG.Error(IncomingTask_.Id + e.StackTrace);
+                LOG.Error("T:"+IncomingTask_.Id + " Probably aborted: (" + e.GetType() + ")" + e.Message);
+                LOG.Error("T:"+IncomingTask_.Id + e.StackTrace);
             }
             catch (ObjectDisposedException e)
             {
                 //// see this when steram is closed
-                LOG.Error(IncomingTask_.Id + " Probably closed incoming Stream_: (" + e.GetType() + ")" + e.Message);
-                LOG.Error(IncomingTask_.Id + e.StackTrace);
+                LOG.Error("T:"+IncomingTask_.Id + " Probably closed incoming Stream_: (" + e.GetType() + ")" + e.Message);
+                LOG.Error("T:"+IncomingTask_.Id + e.StackTrace);
             }
             catch (IOException e)
             {
-                LOG.Error(IncomingTask_.Id + " Probably aborted incoming: (" + e.GetType() + ")" + e.Message);
-                LOG.Error(IncomingTask_.Id + e.StackTrace);
+                LOG.Error("T:"+IncomingTask_.Id + " Probably aborted incoming: (" + e.GetType() + ")" + e.Message);
+                LOG.Error("T:"+IncomingTask_.Id + e.StackTrace);
             }
             catch (Exception e)
             {
-                LOG.Error(IncomingTask_.Id + " Unexpected Exception: (" + e.GetType() + ")" + e.Message);
-                LOG.Error(IncomingTask_.Id + e.StackTrace);
+                LOG.Error("T:"+IncomingTask_.Id + " Unexpected Exception: (" + e.GetType() + ")" + e.Message);
+                LOG.Error("T:"+IncomingTask_.Id + e.StackTrace);
             }
             finally
             {
                 // we don't play swith Stream_ since we didn't create it
                 Handler_.HandleConnectionLost();
-                LOG.Info(IncomingTask_.Id + " Throwing thread cancel to stop incoming thread");
+                LOG.Info("T:"+IncomingTask_.Id + " Throwing thread cancel to stop incoming thread");
                 CancelTokenSource_.Cancel();
                 // debugger will always stop here in unit tests if test or app dynamically determines what Port_ ot use
                 // just hit continue in the debugger when you get here on startup

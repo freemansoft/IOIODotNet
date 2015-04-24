@@ -39,7 +39,7 @@ namespace IOIOLib.Device.Impl
 
         public void OnNext(IUartOpenFrom value)
         {
-            ClearCount(value.UartNum);
+            SetTXBufferState(value.UartNum,0);
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace IOIOLib.Device.Impl
         public void OnNext(IUartReportTxStatusFrom value)
         {
             int key = value.UartNum;
-            int newRemaining = SetTXBufferState(key, value.BytesRemaining);
+            int newRemaining = UpdateTXBufferState(key, value.BytesRemaining);
             LOG.Debug("Device:" + key + " BufferDepth:" + newRemaining);
         }
 

@@ -288,6 +288,7 @@ namespace IOIOLib.Device.Impl
 
         //////////////////////////////////////////////////////////
         //// Outbound Thread Handling section
+        //// This belongs in IOProtocolOutgoing -- similar to IOProtocolIngoing organization
         //////////////////////////////////////////////////////////
 
 
@@ -309,8 +310,7 @@ namespace IOIOLib.Device.Impl
 					bool didTake = WorkQueue.TryTake(out nextMessage, timeout);
 					if (didTake && nextMessage != null)
 					{
-                        /*
-                        LOG.Debug("Execution candidate: " + nextMessage);
+                        LOG.Debug("T:" + OutgoingTask_.Id+" Execution candidate: " + nextMessage);
                         // notify observers we are ABOUT to send a message
                         // the observers can block the send if they are 
                         // waiting for device bus internal buffer space
@@ -326,38 +326,37 @@ namespace IOIOLib.Device.Impl
                             // ie: IOIO internal resource management
                             this.CaptureOutboundObservable_.HandleMessage(possibleNotifyableMessage);
                         }
-                        */
-                        LOG.Debug("Executing: " + nextMessage);
+                        LOG.Debug("T:" + OutgoingTask_.Id+" Executing: " + nextMessage);
                         nextMessage.ExecuteMessage(this.OutProt_);
                     }
 				}
 			}
 			catch (System.Threading.ThreadAbortException e)
 			{
-                LOG.Error(OutgoingTask_.Id + " Probably aborted: (" + e.GetType() + ")" + e.Message);
+                LOG.Error("T:" + OutgoingTask_.Id + " Probably aborted: (" + e.GetType() + ")" + e.Message);
 			}
 			catch (ObjectDisposedException e)
 			{
 				//// see this when steram is closed
-				LOG.Error(OutgoingTask_.Id + " Probably closed outgoing Stream_: (ODE)" + e.Message);
+				LOG.Error("T:" + OutgoingTask_.Id + " Probably closed outgoing Stream_: (ODE)" + e.Message);
 			}
 			catch (NullReferenceException e)
 			{
-				LOG.Error(OutgoingTask_+" Caught Null Reference when sending message",e);
+				LOG.Error("T:" + OutgoingTask_ + " Caught Null Reference when sending message",e);
 			}
             catch (IOException e)
             {
-                LOG.Error(OutgoingTask_.Id + " Probably aborted incoming: (" + e.GetType() + ")" + e.Message);
-                LOG.Error(OutgoingTask_.Id + e.StackTrace);
+                LOG.Error("T:" + OutgoingTask_.Id + " Probably aborted incoming: (" + e.GetType() + ")" + e.Message);
+                LOG.Error("T:" + OutgoingTask_.Id + e.StackTrace);
             }
             catch (Exception e)
 			{
-				LOG.Error(OutgoingTask_.Id + " Probably stopping outgoing: ("+e.GetType()+")" + e.Message);
+				LOG.Error("T:" + OutgoingTask_.Id + " Probably stopping outgoing: ("+e.GetType()+")" + e.Message);
 			}
 			finally
 			{
 				// we don't play swith Stream_ since we didn't create it
-				LOG.Debug(OutgoingTask_.Id + " Throwing thread cancel to make sure outgoing thread stopped");
+				LOG.Debug("T:" + OutgoingTask_.Id + " Throwing thread cancel to make sure outgoing thread stopped");
 				// this is redundant if we got here because of thread stop
 				this.CancelTokenSource_.Cancel();
 				// debugger will always stop here in unit tests if test dynamically determines what Port_ ot use

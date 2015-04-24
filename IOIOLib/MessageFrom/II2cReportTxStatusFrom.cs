@@ -41,6 +41,10 @@ namespace IOIOLib.MessageFrom
     /// </summary>
     public interface II2cReportTxStatusFrom : II2cFrom
     {
+        /// <summary>
+        /// The Java code is confusing. It calls this bytesRemaining
+        /// but uses it as bytesToAdd down in the buffer management
+        /// </summary>
         int BytesRemaining { get; }
     }
 }

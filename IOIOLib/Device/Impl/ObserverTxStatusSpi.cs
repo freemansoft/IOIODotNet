@@ -33,7 +33,7 @@ namespace IOIOLib.Device.Impl
 
         public void OnNext(ISpiOpenFrom value)
         {
-            ClearCount(value.SpiNum);
+            SetTXBufferState(value.SpiNum,0);
         }
 
         public void OnNext(ISpiReportTxStatusFrom value)

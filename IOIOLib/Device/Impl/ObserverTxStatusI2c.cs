@@ -34,7 +34,7 @@ namespace IOIOLib.Device.Impl
 
         public void OnNext(II2cOpenFrom value)
         {
-            ClearCount(value.I2cNum);
+            SetTXBufferState(value.I2cNum,0);
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace IOIOLib.Device.Impl
         public void OnNext(II2cReportTxStatusFrom value)
         {
             int key = value.I2cNum;
-            int newRemaining = SetTXBufferState(key, value.BytesRemaining);
+            int newRemaining = UpdateTXBufferState(key, value.BytesRemaining);
             LOG.Debug("Device:" + key + " BufferDepth:" + newRemaining);
         }
 

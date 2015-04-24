@@ -32,6 +32,7 @@ using IOIOLib.Message;
 using IOIOLib.Util;
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -54,7 +55,9 @@ namespace IOIOLib.Device.Impl
         private ObserverTxStatusSpi SpiObserver_;
         private ObserverTxStatusUart UartObserver_;
         // visible to IOIO - ugh
-        internal List<IObserverIOIO> Observers_ { get; private set; }
+        // do I need to initialize this if the only constructor populates it?
+        internal ConcurrentBag<IObserverIOIO> Observers_ { get; private set; }
+            = new ConcurrentBag<IObserverIOIO>();
 
         public ResourceManager(Hardware hardware)
         {
@@ -74,7 +77,7 @@ namespace IOIOLib.Device.Impl
             I2cObserver_ = new ObserverTxStatusI2c();
             SpiObserver_ = new ObserverTxStatusSpi();
             UartObserver_ = new ObserverTxStatusUart();
-            Observers_ = new List<IObserverIOIO>() { I2cObserver_, SpiObserver_, UartObserver_ };
+            Observers_ = new ConcurrentBag<IObserverIOIO>() { I2cObserver_, SpiObserver_, UartObserver_ };
 
     }
 

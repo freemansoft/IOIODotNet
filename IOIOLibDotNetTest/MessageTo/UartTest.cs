@@ -125,16 +125,17 @@ namespace IOIOLibDotNetTest.MessageTo
             // create byte buffer
             // only 64 can be sent in a single message
             StringBuilder builder = new StringBuilder();
-            int numBlock10 = 4;
+            int numBlock10 = 3;
             for (int i = 0; i < numBlock10; i++)
             {
                 builder.Append( "0123456789");
             }
             string helloWorld = builder.ToString();
 
-            // overrun the internal buffer to make sure observer flow control is working
+            // should overrun the internal buffer to make sure observer flow control is working
+            // buffer is 256 so cnt=4 means get one buffer update : cnt=7 means more than one full buffer
             char hack = 'A';
-            int numBufferSend = 3;
+            int numBufferSend = 4;
             for (int i = 0; i < numBufferSend; i++) {
                 byte[] helloWorldBytes = System.Text.Encoding.ASCII.GetBytes(helloWorld+hack);
                 LOG.Debug("Sending long string " + i + ":" + helloWorldBytes.Length);
@@ -153,12 +154,17 @@ namespace IOIOLibDotNetTest.MessageTo
             // either sleep for some time 
             //System.Threading.Thread.Sleep(5000);
             // or wait until we get the close ack
-            while (this.CapturedSingleQueueAllType_.OfType<IUartCloseFrom>().Count() == 0) { 
+            int maxTimeMsec = 5000;
+            while (this.CapturedSingleQueueAllType_.OfType<IUartCloseFrom>().Count() == 0) {
+                Assert.IsTrue(maxTimeMsec > 0, "Did not receive IUartCloseFrom in the expected amount of time");
                 System.Threading.Thread.Sleep(10);
+                maxTimeMsec -= 10;
             }
 
             Assert.AreEqual(1, this.CapturedSingleQueueAllType_.OfType<IUartOpenFrom>().Count(), "didn't get IUartOpenFrom");
-            Assert.AreEqual(1, this.CapturedSingleQueueAllType_.OfType<IUartReportTxStatusFrom>().Count(), "didn't get IUartReportTXStatusFrom");
+            // we should have counted bytes,  count is first buffer size + each update at the 130 mark
+            int numberTxMessages = 1 + ((numBufferSend * numBlock10) / 130);
+            Assert.AreEqual(numberTxMessages, this.CapturedSingleQueueAllType_.OfType<IUartReportTxStatusFrom>().Count(), "didn't get IUartReportTXStatusFrom");
 
             int expectedDataPacketsReceived = (numBlock10 * 10 + 1) * numBufferSend;
             IEnumerable<IUartDataFrom> readValues = this.CapturedSingleQueueAllType_.OfType<IUartDataFrom>();

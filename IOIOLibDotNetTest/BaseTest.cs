@@ -51,8 +51,13 @@ namespace IOIOLibDotNetTest
         /// Capture all connections here so we can make sure we clean them up
         /// </summary>
         private List<IOIOConnection> ConnectionsOpenedDuringTest;
+        /// <summary>
+        /// Capture all devices here so we can make sure we clean them up
+        /// </summary>
         private List<IOIO> DevicesOpenedDuringTest;
-
+        /// <summary>
+        /// Connection variable used by tests to talk to IOIO
+        /// </summary>
         private IOIOConnection GoodConnection_ = null;
 
         internal ObserverLog CapturedLogs_;

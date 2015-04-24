@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 
 ///
 /// This implementation is described at http://joe.blog.freemansoft.com/2015/04/message-routing-using-double-dispatch.html
@@ -192,7 +193,8 @@ namespace IOIOLibDotNetTest.MessageFrom
     /// </summary>
     public class MessageDistributor
     {
-        List<IObserver> RegisteredObservers = new List<IObserver>();
+        ConcurrentBag<IObserver> RegisteredObservers = new ConcurrentBag<IObserver>();
+
 
         /// <summary>
         /// 
