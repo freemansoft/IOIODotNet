@@ -31,6 +31,7 @@ using IOIOLib.Component.Types;
 using IOIOLib.Device.Types;
 using IOIOLib.Util;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -45,12 +46,16 @@ namespace IOIOLib.Device.Impl
     {
         private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(IOIOHandlerDistributor));
 
-        private List<IIncomingHandlerIOIO> Distributees_ = new List<IIncomingHandlerIOIO>();
+        private ConcurrentBag<IIncomingHandlerIOIO> Distributees_ = new ConcurrentBag<IIncomingHandlerIOIO>();
 
         public IOIOHandlerDistributor(List<IIncomingHandlerIOIO> distributees)
         {
-            this.Distributees_.AddRange(distributees);
+            foreach (IIncomingHandlerIOIO oneDistributee in distributees)
+            {
+                this.Distributees_.Add(oneDistributee);
+            }
         }
+
         public virtual void HandleEstablishConnection(byte[] hardwareId, byte[] bootloaderId, byte[] firmwareId)
         {
             foreach (IIncomingHandlerIOIO Distributee in Distributees_)

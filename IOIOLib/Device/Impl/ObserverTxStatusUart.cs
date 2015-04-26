@@ -50,7 +50,7 @@ namespace IOIOLib.Device.Impl
         {
             int key = value.UartNum;
             int newRemaining = UpdateTXBufferState(key, value.BytesRemaining);
-            LOG.Debug("Device:" + key + " BufferDepth:" + newRemaining);
+            LOG.Debug("Device:" + key + " BufAfterReport:" + newRemaining);
         }
 
         /// <summary>
@@ -64,11 +64,12 @@ namespace IOIOLib.Device.Impl
             int bytesBeforeAction = GetTXBufferState(key);
             while (bytesBeforeAction < value.PayloadSize())
             {
+                LOG.Debug("waiting:" + bytesBeforeAction);
                 System.Threading.Thread.Sleep(5);
                 bytesBeforeAction = GetTXBufferState(key);
             }
             int newRemaining = UpdateTXBufferState(key, -value.PayloadSize());
-            LOG.Debug("Device:" + key + " BufferRemaining:" + newRemaining);
+            LOG.Debug("Device:" + key + " BufAfterSend:" + newRemaining);
         }
 
     }

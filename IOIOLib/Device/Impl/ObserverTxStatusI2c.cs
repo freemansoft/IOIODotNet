@@ -32,6 +32,11 @@ namespace IOIOLib.Device.Impl
             // do nothing
         }
 
+        public void OnNext(II2cCloseFrom value)
+        {
+            ClearCount(value.I2cNum);
+        }
+
         public void OnNext(II2cOpenFrom value)
         {
             SetTXBufferState(value.I2cNum,0);
@@ -45,12 +50,7 @@ namespace IOIOLib.Device.Impl
         {
             int key = value.I2cNum;
             int newRemaining = UpdateTXBufferState(key, value.BytesRemaining);
-            LOG.Debug("Device:" + key + " BufferDepth:" + newRemaining);
-        }
-
-        public void OnNext(II2cCloseFrom value)
-        {
-            ClearCount(value.I2cNum);
+            LOG.Debug("Device:" + key + " BufAfterUpdate:" + newRemaining);
         }
 
         /// <summary>
@@ -64,11 +64,12 @@ namespace IOIOLib.Device.Impl
             int bytesBeforeAction = GetTXBufferState(key);
             while (bytesBeforeAction < value.PayloadSize())
             {
+                LOG.Debug("waiting:" + bytesBeforeAction);
                 System.Threading.Thread.Sleep(5);
                 bytesBeforeAction = GetTXBufferState(key);
             }
             int newRemaining = UpdateTXBufferState(key, -value.PayloadSize());
-            LOG.Debug("Device:" + key + " BufferRemaining:" + newRemaining);
+            LOG.Debug("Device:" + key + " BufAfterSend:" + newRemaining);
         }
 
     }

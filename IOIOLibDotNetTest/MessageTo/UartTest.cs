@@ -135,7 +135,7 @@ namespace IOIOLibDotNetTest.MessageTo
             // should overrun the internal buffer to make sure observer flow control is working
             // buffer is 256 so cnt=4 means get one buffer update : cnt=7 means more than one full buffer
             char hack = 'A';
-            int numBufferSend = 4;
+            int numBufferSend = 10;
             for (int i = 0; i < numBufferSend; i++) {
                 byte[] helloWorldBytes = System.Text.Encoding.ASCII.GetBytes(helloWorld+hack);
                 LOG.Debug("Sending long string " + i + ":" + helloWorldBytes.Length);
@@ -163,8 +163,8 @@ namespace IOIOLibDotNetTest.MessageTo
 
             Assert.AreEqual(1, this.CapturedSingleQueueAllType_.OfType<IUartOpenFrom>().Count(), "didn't get IUartOpenFrom");
             // we should have counted bytes,  count is first buffer size + each update at the 130 mark
-            int numberTxMessages = 1 + ((numBufferSend * numBlock10) / 130);
-            Assert.AreEqual(numberTxMessages, this.CapturedSingleQueueAllType_.OfType<IUartReportTxStatusFrom>().Count(), "didn't get IUartReportTXStatusFrom");
+            int expectedNumberTxMessages = 1 + ((numBufferSend * numBlock10 * 10) / 130);
+            Assert.AreEqual(expectedNumberTxMessages, this.CapturedSingleQueueAllType_.OfType<IUartReportTxStatusFrom>().Count(), "didn't get IUartReportTXStatusFrom");
 
             int expectedDataPacketsReceived = (numBlock10 * 10 + 1) * numBufferSend;
             IEnumerable<IUartDataFrom> readValues = this.CapturedSingleQueueAllType_.OfType<IUartDataFrom>();
@@ -177,9 +177,9 @@ namespace IOIOLibDotNetTest.MessageTo
             Assert.AreEqual(1, this.CapturedSingleQueueAllType_.OfType<IUartCloseFrom>().Count());
             // should verify close command in the Resource manager
 
-            // We get back one packet for each character send + open, TX buffer status ,close
+            // We get back one packet for each character sent that was looped back + uart open, TX buffer status uart close
             int expectedNumDataPackets = expectedDataPacketsReceived;
-            Assert.AreEqual(1 + 1 + expectedNumDataPackets + 1, this.CapturedSingleQueueAllType_.OfType<IUartFrom>().Count());
+            Assert.AreEqual(1 + expectedNumberTxMessages + expectedNumDataPackets + 1, this.CapturedSingleQueueAllType_.OfType<IUartFrom>().Count());
 
         }
     }
