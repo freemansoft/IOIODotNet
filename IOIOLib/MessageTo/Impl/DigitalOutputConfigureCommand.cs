@@ -65,5 +65,9 @@ namespace IOIOLib.MessageTo.Impl
 			rManager.Alloc(new Resource(ResourceType.PIN, PinDef.Pin));
 			return true;
 		}
-	}
+        public override string ToString()
+        {
+            return this.GetType().Name;
+        }
+    }
 }

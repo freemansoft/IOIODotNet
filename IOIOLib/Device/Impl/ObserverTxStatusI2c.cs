@@ -20,7 +20,7 @@ namespace IOIOLib.Device.Impl
         IObserver<II2cOpenFrom>, 
         IObserver<II2cCloseFrom>, IObserverIOIO
     {
-        private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(ObserverTxStatusUart));
+        private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(ObserverTxStatusI2c));
 
         public void OnCompleted()
         {

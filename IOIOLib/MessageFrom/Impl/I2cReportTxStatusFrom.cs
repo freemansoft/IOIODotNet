@@ -52,7 +52,7 @@ namespace IOIOLib.MessageFrom.Impl
 
         public override string ToString()
         {
-            return base.ToString() + " I2cNum:" + I2cNum + " NumBytesRemaining:" + BytesRemaining;
+            return this.GetType().Name + ":" + " I2cNum:" + I2cNum + " NumBytesRemaining:" + BytesRemaining;
         }
     }
 }

@@ -50,7 +50,7 @@ namespace IOIOLib.MessageFrom.Impl
 
         public override string ToString()
         {
-            return base.ToString() + " Pin:" + Pin + " FrequencyScale:" + FrequencyScale;
+            return this.GetType().Name + ":" + " Pin:" + Pin + " FrequencyScale:" + FrequencyScale;
         }
     }
 }

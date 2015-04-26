@@ -49,5 +49,10 @@ namespace IOIOLib.MessageFrom.Impl
             this.NumDataBytes = numBytes;
             this.Data = data;
         }
+
+        public override string ToString()
+        {
+            return this.GetType().Name + ":";
+        }
     }
 }

@@ -53,7 +53,7 @@ namespace IOIOLib.MessageFrom.Impl
         }
         public override string ToString()
         {
-            return base.ToString() + " UartNum:" + UartNum + " NumBytes:"+NumDataBytes+ " Data:"+ LoggingUtilities.ByteArrayToString(this.Data, this.NumDataBytes); ;
+            return this.GetType().Name + ":" + " UartNum:" + UartNum + " NumBytes:"+NumDataBytes+ " Data:"+ LoggingUtilities.ByteArrayToString(this.Data, this.NumDataBytes); ;
         }
     }
 }

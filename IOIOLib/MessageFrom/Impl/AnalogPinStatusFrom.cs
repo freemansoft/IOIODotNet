@@ -50,7 +50,7 @@ namespace IOIOLib.MessageFrom.Impl
 
         public override string ToString()
         {
-            return base.ToString() + " Pin:" + Pin + " IsOpen:" + IsOpen;
+            return this.GetType().Name + ":"+ " Pin:" + Pin + " IsOpen:" + IsOpen;
         }
     }
 }

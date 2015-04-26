@@ -68,7 +68,6 @@ namespace IOIOLib.MessageTo.Impl
             this.Rate = rate;
             throw new NotImplementedException("Post(IOpenSpiMasterTo) not tied together in outgoing protocol");
         }
-
         
 		public bool Alloc(IResourceManager rManager)
 		{
@@ -79,5 +78,9 @@ namespace IOIOLib.MessageTo.Impl
 		{
 			throw new NotImplementedException();
 		}
-	}
+        public override string ToString()
+        {
+            return this.GetType().Name;
+        }
+    }
 }

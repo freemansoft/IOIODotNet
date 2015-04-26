@@ -101,7 +101,7 @@ namespace IOIOLib.MessageTo.Impl
 
         public override string ToString()
         {
-            return base.ToString() + "Twi:" + this.TwiDef.TwiNum 
+            return this.GetType().Name +" Twi:" + this.TwiDef.TwiNum 
                 + " ExpectBack:"+this.NumBytesRead
                 + " SendingBytes:" + LoggingUtilities.ByteArrayToString(this.Data, this.Data.Length);
         }

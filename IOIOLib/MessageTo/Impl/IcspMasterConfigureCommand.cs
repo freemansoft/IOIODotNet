@@ -45,5 +45,9 @@ namespace IOIOLib.MessageTo.Impl
 		{
 			throw new NotImplementedException();
 		}
-	}
+        public override string ToString()
+        {
+            return this.GetType().Name;
+        }
+    }
 }

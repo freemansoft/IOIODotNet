@@ -48,7 +48,7 @@ namespace IOIOLib.MessageFrom.Impl
 
         public override string ToString()
         {
-            return base.ToString() + " BytesRemain:" + BytesRemaining;
+            return this.GetType().Name + ":" + " BytesRemain:" + BytesRemaining;
         }
     }
 }

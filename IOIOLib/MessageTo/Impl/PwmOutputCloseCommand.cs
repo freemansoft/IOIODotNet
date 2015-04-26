@@ -67,5 +67,9 @@ namespace IOIOLib.MessageTo.Impl
 			rManager.Free(new Resource(ResourceType.OUTCOMPARE, this.PwmDef.PwmNumber));
 			return true;
 		}
-	}
+        public override string ToString()
+        {
+            return this.GetType().Name;
+        }
+    }
 }

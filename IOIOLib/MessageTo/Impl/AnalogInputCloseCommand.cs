@@ -62,5 +62,10 @@ namespace IOIOLib.MessageTo.Impl
             outBound.setPinDigitalIn(BoundPin, DigitalInputSpecMode.FLOATING);
             return true;
 		}
-	}
+
+        public override string ToString()
+        {
+            return this.GetType().Name;
+        }
+    }
 }

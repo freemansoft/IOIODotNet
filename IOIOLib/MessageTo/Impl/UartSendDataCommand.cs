@@ -82,7 +82,7 @@ namespace IOIOLib.MessageTo.Impl
 
         public override string ToString()
         {
-            return base.ToString() + "Uart:" + this.UartDef.UartNumber+ " Size:"+this.PayloadSize();
+            return this.GetType().Name + " Uart:" + this.UartDef.UartNumber+ " Size:"+this.PayloadSize();
         }
 
     }

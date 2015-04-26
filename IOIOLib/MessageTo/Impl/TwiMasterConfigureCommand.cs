@@ -69,5 +69,9 @@ namespace IOIOLib.MessageTo.Impl
             outBound.i2cConfigureMaster(this.TwiDef.TwiNum, this.TwiDef.Rate, this.TwiDef.SmBus);
             return true;
 		}
-	}
+        public override string ToString()
+        {
+            return this.GetType().Name;
+        }
+    }
 }

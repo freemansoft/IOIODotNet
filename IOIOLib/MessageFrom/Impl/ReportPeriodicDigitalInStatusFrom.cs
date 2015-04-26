@@ -51,7 +51,7 @@ namespace IOIOLib.MessageFrom.Impl
         public override string ToString()
         {
             // may need to come up with way to display boolean array
-            return base.ToString() + " FrameNum:"+FrameNum+ " Values:"+ this.Values;
+            return this.GetType().Name + ":" + " FrameNum:" + FrameNum+ " Values:"+ this.Values;
         }
     }
 }

@@ -52,7 +52,7 @@ namespace IOIOLib.MessageFrom.Impl
 
         public override string ToString()
         {
-            return base.ToString() + " PinNum:" + PinNum + " IsEnabled:" + IsEnabled;
+            return this.GetType().Name + ":" + " PinNum:" + PinNum + " IsEnabled:" + IsEnabled;
         }
     }
 }

@@ -80,6 +80,9 @@ namespace IOIOLib.MessageTo.Impl
 			this.RequestedFrequency = freqHz;
 			this.PulseWidthUSec = float.NaN;
 		}
-
-	}
+        public override string ToString()
+        {
+            return this.GetType().Name;
+        }
+    }
 }

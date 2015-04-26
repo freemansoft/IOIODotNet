@@ -52,7 +52,7 @@ namespace IOIOLib.MessageFrom.Impl
 
         public override string ToString()
         {
-            return base.ToString() + " SeqEvent:" + SeqEvent + " Identifier:" + this.Identifier;
+            return this.GetType().Name + ":" + " SeqEvent:" + SeqEvent + " Identifier:" + this.Identifier;
         }
     }
 }

@@ -58,5 +58,9 @@ namespace IOIOLib.MessageTo.Impl
 			rManager.Free(new Resource(ResourceType.PIN, PinDef.Pin));
 			return true;
 		}
-	}
+        public override string ToString()
+        {
+            return this.GetType().Name;
+        }
+    }
 }

@@ -46,7 +46,7 @@ namespace IOIOLib.MessageFrom.Impl
         }
         public override string ToString()
         {
-            return base.ToString() + " IncapNum:" + IncapNum;
+            return this.GetType().Name + ":" + " IncapNum:" + IncapNum;
         }
     }
 }

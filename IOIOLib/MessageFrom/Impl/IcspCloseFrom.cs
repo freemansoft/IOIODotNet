@@ -38,5 +38,9 @@ namespace IOIOLib.MessageFrom.Impl
 {
     public class IcspCloseFrom : IOIOMessageNotification<IIcspCloseFrom>, IIcspCloseFrom
     {
+        public override string ToString()
+        {
+            return this.GetType().Name + ":";
+        }
     }
 }

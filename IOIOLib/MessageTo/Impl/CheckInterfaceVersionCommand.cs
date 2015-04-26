@@ -56,6 +56,10 @@ namespace IOIOLib.MessageTo.Impl
 		{
 			return true;
 		}
+        public override string ToString()
+        {
+            return this.GetType().Name;
+        }
 
-	}
+    }
 }

@@ -49,7 +49,7 @@ namespace IOIOLib.MessageFrom.Impl
 
         public override string ToString()
         {
-            return base.ToString() + " PinNum:" + PinNum + " Value:" + Value;
+            return this.GetType().Name + ":" + " PinNum:" + PinNum + " Value:" + Value;
         }
     }
 }

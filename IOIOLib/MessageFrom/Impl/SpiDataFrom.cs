@@ -55,7 +55,7 @@ namespace IOIOLib.MessageFrom.Impl
         }
         public override string ToString()
         {
-            return base.ToString() + " NumBytes:" + NumDataBytes + " Data:" + LoggingUtilities.ByteArrayToString(this.Data, this.NumDataBytes);
+            return this.GetType().Name + ":" + " NumBytes:" + NumDataBytes + " Data:" + LoggingUtilities.ByteArrayToString(this.Data, this.NumDataBytes);
         }
     }
 }

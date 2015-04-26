@@ -78,5 +78,9 @@ namespace IOIOLib.MessageTo.Impl
 			this.RequestedFrequency = spec.Frequency; // no freq change
 		}
 
-	}
+        public override string ToString()
+        {
+            return this.GetType().Name;
+        }
+    }
 }

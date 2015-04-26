@@ -145,10 +145,11 @@ namespace IOIOLib.Device.Impl
             LOG.Debug("Sending CHECK_INTERFACE");
             beginBatch();
             writeByte((byte)IOIOProtocolCommands.CHECK_INTERFACE);
-            for (int i = 0; i < 8; ++i)
-            {
-                writeByte(interfaceId[i]);
-            }
+            writeBytes(interfaceId, 0, 8);
+            //for (int i = 0; i < 8; ++i)
+            //{
+            //    writeByte(interfaceId[i]);
+            //}
             endBatch();
         }
 
@@ -229,10 +230,11 @@ namespace IOIOLib.Device.Impl
             writeByte(address & 0xFF);
             writeByte(writeSize);
             writeByte(readSize);
-            for (int i = 0; i < writeSize; ++i)
-            {
-                writeByte(((int)writeData[i]) & 0xFF);
-            }
+            writeBytes(writeData, 0, writeSize);
+            //for (int i = 0; i < writeSize; ++i)
+            //{
+            //    writeByte(((int)writeData[i]) & 0xFF);
+            //}
             endBatch();
         }
 
@@ -387,10 +389,11 @@ namespace IOIOLib.Device.Impl
             {
                 writeByte(responseBytes);
             }
-            for (int i = 0; i < dataBytes; ++i)
-            {
-                writeByte(((int)data[i]) & 0xFF);
-            }
+            writeBytes(data, 0, dataBytes);
+            //for (int i = 0; i < dataBytes; ++i)
+            //{
+            //    writeByte(((int)data[i]) & 0xFF);
+            //}
             endBatch();
         }
 

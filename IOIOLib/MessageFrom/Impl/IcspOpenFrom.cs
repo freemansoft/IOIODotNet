@@ -38,5 +38,9 @@ namespace IOIOLib.MessageFrom.Impl
 {
     public class IcspOpenFrom : IOIOMessageNotification<IIcspOpenFrom>, IIcspOpenFrom
     {
+        public override string ToString()
+        {
+            return this.GetType().Name + ":";
+        }
     }
 }

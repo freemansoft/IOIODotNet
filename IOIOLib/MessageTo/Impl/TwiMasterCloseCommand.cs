@@ -77,5 +77,9 @@ namespace IOIOLib.MessageTo.Impl
             outBound.i2cClose(TwiDef.TwiNum);
             return true;
 		}
-	}
+        public override string ToString()
+        {
+            return this.GetType().Name;
+        }
+    }
 }

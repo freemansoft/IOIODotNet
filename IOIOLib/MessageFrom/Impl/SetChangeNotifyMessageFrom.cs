@@ -51,7 +51,7 @@ namespace IOIOLib.MessageFrom.Impl
 
         public override string ToString()
         {
-            return base.ToString() + " Pin:" + Pin + " ChangeNotify:" + ChangeNotify;
+            return this.GetType().Name + ":" + " Pin:" + Pin + " ChangeNotify:" + ChangeNotify;
         }
     }
 }

@@ -46,7 +46,7 @@ namespace IOIOLib.MessageFrom.Impl
         }
         public override string ToString()
         {
-            return base.ToString() + " SpiNum:" + SpiNum;
+            return this.GetType().Name + ":" + " SpiNum:" + SpiNum;
         }
     }
 }

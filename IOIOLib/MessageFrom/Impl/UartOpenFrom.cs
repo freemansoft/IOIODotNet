@@ -47,7 +47,7 @@ namespace IOIOLib.MessageFrom.Impl
         }
         public override string ToString()
         {
-            return base.ToString() + " UartNum:" + UartNum;
+            return this.GetType().Name + ":" + " UartNum:" + UartNum;
         }
     }
 }

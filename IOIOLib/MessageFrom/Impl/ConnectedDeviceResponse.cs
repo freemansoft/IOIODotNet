@@ -70,7 +70,7 @@ namespace IOIOLib.MessageFrom.Impl
 
         public override string ToString()
         {
-            return base.ToString()+ " HardwareId:"+this.HardwareId+ " BootloaderId:"+this.BootloaderId+ " FirmwareId:"+this.FirmwareId;
+            return this.GetType().Name + ":" + " HardwareId:" + this.HardwareId+ " BootloaderId:"+this.BootloaderId+ " FirmwareId:"+this.FirmwareId;
         }
     }
 }

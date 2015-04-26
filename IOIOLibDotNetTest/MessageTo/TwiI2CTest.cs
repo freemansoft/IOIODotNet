@@ -109,7 +109,7 @@ namespace IOIOLibDotNetTest.MessageTo
             this.CreateCaptureLogHandlerSet();
             // we'll inject our handlers on top of the default handlers so we don't have to peek into impl
             IOIO ourImpl = CreateIOIOImplAndConnect(ourConn, HandlerObservable_);
-            ObserveI2cResultFrom observer = new ObserveI2cResultFrom();
+            ObserverI2cResultTest observer = new ObserverI2cResultTest();
             HandlerObservable_.Subscribe(observer);
             LOG.Debug("Setup Complete");
             System.Threading.Thread.Sleep(100);  // wait for us to get the hardware ids
@@ -155,35 +155,46 @@ namespace IOIOLibDotNetTest.MessageTo
             // clear the list
             observer.allEvents = new ConcurrentQueue<II2cResultFrom>();
 
-            // Read back the current values -- whould wait for in to go high but....
-            // Top most bit in address turns on auto inc.  that is weirder than usual
+            // Read back the current values -- could wait for int to go high but can't see it....
+            // Top most bit in address turns on auto inc.  That is weirder than usual i2c
             // Who thought that there should be no bitwise byte operators but then came up with |= ?
-            // never get more than 2 behind
+            // never get more than allowableOutstanding behind
             // on my machine it takes 15msec to receive a message after sending
+            int allowableOutstanding = 0;
             int numReps = 50;
             int count = 0;
+            int maxWaitCount = 50;
             for (int i = 1; i <= numReps; i++)
             {
-                LOG.Debug("Send read-only command retreive xyz - with auto increment");
+                LOG.Debug("Send read-only command retreive xyz with auto increment sendCount: " +i);
                 observer.LastResult_ = null;
                 byte[] ReadFromFirstOutRegisterWithAutoInc = new byte[] { Gyro_First_Out_Register |= Convert.ToByte(0x80) };
                 ITwiMasterSendDataCommand ReadXYZ = factory.CreateTwiSendData(twiDef, GyroSlaveAddress1, false, ReadFromFirstOutRegisterWithAutoInc, 6);
                 ourImpl.PostMessage(ReadXYZ);
                 count = 0;
-                while (i > observer.allEvents.Count)
+                while (count <= maxWaitCount && i > observer.allEvents.Count + allowableOutstanding)
                 {
-                    LOG.Debug("i:" + i + ",count:" + observer.allEvents.Count);
+                    // waiting for some reply
+                    LOG.Debug("waiting: sendCount:" + i + ", observCount:" + observer.allEvents.Count);
                     System.Threading.Thread.Sleep(5);
                     count++;
-                    if (count > 50) { break; }
+                }
+                if (count >= maxWaitCount)
+                {
+                    Assert.Fail("waitedCount:" + count + " while trying to send");
                 }
             }
+            // this is only needed if maxWaitCount > 0
             count = 0;
-            while (count < 50 && numReps > observer.allEvents.Count)
+            while (count < maxWaitCount && numReps > observer.allEvents.Count)
             {
                 LOG.Debug("i:" + numReps + ",count:" + observer.allEvents.Count);
                 System.Threading.Thread.Sleep(10);
                 count++;
+            }
+            if (count >= maxWaitCount)
+            {
+                Assert.Fail("waited " + count + " while trying to receive");
             }
 
             System.Threading.Thread.Sleep(50);
@@ -308,9 +319,9 @@ namespace IOIOLibDotNetTest.MessageTo
         }
     }
 
-    public class ObserveI2cResultFrom : IObserver<II2cResultFrom>, IObserverIOIO
+    public class ObserverI2cResultTest : IObserver<II2cResultFrom>, IObserverIOIO
     {
-        private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(ObserveI2cResultFrom));
+        private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(ObserverI2cResultTest));
         internal ConcurrentQueue<II2cResultFrom> allEvents = new ConcurrentQueue<II2cResultFrom>();
         internal II2cResultFrom LastResult_;
 
@@ -328,7 +339,12 @@ namespace IOIOLibDotNetTest.MessageTo
         {
             LastResult_ = value;
             allEvents.Enqueue(value);
-            LOG.Debug("Received " + value + " - " + this.ToXYZ(value)); ;
+            if (value.NumDataBytes > 0) { 
+            LOG.Debug("Received:" + value + " xyz: " + this.ToXYZ(value)); ;
+            } else
+            {
+                LOG.Debug("Received:" + value); ;
+            }
         }
 
         public Tuple<int,int,int> ToXYZ(II2cResultFrom value)

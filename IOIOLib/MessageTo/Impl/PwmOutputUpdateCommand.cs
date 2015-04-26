@@ -166,5 +166,9 @@ namespace IOIOLib.MessageTo.Impl
             }
             outBound.setPwmDutyCycle(this.PwmDef.PwmNumber, pulseWidth, fraction);
         }
+        public override string ToString()
+        {
+            return this.GetType().Name;
+        }
     }
 }
