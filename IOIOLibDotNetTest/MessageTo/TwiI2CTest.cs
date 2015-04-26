@@ -160,7 +160,7 @@ namespace IOIOLibDotNetTest.MessageTo
             // Who thought that there should be no bitwise byte operators but then came up with |= ?
             // never get more than allowableOutstanding behind
             // on my machine it takes 15msec to receive a message after sending
-            int allowableOutstanding = 0;
+            int allowableOutstanding = 10;
             int numReps = 50;
             int count = 0;
             int maxWaitCount = 50;

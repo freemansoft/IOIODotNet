@@ -65,17 +65,17 @@ namespace IOIOLib.Device.Impl
             // http://www.sparxeng.com/blog/software/must-use-net-system-io-ports-serialport
             System.Diagnostics.Debug.Assert(b >= 0 && b < 256);
             LOG.Debug("sending: 0x" + b.ToString("X"));
-            Stream_.WriteByte((byte)b);
+            //Stream_.WriteByte((byte)b);
+
+            byte[] oneByte = new byte[1] { (byte)b };
+            Stream_.WriteAsync(oneByte, 0, 1);
         }
 
         private void writeBytes(byte[] buf, int offset, int size)
         {
             LOG.Debug("sending: " + LoggingUtilities.ByteArrayToString(buf,size));
-            Stream_.Write(buf, offset, size);
-            //while (size-- > 0)
-            //{
-            //    writeByte(((int)buf[offset++]) & 0xFF);
-            //}
+            //Stream_.Write(buf, offset, size);
+            Stream_.WriteAsync(buf, offset, size);
         }
 
         public virtual void beginBatch()

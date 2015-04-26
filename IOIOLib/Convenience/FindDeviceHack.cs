@@ -35,7 +35,7 @@ namespace IOIOLib.Convenience
                     try {
                         oneConn.WaitForConnect();
                         // logging without real capture
-                        ObserverLog handlerLog = new ObserverLog(1);
+                        ObserverLogAndCaptureLog handlerLog = new ObserverLogAndCaptureLog(1);
                         // so we can verify
                         ObserverConnectionState handlerState = new ObserverConnectionState();
                         IOIOHandlerObservable observers = new IOIOHandlerObservable();

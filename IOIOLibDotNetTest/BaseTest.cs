@@ -60,9 +60,9 @@ namespace IOIOLibDotNetTest
         /// </summary>
         private IOIOConnection GoodConnection_ = null;
 
-        internal ObserverLog CapturedLogs_;
+        internal ObserverLogAndCaptureLog CapturedLogs_;
         internal ObserverConnectionState CapturedConnectionState_;
-        internal ObserverCaptureQueue CapturedSingleQueueAllType_;
+        internal ObserverCaptureSingleQueue CapturedSingleQueueAllType_;
         internal IObservableHandlerIOIO HandlerObservable_;
 
         /// <summary>
@@ -143,8 +143,8 @@ namespace IOIOLibDotNetTest
         {
             // create handlers of our own so we don't have to peek in and understand how IOIOImpl is configured
 
-            CapturedSingleQueueAllType_ = new ObserverCaptureQueue();
-            CapturedLogs_ = new ObserverLog(10);
+            CapturedSingleQueueAllType_ = new ObserverCaptureSingleQueue();
+            CapturedLogs_ = new ObserverLogAndCaptureLog(10);
             CapturedConnectionState_ = new ObserverConnectionState();
             HandlerObservable_ = new IOIOHandlerObservableNoWait();
             HandlerObservable_.Subscribe(CapturedLogs_);

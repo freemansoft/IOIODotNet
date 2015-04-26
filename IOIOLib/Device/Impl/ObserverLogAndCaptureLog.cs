@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace IOIOLib.Device.Impl
 {
-    public class ObserverLog : IObserver<IMessageFromIOIO>,  IObserverIOIO
+    public class ObserverLogAndCaptureLog : IObserver<IMessageFromIOIO>,  IObserverIOIO
     {
-        private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(ObserverLog));
+        private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(ObserverLogAndCaptureLog));
 
         /// <summary>
         /// TODO:  Use more efficient queue that retains last N
@@ -27,7 +27,7 @@ namespace IOIOLib.Device.Impl
         /// <param name="maxCaptureDepth">number to retain in buffer.  
         /// value less 0 means all which cna be a lot
         /// </param>
-        public ObserverLog(int maxCaptureDepth)
+        public ObserverLogAndCaptureLog(int maxCaptureDepth)
         {
             MaxCount_ = maxCaptureDepth;
         }

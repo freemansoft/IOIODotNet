@@ -84,8 +84,8 @@
     <Compile Include="Device\Impl\IOIOHandlerObservableAbstract.cs" />
     <Compile Include="Device\Impl\IOIOHandlerObservable.cs" />
     <Compile Include="Device\Impl\IOIOHandlerObservableNoWaitParallel.cs" />
-    <Compile Include="Device\Impl\ObserverCaptureQueue.cs" />
-    <Compile Include="Device\Impl\ObserverLog.cs" />
+    <Compile Include="Device\Impl\ObserverCaptureSingleQueue.cs" />
+    <Compile Include="Device\Impl\ObserverLogAndCaptureLog.cs" />
     <Compile Include="Device\Impl\ObserverTxStatusBase.cs" />
     <Compile Include="Device\Impl\ObserverTxStatusI2c.cs" />
     <Compile Include="Device\Impl\ObserverTxStatusSpi.cs" />

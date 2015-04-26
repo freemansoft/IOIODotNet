@@ -13,9 +13,9 @@ namespace IOIOLib.Device.Impl
     /// Maybe we should set it up so that it only holds the last N messages like the LogObserver?
     /// One difference with the log observer is that there is no destructive read operation in that observer.
     /// </summary>
-    public class ObserverCaptureQueue : IObserver<IMessageFromIOIO>,  IObserverIOIO, IEnumerable<IMessageFromIOIO>
+    public class ObserverCaptureSingleQueue : IObserver<IMessageFromIOIO>,  IObserverIOIO, IEnumerable<IMessageFromIOIO>
     {
-        private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(ObserverCaptureQueue));
+        private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(ObserverCaptureSingleQueue));
 
         /// <summary>
         /// Use GetMessage to pull a message or IEnumerable to get matching messages without Dequeuing
@@ -29,7 +29,7 @@ namespace IOIOLib.Device.Impl
         /// <param name="maxCaptureDepth">number to retain in buffer.  
         /// value less 0 means all which cna be a lot
         /// </param>
-        public ObserverCaptureQueue()
+        public ObserverCaptureSingleQueue()
         {
         }
 
