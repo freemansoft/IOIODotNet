@@ -9,7 +9,9 @@ using System.Collections.Generic;
 namespace IOIOLib.Device.Impl
 {
     /// <summary>
-    /// Captures all inbound messages in a queue.  This can get large if you don't pull the messages.
+    /// Captures all inbound messages in a single queue.  This can get large if you don't pull the messages.
+    /// This is used a lot in UNIT tests to capture inbound messages for Assert analysis.
+    /// <para></para>
     /// Maybe we should set it up so that it only holds the last N messages like the LogObserver?
     /// One difference with the log observer is that there is no destructive read operation in that observer.
     /// </summary>

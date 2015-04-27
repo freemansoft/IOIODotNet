@@ -32,6 +32,7 @@ using IOIOLib.Connection;
 using IOIOLib.Device;
 using IOIOLib.Device.Impl;
 using IOIOLib.Device.Types;
+using IOIOLib.Message;
 using IOIOLib.MessageFrom;
 using IOIOLib.MessageTo;
 using IOIOLib.MessageTo.Impl;
@@ -104,6 +105,7 @@ namespace IOIOLibDotNetTest.MessageTo
 
         /// <summary>
         /// Assumes pins 31 and 32 are tied together
+        /// this test sends a bunch of data
         /// </summary>
         [TestMethod]
         public void UartTest_BigBufferOut31In32()
@@ -113,7 +115,8 @@ namespace IOIOLibDotNetTest.MessageTo
             this.CreateCaptureLogHandlerSet();
             // MUST use IOIOImpl to get "send" notifications for buffer management
             // add our own handler so we don't have to grovel around in there
-            IOIO ourImpl = CreateIOIOImplAndConnect(ourConn, HandlerObservable_);
+            IOIO ourImpl = CreateIOIOImplAndConnect(ourConn,
+                new List<IObserverIOIO>() { this.CapturedConnectionState_, this.CapturedSingleQueueAllType_, this.CapturedLogs_ });
             LOG.Debug("Setup Complete");
             System.Threading.Thread.Sleep(100); // wait for us to get the hardware ids
 
@@ -144,7 +147,9 @@ namespace IOIOLibDotNetTest.MessageTo
                 hack++;
                 System.Threading.Thread.Sleep(50);
             }
-            // this will get blocked by data sends but it may run before all data sent from IOIO buffers
+            // message posts will possibly block if IOIO UART ran out of buffer space
+            // but it may still run before all data sent from IOIO buffers to the UART pins
+            // really node for this since we wait for UART close
             System.Threading.Thread.Sleep(300);
 
             LOG.Debug("Closing Uart");

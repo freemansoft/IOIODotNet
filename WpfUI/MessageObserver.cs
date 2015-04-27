@@ -1,12 +1,13 @@
 ﻿using IOIOLib.Message;
 using IOIOLib.MessageFrom;
+using IOIOLib.MessageTo;
 using System;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace WpfUI
 {
-    internal class MessageObserver : IObserverIOIO, IObserver<IMessageFromIOIO>
+    internal class MessageObserver : IObserverIOIO, IObserver<IMessageFromIOIO>, IObserver<IPostMessageCommand>
     {
         private TextBox MessageLog_;
 
@@ -21,6 +22,13 @@ namespace WpfUI
 
         public void OnError(Exception error)
         {
+        }
+
+        public void OnNext(IPostMessageCommand value)
+        {
+            this.MessageLog_.Dispatcher.BeginInvoke((Action)(() =>
+                this.MessageLog_.AppendText(value.ToString() + "\n")
+                ));
         }
 
         public void OnNext(IMessageFromIOIO value)

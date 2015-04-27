@@ -137,15 +137,18 @@ namespace IOIOLib.Device.Impl
         /// Wrap the custom handler with our instrumentation handlers.
         /// Additional observers may be added once the board is initialized
         /// </summary>
-        /// <param name="customHandler">optional handler provided by object creator. </param>
+        /// <param name="customHandler">additional handler provided by object creator. </param>
+        /// <param name="customHandler">observers added to the default handler. </param>
         private void ConfigureHandlers(IIncomingHandlerIOIO customHandler, List<IObserverIOIO> observers)
         {
             // we want this one to be blocking so that outbound wait for resources
             CaptureOutboundObservable_ = new IOIOHandlerObservable();
             // we want this one to be non blocking
             CaptureInboundObservable_ = new IOIOHandlerObservableNoWait();
+
             CapturedConnectionInformation_ = new ObserverConnectionState();
             CaptureInboundObservable_.Subscribe(CapturedConnectionInformation_);
+            // add the passed in observers
             // observers using the default handler threading model
             if (observers != null)
             {

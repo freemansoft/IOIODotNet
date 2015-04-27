@@ -31,6 +31,7 @@ using IOIOLib.Connection;
 using IOIOLib.Connection.Impl;
 using IOIOLib.Device;
 using IOIOLib.Device.Impl;
+using IOIOLib.Message;
 using IOIOLib.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -63,6 +64,9 @@ namespace IOIOLibDotNetTest
         internal ObserverLogAndCaptureLog CapturedLogs_;
         internal ObserverConnectionState CapturedConnectionState_;
         internal ObserverCaptureSingleQueue CapturedSingleQueueAllType_;
+        /// <summary>
+        /// This handler exists to support incoming/outgoing protocol tests with no IOIOImpl
+        /// </summary>
         internal IObservableHandlerIOIO HandlerObservable_;
 
         /// <summary>
@@ -155,13 +159,14 @@ namespace IOIOLibDotNetTest
 
         /// <summary>
         /// Use this to create your IOIO because it retains references to Tasks that are automatically cleaned up for you
+        /// This should probably changed to take a list of observers instead
         /// </summary>
         /// <param name="connection"></param>
         /// <param name="handler"></param>
         /// <returns></returns>
-        internal IOIO CreateIOIOImplAndConnect(IOIOConnection connection, IIncomingHandlerIOIO handler)
+        internal IOIO CreateIOIOImplAndConnect(IOIOConnection connection, List<IObserverIOIO> observers)
         {
-            IOIO ourImpl = new IOIOImpl(connection, handler);
+            IOIO ourImpl = new IOIOImpl(connection, observers);
             DevicesOpenedDuringTest.Add(ourImpl);
             ourImpl.WaitForConnect();
             return ourImpl;

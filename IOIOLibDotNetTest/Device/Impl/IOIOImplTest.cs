@@ -32,6 +32,7 @@ using IOIOLib.Connection;
 using IOIOLib.Device;
 using IOIOLib.Device.Impl;
 using IOIOLib.Device.Types;
+using IOIOLib.Message;
 using IOIOLib.MessageFrom;
 using IOIOLib.MessageFrom.Impl;
 using IOIOLib.MessageTo;
@@ -58,7 +59,9 @@ namespace IOIOLibDotNetTest.Device.Impl
             IOIOConnection ourConn = this.CreateGoodSerialConnection(false);
             this.CreateCaptureLogHandlerSet();
             // we'll add the handler state on top of the default handlers so we don't have to peek into impl
-            IOIO ourImpl = CreateIOIOImplAndConnect(ourConn, HandlerObservable_);
+            IOIO ourImpl = CreateIOIOImplAndConnect(ourConn,
+                new List<IObserverIOIO>() { this.CapturedConnectionState_, this.CapturedSingleQueueAllType_, this.CapturedLogs_ });
+
             LOG.Debug("Setup Complete");
             System.Threading.Thread.Sleep(100);	// wait for us to get the hardware ids
 
@@ -89,7 +92,8 @@ namespace IOIOLibDotNetTest.Device.Impl
             LOG.Debug("Setup Complete");
 
             // we'll add the handler state on top of the default handlers so we don't have to peek into impl
-            IOIO ourImpl = CreateIOIOImplAndConnect(ourConn, HandlerObservable_);
+            IOIO ourImpl = CreateIOIOImplAndConnect(ourConn,
+                new List<IObserverIOIO>() { this.CapturedConnectionState_, this.CapturedSingleQueueAllType_, this.CapturedLogs_ });
             System.Threading.Thread.Sleep(100); // wait for us to get the hardware ids
 
             // SHOULD USE THE FACTORY instead of this lame ...

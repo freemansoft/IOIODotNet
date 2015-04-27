@@ -42,7 +42,6 @@ namespace WpfUI
             ComPort_Field.Text = comPort;
             if (comPort != null) { 
                 IOIOConnection connection = new SerialConnectionFactory().CreateConnection(comPort);
-                IOIOHandlerObservable handlerNotifier = new IOIOHandlerObservable();
 
                 ObserverConnectionState handlerCaptureState = new ObserverConnectionState();
                 MessageObserver textBoxObserver = new MessageObserver(this.MessageLog);
