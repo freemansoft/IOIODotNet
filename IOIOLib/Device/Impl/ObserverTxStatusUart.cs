@@ -18,7 +18,9 @@ namespace IOIOLib.Device.Impl
         IObserver<IUartSendDataCommand>,
         IObserver<IUartReportTxStatusFrom>, 
         IObserver<IUartOpenFrom>, 
-        IObserver<IUartCloseFrom>, IObserverIOIO
+        IObserver<IUartCloseFrom>, 
+        IObserver<IUartDataFrom>,
+        IObserverIOIO
     {
         private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(ObserverTxStatusUart));
 
@@ -49,8 +51,8 @@ namespace IOIOLib.Device.Impl
         public void OnNext(IUartReportTxStatusFrom value)
         {
             int key = value.UartNum;
-            int newRemaining = UpdateTXBufferState(key, value.BytesRemaining);
-            LOG.Debug("Device:" + key + " BufAfterReport:" + newRemaining);
+            ObserverTxStatusPoco newRemaining = UpdateTXBufferState(key, value.BytesRemaining,0,0);
+            LOG.Debug("Device:" + key + " remaining after IUartReportTxStatusFrom:" + newRemaining);
         }
 
         /// <summary>
@@ -68,8 +70,19 @@ namespace IOIOLib.Device.Impl
                 System.Threading.Thread.Sleep(5);
                 bytesBeforeAction = GetTXBufferState(key);
             }
-            int newRemaining = UpdateTXBufferState(key, -value.PayloadSize());
-            LOG.Debug("Device:" + key + " BufAfterSend:" + newRemaining);
+            ObserverTxStatusPoco newRemaining = UpdateTXBufferState(
+                key, -value.PayloadSize(),value.Data.Length,0);
+            LOG.Debug("Device:" + key + " remaining after IUartSendDataCommand:" + newRemaining);
+        }
+
+        /// <summary>
+        /// has no buffer impact
+        /// </summary>
+        /// <param name="value">object containing data from IOIO</param>
+        public void OnNext(IUartDataFrom value)
+        {
+            int key = value.UartNum;
+            UpdateTXBufferState(key, 0, 0, value.NumDataBytes);
         }
 
     }

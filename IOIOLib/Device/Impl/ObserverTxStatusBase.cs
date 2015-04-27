@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IOIOLib.Util;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,14 +10,16 @@ namespace IOIOLib.Device.Impl
 {
     class ObserverTxStatusBase
     {
+        private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(ObserverTxStatusBase));
+
         /// <summary>
         /// dictionary of buffer depths keyed by bus number/id/uart
         /// </summary>
-        internal ConcurrentDictionary<int, int> BufferDepth_ { get; private set; }
+        internal ConcurrentDictionary<int, ObserverTxStatusPoco> BufferDepth_ { get; private set; }
 
         public ObserverTxStatusBase()
         {
-            BufferDepth_ = new ConcurrentDictionary<int, int>();
+            BufferDepth_ = new ConcurrentDictionary<int, ObserverTxStatusPoco>();
         }
 
         /// <summary>
@@ -27,62 +30,77 @@ namespace IOIOLib.Device.Impl
         internal int GetTXBufferState(int key)
         {
             // update requires the old value
-            int oldRemaining;
+            ObserverTxStatusPoco oldRemaining;
             bool gotValue = BufferDepth_.TryGetValue(key, out oldRemaining);
-            if (gotValue) { 
-                return oldRemaining;
+            if (gotValue) {
+                //LOG.Debug("GotValue " + oldRemaining);
+                return oldRemaining.NumBytesRemaining;
             }
             else
             {
+                //LOG.Debug("NoValue ");
                 return -1;
             }
         }
 
         /// <summary>
-        /// adds the passed in bytes to the dcurrent number of bytes
+        /// adds the passed in bytes to the current number of bytes
         /// </summary>
         /// <param name="key">bus unit identifier, uart num, Twi bus num...</param>
         /// <param name="numBytesChange">number of bytes to increment or decrement the buffer</param>
         /// <returns>avalable buffer space</returns>
-        internal int UpdateTXBufferState(int key, int numBytesChange)
+        internal ObserverTxStatusPoco UpdateTXBufferState(int key, int numBytesChange, int numSendChange, int numReceiveChange)
         {
             // make sure we always have a key with an initial value. Ignore success/fail code
             // this used to be in a conditional block. TryAdd fails if key exists
-            BufferDepth_.TryAdd(key, 0);
+            BufferDepth_.TryAdd(key, new ObserverTxStatusPoco());
             // update requires the old value
-            int oldRemaining;
+            ObserverTxStatusPoco oldRemaining;
             bool gotValue = BufferDepth_.TryGetValue(key, out oldRemaining);
-            int newRemaining = oldRemaining + numBytesChange;
+            ObserverTxStatusPoco newRemaining = new ObserverTxStatusPoco(
+                oldRemaining.NumBytesRemaining + numBytesChange,
+                oldRemaining.NumSent+numSendChange, 
+                oldRemaining.NumReceived+numReceiveChange);
             // this could fail if we have multiple threads manipulating the map and oldRemaining has changed
             // we should RETRY if we fail
             bool success = BufferDepth_.TryUpdate(key, newRemaining, oldRemaining);
+            if (!success) { 
+                LOG.Info("Failed update: "+ newRemaining+ "->" + oldRemaining);
+            }
             return newRemaining;
         }
 
         /// <summary>
-        /// adds the passed in bytes to the dcurrent number of bytes
+        /// sets the passed in bytes to the current number of bytes
         /// </summary>
         /// <param name="key">bus unit identifier, uart num, Twi bus num...</param>
         /// <param name="numBytesRemaining">current buffer size</param>
         /// <returns>available buffer space.  should be same as numBytesRemaining</returns>
-        internal int SetTXBufferState(int key, int numBytesRemaining)
+        internal ObserverTxStatusPoco SetTXBufferState(int key, int numBytesRemaining)
         {
             // make sure we always have a key with an initial value. Ignore success/fail code
             // this used to be in a conditional block. TryAdd fails if key exists
-            BufferDepth_.TryAdd(key, 0);
+            BufferDepth_.TryAdd(key, new ObserverTxStatusPoco());
             // update requires the old value
-            int oldRemaining;
+            ObserverTxStatusPoco oldRemaining;
             bool gotValue = BufferDepth_.TryGetValue(key, out oldRemaining);
-            int newRemaining = numBytesRemaining;
+            ObserverTxStatusPoco newRemaining = new ObserverTxStatusPoco(
+                 numBytesRemaining, 
+                 oldRemaining.NumSent, 
+                 oldRemaining.NumReceived);
             // this could fail if we have multiple threads manipulating the map and oldRemaining has changed
             // we should RETRY if we fail
             bool success = BufferDepth_.TryUpdate(key, newRemaining, oldRemaining);
+            if (!success)
+            {
+                LOG.Info("Failed set: " + newRemaining + "->" + oldRemaining);
+            }
             return newRemaining;
         }
 
         internal virtual void ClearCount(int key)
         {
-            int removedValue;
+            ObserverTxStatusPoco removedValue;
             BufferDepth_.TryRemove(key, out removedValue);
         }
 

@@ -46,7 +46,7 @@ namespace IOIOLib.MessageTo.Impl
     {
         private int Address;
         private bool IsTenBitAddress;
-        private byte[] Data;
+        public byte[] Data { get; private set; }
         private int NumBytesRead;
 
         /// <summary>

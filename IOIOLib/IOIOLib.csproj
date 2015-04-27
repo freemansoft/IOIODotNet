@@ -88,6 +88,7 @@
     <Compile Include="Device\Impl\ObserverLogAndCaptureLog.cs" />
     <Compile Include="Device\Impl\ObserverTxStatusBase.cs" />
     <Compile Include="Device\Impl\ObserverTxStatusI2c.cs" />
+    <Compile Include="Device\Impl\ObserverTxStatusPoco.cs" />
     <Compile Include="Device\Impl\ObserverTxStatusSpi.cs" />
     <Compile Include="Device\Impl\ObserverTxStatusUart.cs" />
     <Compile Include="Device\IObservableHandlerIOIO.cs" />

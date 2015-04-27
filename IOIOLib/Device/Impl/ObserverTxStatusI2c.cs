@@ -18,7 +18,9 @@ namespace IOIOLib.Device.Impl
         IObserver<ITwiMasterSendDataCommand>,
         IObserver<II2cReportTxStatusFrom>, 
         IObserver<II2cOpenFrom>, 
-        IObserver<II2cCloseFrom>, IObserverIOIO
+        IObserver<II2cCloseFrom>, 
+        IObserver<II2cResultFrom>,
+        IObserverIOIO
     {
         private static IOIOLog LOG = IOIOLogManager.GetLogger(typeof(ObserverTxStatusI2c));
 
@@ -49,8 +51,8 @@ namespace IOIOLib.Device.Impl
         public void OnNext(II2cReportTxStatusFrom value)
         {
             int key = value.I2cNum;
-            int newRemaining = UpdateTXBufferState(key, value.BytesRemaining);
-            LOG.Debug("Device:" + key + " BufAfterUpdate:" + newRemaining);
+            ObserverTxStatusPoco newRemaining = UpdateTXBufferState(key, value.BytesRemaining,0,0);
+            LOG.Debug("Device:" + key + " remaining after II2cReportTxStatusFrom:" + newRemaining);
         }
 
         /// <summary>
@@ -68,9 +70,20 @@ namespace IOIOLib.Device.Impl
                 System.Threading.Thread.Sleep(5);
                 bytesBeforeAction = GetTXBufferState(key);
             }
-            int newRemaining = UpdateTXBufferState(key, -value.PayloadSize());
-            LOG.Debug("Device:" + key + " BufAfterSend:" + newRemaining);
+            ObserverTxStatusPoco newRemaining = UpdateTXBufferState(
+                key, -value.PayloadSize(),value.Data.Length,0);
+            LOG.Debug("Device:" + key + " remaining after ITwiMasterSendDataCommand:" + newRemaining);
         }
 
+        /// <summary>
+        /// has no buffer impact
+        /// </summary>
+        /// <param name="value">object containing data from IOIO</param>
+        public void OnNext(II2cResultFrom value)
+        {
+            int key = value.I2cNum;
+            // could also use value.Data.Length
+            UpdateTXBufferState(key, 0, 0, value.NumDataBytes);
+        }
     }
 }

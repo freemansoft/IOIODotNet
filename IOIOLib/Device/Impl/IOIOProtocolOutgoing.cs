@@ -65,8 +65,9 @@ namespace IOIOLib.Device.Impl
             // http://www.sparxeng.com/blog/software/must-use-net-system-io-ports-serialport
             System.Diagnostics.Debug.Assert(b >= 0 && b < 256);
             LOG.Debug("sending: 0x" + b.ToString("X"));
+            // converting from sync to async got rid of some of the apparent buffer corruption issues 
+            // when sending and receiving to the IOIO at the same time 2015/26/Apr
             //Stream_.WriteByte((byte)b);
-
             byte[] oneByte = new byte[1] { (byte)b };
             Stream_.WriteAsync(oneByte, 0, 1);
         }
@@ -74,6 +75,8 @@ namespace IOIOLib.Device.Impl
         private void writeBytes(byte[] buf, int offset, int size)
         {
             LOG.Debug("sending: " + LoggingUtilities.ByteArrayToString(buf,size));
+            // converting from sync to async got rid of some of the apparent buffer corruption issues 
+            // when sending and receiving to the IOIO at the same time 2015/26/Apr
             //Stream_.Write(buf, offset, size);
             Stream_.WriteAsync(buf, offset, size);
         }

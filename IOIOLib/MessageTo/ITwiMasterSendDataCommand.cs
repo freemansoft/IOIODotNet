@@ -50,6 +50,11 @@ namespace IOIOLib.MessageTo
         TwiSpec TwiDef { get; }
 
         /// <summary>
+        /// the actual data we are sending
+        /// </summary>
+        byte[] Data { get;  }
+
+        /// <summary>
         /// Number of bytes that will sit in the I2C payload buffer
         /// </summary>
         /// <returns></returns>

@@ -39,7 +39,7 @@ namespace IOIOLib.Device.Impl
         public void OnNext(ISpiReportTxStatusFrom value)
         {
             int key = value.SpiNum;
-            int newRemaining = UpdateTXBufferState(key, value.BytesRemaining);
+            ObserverTxStatusPoco newRemaining = UpdateTXBufferState(key, value.BytesRemaining, 0,0);
             LOG.Debug("Device:" + key + " BufferDepth:" + newRemaining);
         }
     }
