@@ -36,9 +36,9 @@ using IOIOLib.Util.Impl;
 
 namespace IOIOLib.Util
 {
-    internal class IOIOLogManager
+    public class IOIOLogManager
     {
-        internal static IOIOLog GetLogger(Type type)
+        public static IOIOLog GetLogger(Type type)
         {
             return new IOIOLogImpl(type);
         }

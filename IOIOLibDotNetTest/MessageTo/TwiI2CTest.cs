@@ -91,19 +91,6 @@ namespace IOIOLibDotNetTest.MessageTo
         public void TwiI2CTest_L3G4200D_Integration()
 		{
 
-            // slave address is 7 bits, the last bit is set by SD0 line
-            int GyroSlaveAddress0 = Convert.ToInt32("1101000", 2);
-            // the parallax board seems to pull SD0 high so this is the address we need
-            int GyroSlaveAddress1 = Convert.ToInt32("1101001", 2);
-            byte Gyro_WhoAmI_Register = 0x0f;
-            byte Gyro_WhoAmI_ID_L3G4200D = 0xD3;
-            byte Gyro_CTRL_REG1 = 0x20;
-            byte Gyro_CTRL_REG2 = 0x21;
-            byte Gyro_CTRL_REG3 = 0x22;
-            byte Gyro_CTRL_REG4 = 0x23;
-            byte Gyro_CTRL_REG5 = 0x24;
-            byte Gyro_First_Out_Register = 0x28;
-
 
             IOIOConnection ourConn = this.CreateGoodSerialConnection(false);
             // create our custom I2C result observer and add it to the default set
@@ -127,30 +114,30 @@ namespace IOIOLibDotNetTest.MessageTo
 
             LOG.Debug("Ask for Who Am I");
             // send the whoami command - we expect the id to be Gyro_WhoAmI_ID
-            byte[] ReadWhoAmiRegisterData = new byte[] { Gyro_WhoAmI_Register };
-            ITwiMasterSendDataCommand startupCommand1 = factory.CreateTwiSendData(twiDef, GyroSlaveAddress1, false, ReadWhoAmiRegisterData, 1);
+            byte[] ReadWhoAmiRegisterData = new byte[] { L3G4200DConstants.Gyro_WhoAmI_Register };
+            ITwiMasterSendDataCommand startupCommand1 = factory.CreateTwiSendData(twiDef, L3G4200DConstants.GyroSlaveAddress1, false, ReadWhoAmiRegisterData, 1);
             ourImpl.PostMessage(startupCommand1);
             System.Threading.Thread.Sleep(50);
             // should check for Gyro_WhoAmI_ID_L3G4200D !
 
             // Enable x, y, z and turn off power down
             // auto increment registers
-            byte ControlRegisterAutoIncrement = Gyro_CTRL_REG1 |= Convert.ToByte(0x80);
+            byte ControlRegisterAutoIncrement = L3G4200DConstants.Gyro_CTRL_REG1 |= Convert.ToByte(0x80);
             byte[] RegisterConfigurationData = new byte[] { ControlRegisterAutoIncrement,
                 Convert.ToByte("00001111", 2),
                 Convert.ToByte("00000000", 2),
                 Convert.ToByte("00000000", 2),
-                (((byte)0x02) <<4),
+                L3G4200DConstants.Gyro_Range_DPS_2000,
                 //Enable High pass filter
                 Convert.ToByte("00000000", 2)
             };
-            LOG.Debug("Updating Registers starting with " + Gyro_CTRL_REG1.ToString("X")+ ":"+ RegisterConfigurationData);
-            ITwiMasterSendDataCommand ConfigureRegisters = factory.CreateTwiSendData(twiDef, GyroSlaveAddress1, false, RegisterConfigurationData, 0);
+            LOG.Debug("Updating Registers starting with " + L3G4200DConstants.Gyro_CTRL_REG1.ToString("X")+ ":"+ RegisterConfigurationData);
+            ITwiMasterSendDataCommand ConfigureRegisters = factory.CreateTwiSendData(twiDef, L3G4200DConstants.GyroSlaveAddress1, false, RegisterConfigurationData, 0);
             ourImpl.PostMessage(ConfigureRegisters);
 
-            LOG.Debug("Reading Registers starting with " + Gyro_CTRL_REG1.ToString("X"));
+            LOG.Debug("Reading Registers starting with " + L3G4200DConstants.Gyro_CTRL_REG1.ToString("X"));
             byte[] ReadRegisterControl = new byte[] { ControlRegisterAutoIncrement };
-            ITwiMasterSendDataCommand ReadRegistersCommand = factory.CreateTwiSendData(twiDef, GyroSlaveAddress1, false, ReadRegisterControl, 5);
+            ITwiMasterSendDataCommand ReadRegistersCommand = factory.CreateTwiSendData(twiDef, L3G4200DConstants.GyroSlaveAddress1, false, ReadRegisterControl, 5);
             ourImpl.PostMessage(ReadRegistersCommand);
             System.Threading.Thread.Sleep(50);
 
@@ -170,8 +157,8 @@ namespace IOIOLibDotNetTest.MessageTo
             {
                 LOG.Debug("Send read-only command retreive xyz with auto increment sendCount: " +i);
                 observer.LastResult_ = null;
-                byte[] ReadFromFirstOutRegisterWithAutoInc = new byte[] { Gyro_First_Out_Register |= Convert.ToByte(0x80) };
-                ITwiMasterSendDataCommand ReadXYZ = factory.CreateTwiSendData(twiDef, GyroSlaveAddress1, false, ReadFromFirstOutRegisterWithAutoInc, 6);
+                byte[] ReadFromFirstOutRegisterWithAutoInc = new byte[] { L3G4200DConstants.Gyro_First_Out_Register |= Convert.ToByte(0x80) };
+                ITwiMasterSendDataCommand ReadXYZ = factory.CreateTwiSendData(twiDef, L3G4200DConstants.GyroSlaveAddress1, false, ReadFromFirstOutRegisterWithAutoInc, 6);
                 ourImpl.PostMessage(ReadXYZ);
                 count = 0;
                 while (count <= maxWaitCount && i > observer.allEvents.Count + allowableOutstanding)

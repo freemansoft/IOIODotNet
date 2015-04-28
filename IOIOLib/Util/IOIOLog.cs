@@ -38,7 +38,7 @@ namespace IOIOLib.Util
     /// <summary>
     /// Modeled after log4net
     /// </summary>
-    internal interface IOIOLog
+    public interface IOIOLog
     {
         void Debug(object message);
         void Debug(object message, Exception exception);

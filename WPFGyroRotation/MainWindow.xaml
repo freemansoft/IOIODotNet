@@ -1,0 +1,102 @@
+﻿<Window x:Class="WPFGyroRotation.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFGyroRotation"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="500" Width="500">
+<DockPanel LastChildFill="True">
+        <Grid DockPanel.Dock="Top">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="2*" />
+                    </Grid.ColumnDefinitions>
+        <TextBlock Name="COMPort_Label" Text="COM Port "  Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right"/>
+        <TextBox Name="ComPort_Field"        Grid.Row="0" Grid.Column="1"/>
+            
+        <TextBox  Text="Angle"               Grid.Row="1" Grid.Column="1"/>
+        <TextBox  Text="Last Sample"         Grid.Row="1" Grid.Column="2"/>
+        <TextBox  Text="Callibration"        Grid.Row="1" Grid.Column="3"/>
+
+        <TextBlock Name="X_Label" Text="X "  Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right"/>
+        <TextBox Name="X_Angle" Text="0"     Grid.Row="2" Grid.Column="1"/>
+        <TextBox Name="X_RawField"           Grid.Row="2" Grid.Column="2"/>
+        <TextBox Name="X_CallibField"        Grid.Row="2" Grid.Column="3"/>
+        <TextBlock Name="Y_Label" Text="Y "  Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right"/>
+        <TextBox Name="Y_Angle" Text="0"     Grid.Row="3" Grid.Column="1"/>
+        <TextBox Name="Y_RawField"           Grid.Row="3" Grid.Column="2"/>
+        <TextBox Name="Y_CallibField"        Grid.Row="3" Grid.Column="3"/>
+        <TextBlock Name="Z_Label"  Text="Z " Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right"/>
+        <TextBox Name="Z_Angle" Text="0"     Grid.Row="4" Grid.Column="1"/>
+        <TextBox Name="Z_RawField"           Grid.Row="4" Grid.Column="2"/>
+        <TextBox Name="Z_CallibField"        Grid.Row="4" Grid.Column="3"/>
+        </Grid>
+    <Viewport3D Name="myViewport">
+      <Viewport3D.Camera>
+        <PerspectiveCamera FarPlaneDistance="20" LookDirection="5,-2,-3" UpDirection="0,1,0" NearPlaneDistance="0" Position="-5,2,3" FieldOfView="45" />
+      </Viewport3D.Camera>
+
+      <ModelVisual3D x:Name="topModelVisual3D">
+        <ModelVisual3D.Children>
+          <ModelVisual3D>
+            <ModelVisual3D.Content>
+              <DirectionalLight Color="#FFFFFFFF" Direction="-3,-4,-5" />
+            </ModelVisual3D.Content>
+          </ModelVisual3D>
+
+          <ModelVisual3D x:Name="Teapot">
+            <ModelVisual3D.Content>
+              <GeometryModel3D Geometry="{StaticResource myTeapot}">
+                <GeometryModel3D.Material>
+                  <DiffuseMaterial>
+                    <DiffuseMaterial.Brush>
+                      <SolidColorBrush Color="Blue" Opacity="1.0" />
+                    </DiffuseMaterial.Brush>
+                  </DiffuseMaterial>
+                </GeometryModel3D.Material>
+                <GeometryModel3D.Transform>
+                  <RotateTransform3D>
+                    <RotateTransform3D.Rotation>
+                      <AxisAngleRotation3D x:Name="myAngleRotation" Axis="0,3,0" Angle="1" />
+                    </RotateTransform3D.Rotation>
+                  </RotateTransform3D>
+                </GeometryModel3D.Transform>
+              </GeometryModel3D>
+            </ModelVisual3D.Content>
+          </ModelVisual3D>
+
+
+        </ModelVisual3D.Children>
+      </ModelVisual3D>
+
+        <!-- we don't want automated rotation from the example -->
+    <!--
+      <Viewport3D.Triggers>
+        <EventTrigger RoutedEvent="Viewport3D.Loaded">
+          <BeginStoryboard>
+            <Storyboard>
+              <DoubleAnimation 
+                Storyboard.TargetName="myAngleRotation"
+                Storyboard.TargetProperty="Angle"
+                From="0" To="360" Duration="0:0:10"
+                RepeatBehavior="Forever" />
+            </Storyboard>
+          </BeginStoryboard>
+        </EventTrigger>
+      </Viewport3D.Triggers>
+    -->
+
+    </Viewport3D>
+  </DockPanel>
+
+</Window>

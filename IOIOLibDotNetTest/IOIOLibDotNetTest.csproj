@@ -28,6 +28,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -68,6 +69,7 @@
     <Compile Include="Device\Impl\ResourceManagerTest.cs" />
     <Compile Include="Device\Impl\ResourceAllocatorGenericTest.cs" />
     <Compile Include="Device\Impl\ResourceAllocatorSpecificTest.cs" />
+    <Compile Include="MessageTo\L3G4200DConstants.cs" />
     <Compile Include="MessageTo\ServoTest.cs" />
     <Compile Include="MessageTo\TwiI2CTest.cs" />
     <Compile Include="MessageTo\UartTest.cs" />
